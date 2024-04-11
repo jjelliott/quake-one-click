@@ -1,10 +1,6 @@
 package q1.installer;
 
 import io.micronaut.configuration.picocli.PicocliRunner;
-
-import io.micronaut.http.client.BlockingHttpClient;
-import io.micronaut.http.client.HttpClient;
-import io.micronaut.http.client.HttpClientConfiguration;
 import jakarta.inject.Inject;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine.Command;
@@ -14,12 +10,13 @@ import q1.installer.unpack.Extractor;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.sql.Time;
 import java.util.*;
 
 @Command(name = "q1-installer", description = "...",
@@ -30,8 +27,6 @@ public class Q1InstallerCommand implements Runnable {
 
   @Inject
   List<Extractor> extractors;
-  @Inject
-  HttpClientConfiguration configuration;
 
   @Parameters
   List<String> args = new ArrayList<>();
@@ -145,36 +140,53 @@ public class Q1InstallerCommand implements Runnable {
       var urlSplit = launchMessage.url.split("/");
       fileName = urlSplit[urlSplit.length - 1];
     }
-    try (BlockingHttpClient httpClient = HttpClient.create(new URL(launchMessage.url), configuration).toBlocking()) {
-      Timer.start("initial web request");
-      var response = httpClient.exchange(launchMessage.url, byte[].class);
-      Timer.stop();
-      if (response.status().getCode() >= 300 && response.status().getCode() < 400) {
-        if (response.header("location") != null) {
-          var newLocation = response.header("location");
-          if (newLocation.endsWith(".zip")) {
-            var urlSplit = newLocation.split("/");
-            fileName = urlSplit[urlSplit.length - 1];
-          }
-          Timer.start("second web request");
-          response = httpClient.exchange(newLocation, byte[].class);
-          Timer.stop();
+    HttpClient client = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_1_1)
+        .followRedirects(HttpClient.Redirect.NEVER)
+        .build();
+
+    Timer.start("initial web request");
+    HttpResponse<byte[]> response = null;
+    try {
+      response = client.send(HttpRequest.newBuilder(URI.create(launchMessage.url)).build(), HttpResponse.BodyHandlers.ofByteArray());
+    } catch (IOException ex) {
+      throw new RuntimeException(ex);
+    } catch (InterruptedException ex) {
+      throw new RuntimeException(ex);
+    }
+    Timer.stop();
+    if (response.statusCode() >= 300 && response.statusCode() < 400) {
+      if (!response.headers().allValues("location").isEmpty()) {
+        var newLocation = response.headers().firstValue("location").orElseThrow();
+        if (newLocation.endsWith(".zip")) {
+          var urlSplit = newLocation.split("/");
+          fileName = urlSplit[urlSplit.length - 1];
         }
-      }
-      if (fileName.equals("")) {
-        var disposition = response.header("content-disposition");
-        if (disposition.contains("attachment; filename=\"")) {
-          fileName = disposition.replace("attachment; filename=\"", "").replace("\"", "");
+        Timer.start("second web request");
+        try {
+          response = client.send(HttpRequest.newBuilder(URI.create(newLocation)).build(), HttpResponse.BodyHandlers.ofByteArray());
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
         }
+        Timer.stop();
       }
-      Timer.start("downloaded file write");
+    }
+    if (fileName.equals("")) {
+      var disposition = response.headers().firstValue("content-disposition").orElseThrow();
+      if (disposition.contains("attachment; filename=\"")) {
+        fileName = disposition.replace("attachment; filename=\"", "").replace("\"", "");
+      }
+    }
+    Timer.start("downloaded file write");
+    try {
       Files.write(Path.of(confDirPath + "/cache/" + fileName), response.body(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-      Timer.stop();
-    } catch (MalformedURLException e) {
-      throw new RuntimeException(e);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    Timer.stop();
+
     return fileName;
   }
 }
@@ -219,15 +231,15 @@ class Timer {
 
   static void start(String message) {
     if (message == null) {
-//      System.out.println("Starting timer");
+      System.out.println("Starting timer");
     } else {
-//      System.out.println("Starting " + message + " timer");
+      System.out.println("Starting " + message + " timer");
     }
     start = System.currentTimeMillis();
   }
 
   static void stop() {
     var end = System.currentTimeMillis();
-//    System.out.println("Seconds elapsed: " + ((end - start) / 1000.0));
+    System.out.println("Seconds elapsed: " + ((end - start) / 1000.0));
   }
 }

@@ -15,8 +15,6 @@ dependencies {
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     implementation("info.picocli:picocli")
     implementation("io.micronaut.picocli:micronaut-picocli")
-    implementation("io.micronaut.serde:micronaut-serde-jackson")
-    implementation("io.micronaut:micronaut-http-client")
     implementation("org.apache.commons:commons-compress:1.26.1")
     runtimeOnly("ch.qos.logback:logback-classic")
 }
