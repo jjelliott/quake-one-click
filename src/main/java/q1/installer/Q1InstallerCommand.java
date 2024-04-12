@@ -25,6 +25,7 @@ public class Q1InstallerCommand implements Runnable {
 
   public static String confDirPath = System.getProperty("user.home") + "/.q1-installer";
 
+  Properties userProps;
   @Inject
   List<Extractor> extractors;
 
@@ -37,15 +38,14 @@ public class Q1InstallerCommand implements Runnable {
 
   public void run() {
     if (args.isEmpty()) {
-      System.out.println("Hi!");
-      System.out.println("This will eventually be an installer / setup helper");
+      menu();
       return;
     }
     Timer.start("configuration initialization");
     var cacheDir = new File(confDirPath + "/cache");
     cacheDir.mkdirs();
     var userPropsFile = new File(confDirPath + "/props");
-    var userProps = new Properties();
+    userProps = new Properties();
     try {
       userProps.load(new FileReader(userPropsFile));
     } catch (IOException e) {
@@ -63,9 +63,7 @@ public class Q1InstallerCommand implements Runnable {
     Timer.stop();
     if (!installed.contains(launchMessage.url)) {
       try {
-        Timer.start("downloading");
         String fileName = downloadFile(launchMessage);
-        Timer.stop();
         Timer.start("extracting");
         extractors.stream()
             .filter(it -> it.handles(FilenameUtils.getExtension(fileName)))
@@ -73,13 +71,42 @@ public class Q1InstallerCommand implements Runnable {
             .extract(confDirPath + "/cache/" + fileName);
         Timer.stop();
         Timer.start("copying");
-        if (launchMessage.type.equals("mod")) {
-          copyFolder(Path.of(confDirPath + "/cache/" + FilenameUtils.getBaseName(fileName) + "/" + launchMessage.modName), Path.of(userProps.get("quake.directory-path").toString() + "/" + launchMessage.modName));
-        } else if (launchMessage.type.equals("map")) {
-          for (String packageFile : launchMessage.files) {
-            Files.copy(Path.of(confDirPath + "/cache/" + FilenameUtils.getBaseName(fileName) + "/" + packageFile), Path.of(userProps.get("quake.directory-path").toString() + "/" + launchMessage.modName + "/maps/" + packageFile));
+//        if (launchMessage.type.equals("mod-folder")) {
+//          copyFolder(Path.of(confDirPath + "/cache/" + FilenameUtils.getBaseName(fileName) + "/" + launchMessage.modName), Path.of(userProps.get("quake.directory-path").toString() + "/" + launchMessage.modName));
+//        } else if (launchMessage.type.equals("gamedir")) {
+//          Files.createDirectories(Path.of(userProps.get("quake.directory-path").toString() + "/" + launchMessage.modName + "/maps/"));
+//          Files.list(Path.of(confDirPath + "/cache/" + FilenameUtils.getBaseName(fileName) + "/")).forEach(packageFilePath -> {
+//            try {
+//              Files.copy(packageFilePath, Path.of(userProps.get("quake.directory-path").toString() + "/" + launchMessage.modName + "/" + packageFilePath.getFileName().toString()));
+//            } catch (IOException e) {
+//              throw new RuntimeException(e);
+//            }
+//          });
+//        } else {
+//        } else if (launchMessage.type.equals("map")) {
+        Files.createDirectories(quakeDirectoryPath(launchMessage.modName + "/maps/"));
+//          if (launchMessage.files == null ){
+        Files.list(Path.of(confDirPath + "/cache/" + FilenameUtils.getBaseName(fileName) + "/")).forEach(packageFilePath -> {
+          try {
+            if (Files.isDirectory(packageFilePath)) {
+              if (packageFilePath.getFileName().toString().equals(launchMessage.modName)) {
+                copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName));
+              } else {
+                copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName + "/" + packageFilePath.getFileName().toString()));
+              }
+            } else {
+              Files.copy(packageFilePath, quakeDirectoryPath(launchMessage.modName + (launchMessage.type.equals("map") ? "/maps/" : "/") + packageFilePath.getFileName().toString()));
+            }
+          } catch (IOException e) {
+            throw new RuntimeException(e);
           }
-        }
+        });
+//          } else {
+//            for (String packageFile : launchMessage.files) {
+//              Files.copy(Path.of(confDirPath + "/cache/" + FilenameUtils.getBaseName(fileName) + "/" + packageFile), Path.of(userProps.get("quake.directory-path").toString() + "/" + launchMessage.modName + "/maps/" + packageFile));
+//            }
+//          }
+//        }
         Timer.stop();
 
         Files.writeString(Path.of(confDirPath + "/installed"), (!installed.isEmpty() ? "\n" : "") + launchMessage.url, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
@@ -112,6 +139,10 @@ public class Q1InstallerCommand implements Runnable {
       scanner.nextLine();
     }
 
+  }
+
+  Path quakeDirectoryPath(String subPath){
+    return Path.of(userProps.get("quake.directory-path").toString() + "/" + subPath);
   }
 
   public static void copyFolder(Path src, Path dest) {
@@ -189,6 +220,11 @@ public class Q1InstallerCommand implements Runnable {
 
     return fileName;
   }
+
+  void menu() {
+    System.out.println("Hi!");
+    System.out.println("This will eventually be an installer / setup helper");
+  }
 }
 
 class LaunchMessage {
@@ -209,7 +245,7 @@ class LaunchMessage {
 
     var split = commandWithoutProtocol.split(",");
     url = split[0];
-    if (split[1].equals("mod")) {
+    if (split[1].equals("mod-folder") || split[1].equals("gamedir")) {
       type = split[1];
       modName = split[2];
       launchMap = split.length >= 4 ? split[3] : null;
