@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=q1package Scheme Handler
+Exec=q1-installer %u
+StartupNotify=false
+MimeType=x-scheme-handler/q1package;

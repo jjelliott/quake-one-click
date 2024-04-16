@@ -4,7 +4,10 @@ import io.github.jjelliott.q1installer.os.ConfigLocation;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import io.github.jjelliott.q1installer.unpack.Extractor;
 import io.micronaut.configuration.picocli.PicocliRunner;
+import io.micronaut.context.annotation.Configuration;
+import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
@@ -31,7 +34,8 @@ public class Q1InstallerCommand implements Runnable {
   UserProps userProps;
   Timer timer;
 
-  Scanner scanner = new Scanner(System.in);
+  @Inject
+  Scanner scanner;
 
   @Inject
   ConfigLocation configLocation;
@@ -304,6 +308,13 @@ public class Q1InstallerCommand implements Runnable {
       }
     }
   }
+
 }
 
-
+@Factory
+class ScannerFactory {
+  @Singleton
+  Scanner scanner(){
+    return new Scanner(System.in);
+  }
+}
