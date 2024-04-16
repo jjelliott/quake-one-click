@@ -1,4 +1,4 @@
-package q1.installer;
+package io.github.jjelliott.q1installer;
 
 import io.micronaut.configuration.picocli.PicocliRunner;
 import io.micronaut.context.ApplicationContext;
@@ -19,7 +19,7 @@ public class Q1InstallerCommandTest {
 
         try (ApplicationContext ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)) {
             String[] args = new String[] { "-v" };
-            PicocliRunner.run(Q1InstallerCommand.class, ctx, args);
+            PicocliRunner.run(io.github.jjelliott.q1installer.Q1InstallerCommand.class, ctx, args);
 
             // q1-installer
             assertTrue(baos.toString().contains("Hi!"));

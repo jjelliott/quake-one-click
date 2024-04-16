@@ -4,7 +4,7 @@ plugins {
 }
 
 version = "0.1"
-group = "q1.installer"
+group = "io.github.jjelliott.q1installer"
 
 repositories {
     mavenCentral()
@@ -21,7 +21,7 @@ dependencies {
 
 
 application {
-    mainClass.set("q1.installer.Q1InstallerCommand")
+    mainClass.set("io.github.jjelliott.q1installer.Q1InstallerCommand")
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
@@ -33,9 +33,12 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("q1.installer.*")
+        annotations("io.github.jjelliott.q1installer.*")
     }
 }
 
+graalvmNative {
+    toolchainDetection.set(true)
+}
 
 

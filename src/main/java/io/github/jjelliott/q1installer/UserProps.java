@@ -1,4 +1,4 @@
-package q1.installer;
+package io.github.jjelliott.q1installer;
 
 import java.util.Properties;
 

@@ -1,4 +1,4 @@
-package q1.installer;
+package io.github.jjelliott.q1installer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +30,11 @@ public class LaunchMessage {
       modName = split[2];
       files = split[3].equals("auto") ? null : Arrays.asList(split[3].split(":"));
       launchMap = split.length >= 5 ? split[4] : null;
+    } else if (split[1].equals("custom")){
+      type = split[1];
+      modName = split[2];
+
+      launchMap = launchMap = split.length >= 5 ? split[4] : null;
     }
     if (launchMap != null) {
       action = "run";

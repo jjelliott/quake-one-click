@@ -1,4 +1,4 @@
-package q1.installer.unpack;
+package io.github.jjelliott.q1installer.unpack;
 
 import jakarta.inject.Singleton;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static q1.installer.Q1InstallerCommand.confDirPath;
+import static io.github.jjelliott.q1installer.Q1InstallerCommand.confDirPath;
 
 @Singleton
 public class ZipExtractor implements Extractor {

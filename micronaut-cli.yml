@@ -1,5 +1,5 @@
 applicationType: cli
-defaultPackage: q1.installer
+defaultPackage: io.github.jjelliott.q1installer
 testFramework: junit
 sourceLanguage: java
 buildTool: gradle_kotlin

@@ -1,12 +1,13 @@
-package q1.installer;
+package io.github.jjelliott.q1installer;
 
+import io.github.jjelliott.q1installer.os.ConfigLocation;
+import io.github.jjelliott.q1installer.os.HandlerInstaller;
+import io.github.jjelliott.q1installer.unpack.Extractor;
 import io.micronaut.configuration.picocli.PicocliRunner;
 import jakarta.inject.Inject;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
-import q1.installer.handler.HandlerInstaller;
-import q1.installer.unpack.Extractor;
 
 import java.io.*;
 import java.net.URI;
@@ -16,18 +17,25 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Scanner;
 
 @Command(name = "q1-installer", description = "...",
     mixinStandardHelpOptions = true)
 public class Q1InstallerCommand implements Runnable {
 
-  public static String confDirPath = System.getProperty("user.home") + "/.q1-installer";
+  public static String confDirPath;
 
   UserProps userProps;
   Timer timer;
 
   Scanner scanner = new Scanner(System.in);
+
+  @Inject
+  ConfigLocation configLocation;
+
   @Inject
   List<Extractor> extractors;
 
@@ -37,14 +45,22 @@ public class Q1InstallerCommand implements Runnable {
   @Parameters
   List<String> args = new ArrayList<>();
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     PicocliRunner.run(Q1InstallerCommand.class, args);
   }
 
   void initConfig() {
+    confDirPath = configLocation.getConfig();
     var cacheDir = new File(confDirPath + "/cache");
     cacheDir.mkdirs();
-    var userPropsFile = new File(confDirPath + "/props");
+    var userPropsFile = new File(confDirPath + "/user.properties");
+    if (!userPropsFile.exists()) {
+      try {
+        userPropsFile.createNewFile();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
     var userProperties = new Properties();
     try {
       userProperties.load(new FileReader(userPropsFile));
@@ -52,6 +68,7 @@ public class Q1InstallerCommand implements Runnable {
       throw new RuntimeException(e);
     }
     userProps = new UserProps(userProperties);
+
     timer = new Timer();
   }
 
@@ -60,10 +77,12 @@ public class Q1InstallerCommand implements Runnable {
     initConfig();
     if (args.isEmpty()) {
       menu();
+    } else if (userProps.quakeDirectoryPath == null || userProps.quakeEnginePath == null) {
+      System.out.println("Paths not set, please run setup and set them.");
     } else {
       List<String> installed;
       try {
-        installed = Files.readAllLines(Path.of(confDirPath + "/installed"));
+        installed = Files.readAllLines(Path.of(confDirPath + "/installed.list"));
       } catch (IOException e) {
         installed = new ArrayList<>();
       }
@@ -163,12 +182,10 @@ public class Q1InstallerCommand implements Runnable {
         .build();
 
     timer.start("initial web request");
-    HttpResponse<byte[]> response = null;
+    HttpResponse<byte[]> response;
     try {
       response = client.send(HttpRequest.newBuilder(URI.create(launchMessage.url)).build(), HttpResponse.BodyHandlers.ofByteArray());
-    } catch (IOException ex) {
-      throw new RuntimeException(ex);
-    } catch (InterruptedException ex) {
+    } catch (IOException | InterruptedException ex) {
       throw new RuntimeException(ex);
     }
     timer.stop();
@@ -182,15 +199,13 @@ public class Q1InstallerCommand implements Runnable {
         timer.start("second web request");
         try {
           response = client.send(HttpRequest.newBuilder(URI.create(newLocation)).build(), HttpResponse.BodyHandlers.ofByteArray());
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
           throw new RuntimeException(e);
         }
         timer.stop();
       }
     }
-    if (fileName.equals("")) {
+    if (fileName.isEmpty()) {
       var disposition = response.headers().firstValue("content-disposition").orElseThrow();
       if (disposition.contains("attachment; filename=\"")) {
         fileName = disposition.replace("attachment; filename=\"", "").replace("\"", "");
@@ -243,8 +258,6 @@ public class Q1InstallerCommand implements Runnable {
                 userProps.quakeDirectoryPath = quakeDirPath;
                 userProps.quakeEnginePath = quakeEnginePath;
                 userProps.toProperties().store(out, null);
-              } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
               } catch (IOException e) {
                 throw new RuntimeException(e);
               }
@@ -259,8 +272,6 @@ public class Q1InstallerCommand implements Runnable {
             System.out.println(userProps.installerAutoClose ? "Disabling auto-close" : "Enabling auto-close");
             userProps.installerAutoClose = !userProps.installerAutoClose;
             userProps.toProperties().store(out, null);
-          } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
           } catch (IOException e) {
             throw new RuntimeException(e);
           }
