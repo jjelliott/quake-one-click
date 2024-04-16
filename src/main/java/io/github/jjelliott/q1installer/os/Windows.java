@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -23,11 +24,16 @@ public class Windows implements HandlerInstaller, ConfigLocation {
   @Override
   public void install() {
     try (var resource = Objects.requireNonNull(this.getClass().getClassLoader().getResource("q1package.reg")).openStream()) {
-      Files.write(Path.of(getConfig() + "/cache/q1package.reg"), resource.readAllBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+      var outPath = Path.of(getConfig() + "/cache/q1package.reg");
+      var escapedPath = System.getProperty("user.dir")
+          .replaceAll("\\\\", "\\\\\\\\") + "\\\\"; // XXX: this is gross
+      var contents = new String(resource.readAllBytes(), StandardCharsets.UTF_8)
+          .replace("%WORKDIR%", escapedPath);
+      Files.writeString(outPath, contents, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    System.out.println("An admin prompt will pop up to write to the registry.");
+    System.out.println("A prompt should pop up to write to the registry.");
     System.out.println("You may review " + getConfig() + "/cache/q1package.reg if you wish before continuing.");
     System.out.println("Press enter to continue when you are ready...");
     scanner.nextLine();
