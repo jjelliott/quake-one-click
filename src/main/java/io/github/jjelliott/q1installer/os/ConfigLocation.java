@@ -15,4 +15,8 @@ public interface ConfigLocation {
   default String getUserPropertiesFile(){
     return getConfig() + "/user.properties";
   }
+
+  default String getInstalledList(){
+    return getConfig() + "/installed.list";
+  }
 }
