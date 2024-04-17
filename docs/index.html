@@ -1,17 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>q1-installer</title>
-</head>
-<body>
 <h1 id="q1-installer">q1-installer</h1>
-<p>This program enables one-click installation and run of Quake 1 maps and mods. Any site that wishes to implement one-click links may.</p>
+<p>This program enables one-click installation and run of Quake 1 maps and mods.</p>
+<h2 id="link-format">Link format</h2>
+<pre><code><span class="xml">q1package:</span><span class="hljs-template-variable">{download-url}</span><span class="xml">,</span><span class="hljs-template-variable">{type}</span><span class="xml">,</span><span class="hljs-template-variable">{gamedir}</span><span class="xml">,</span><span class="hljs-template-variable">{type-specific-info?}</span><span class="xml">,</span><span class="hljs-template-variable">{map-to-start?}</span><span class="xml"></span>
+</code></pre><table>
+    <thead>
+    <tr>
+        <th>field</th>
+        <th>explanation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>download-url</td>
+        <td>Url to download the resource</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td><code>mod-folder</code>, <code>map</code> or <code>gamedir</code>, more info below</td>
+    </tr>
+    <tr>
+        <td>gamedir</td>
+        <td>Gamedir to extract files to (ex. <code>id1</code>, <code>quoth</code>, <code>ad</code>)</td>
+    </tr>
+    <tr>
+        <td>type-specific-info</td>
+        <td>see type section below</td>
+    </tr>
+    <tr>
+        <td>map-to-start</td>
+        <td>(Optional) map to start after completing installation.</td>
+    </tr>
+    </tbody>
+</table>
+<h3 id="install-types">Install types</h3>
+<table>
+    <thead>
+    <tr>
+        <th>type</th>
+        <th>explanation</th>
+        <th>type-specific-info</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>mod-folder</td>
+        <td>This type of package contains a fully contained mod directory, ex. <code>sm228.zip</code> contains a single folder called <code>sm228</code>.</td>
+        <td>None, omit this field</td>
+    </tr>
+    <tr>
+        <td>map</td>
+        <td>This type of package contains only files that should be placed within the <code>maps</code> directory of the applicable mod directory, ex. <code>.bsp</code>, <code>.lit</code>.</td>
+        <td>Colon-separated list of files to copy, or <code>auto</code> if you wish to copy all files</td>
+    </tr>
+    <tr>
+        <td>gamedir</td>
+        <td>Contains a collection of assets intended to be extracted to a mod directory, ex. <code>quoth2pt2full_2.zip</code> contains <code>pak0.pak</code> - <code>pak2.pak</code> at the top level of the zip</td>
+        <td>Same as <code>map</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>Note: Use <code>auto</code> for as many packages as possible</p>
 <h2 id="usage">Usage</h2>
 <h3 id="download">Download</h3>
 <p>Binaries will be available from the Releases section.</p>
 <h3 id="installation">Installation</h3>
-<p>Obtain the appropriate binary for your system. </p>
+<p>Obtain the appropriate binary for your system.</p>
 <p>On Linux, place the binary on your path. On Windows, place the binary where you want it.</p>
 <p>Run the binary and set up the configuration via menu. You must install the handler and set the quake paths.</p>
 <p>Once setup, one-click links should work.</p>
@@ -22,11 +75,8 @@
 <p>Run <code>./gradlew nativeCompile</code> to create a binary. Install the binary as you would a release version.</p>
 <h3 id="running-tests">Running tests</h3>
 <p><em>Note: Tests are not yet implemented.</em></p>
-<p>To run the test suite, run <code>./gradlew check</code>. </p>
-
-<h2>Test links</h2>
-<a href="q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start">SM228 (via Slipseer)</a>
-<a href="q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,auto,spasp1">Enforced Entropy (via Slipseer)</a>
-<a href="q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start">Quoth 2.2 (via Quaddicted)</a>
-</body>
-</html>
+<p>To run the test suite, run <code>./gradlew check</code>.</p>
+<h2 id="test-links">Test links</h2>
+<p><a href="q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start">SM228 (via Slipseer)</a></p>
+<p><a href="q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,auto,spasp1">Enforced Entropy (via Slipseer)</a></p>
+<p><a href="q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start">Quoth 2.2 (via Quaddicted)</a></p>
