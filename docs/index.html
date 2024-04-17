@@ -1,7 +1,17 @@
+<!doctype html>
+<html>
+<head>
+    <title>
+        Quake One-Click Installer
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
 <h1 id="q1-installer">q1-installer</h1>
 <p>This program enables one-click installation and run of Quake 1 maps and mods.</p>
+<p>Repository: <a href="https://github.com/jjelliott/quake-one-click">Github</a></p>
 <h2 id="link-format">Link format</h2>
-<pre><code><span class="xml">q1package:</span><span class="hljs-template-variable">{download-url}</span><span class="xml">,</span><span class="hljs-template-variable">{type}</span><span class="xml">,</span><span class="hljs-template-variable">{gamedir}</span><span class="xml">,</span><span class="hljs-template-variable">{type-specific-info?}</span><span class="xml">,</span><span class="hljs-template-variable">{map-to-start?}</span><span class="xml"></span>
+<pre><code><span class="xml">q1package:</span><span class="hljs-template-variable">{download-url}</span><span class="xml">,</span><span class="hljs-template-variable">{type}</span><span class="xml">,</span><span class="hljs-template-variable">{gamedir}</span><span class="xml">,</span><span class="hljs-template-variable">{map-to-start?}</span><span class="xml"></span>
 </code></pre><table>
     <thead>
     <tr>
@@ -23,10 +33,6 @@
         <td>Gamedir to extract files to (ex. <code>id1</code>, <code>quoth</code>, <code>ad</code>)</td>
     </tr>
     <tr>
-        <td>type-specific-info</td>
-        <td>see type section below</td>
-    </tr>
-    <tr>
         <td>map-to-start</td>
         <td>(Optional) map to start after completing installation.</td>
     </tr>
@@ -38,28 +44,23 @@
     <tr>
         <th>type</th>
         <th>explanation</th>
-        <th>type-specific-info</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <td>mod-folder</td>
         <td>This type of package contains a fully contained mod directory, ex. <code>sm228.zip</code> contains a single folder called <code>sm228</code>.</td>
-        <td>None, omit this field</td>
     </tr>
     <tr>
         <td>map</td>
         <td>This type of package contains only files that should be placed within the <code>maps</code> directory of the applicable mod directory, ex. <code>.bsp</code>, <code>.lit</code>.</td>
-        <td>Colon-separated list of files to copy, or <code>auto</code> if you wish to copy all files</td>
     </tr>
     <tr>
         <td>gamedir</td>
         <td>Contains a collection of assets intended to be extracted to a mod directory, ex. <code>quoth2pt2full_2.zip</code> contains <code>pak0.pak</code> - <code>pak2.pak</code> at the top level of the zip</td>
-        <td>Same as <code>map</code></td>
     </tr>
     </tbody>
 </table>
-<p>Note: Use <code>auto</code> for as many packages as possible</p>
 <h2 id="usage">Usage</h2>
 <h3 id="download">Download</h3>
 <p>Binaries will be available from the Releases section.</p>
@@ -80,3 +81,6 @@
 <p><a href="q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start">SM228 (via Slipseer)</a></p>
 <p><a href="q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,auto,spasp1">Enforced Entropy (via Slipseer)</a></p>
 <p><a href="q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start">Quoth 2.2 (via Quaddicted)</a></p>
+
+</body>
+</html>

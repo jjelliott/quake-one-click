@@ -2,29 +2,30 @@
 
 This program enables one-click installation and run of Quake 1 maps and mods.
 
+Repository: [Github](https://github.com/jjelliott/quake-one-click)
+
 ## Link format
 
 ```
-q1package:{download-url},{type},{gamedir},{type-specific-info?},{map-to-start?}
+q1package:{download-url},{type},{gamedir},{map-to-start?}
 ```
 
 | field              | explanation                                            |
 |--------------------|--------------------------------------------------------|
 | download-url       | Url to download the resource                           |
 | type               | `mod-folder`, `map` or `gamedir`, more info below      |
-| gamedir            | Gamedir to extract files to (ex. `id1`, `quoth`, `ad`) |
-| type-specific-info | see type section below                                 |
+| gamedir            | Gamedir to extract files to (ex. `id1`, `quoth`, `ad`) | 
 | map-to-start       | (Optional) map to start after completing installation. |
 
 ### Install types
 
-| type       | explanation                                                                                                                                                         | type-specific-info                                                             |
-|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
-| mod-folder | This type of package contains a fully contained mod directory, ex. `sm228.zip` contains a single folder called `sm228`.                                             | None, omit this field                                                          |
-| map        | This type of package contains only files that should be placed within the `maps` directory of the applicable mod directory, ex. `.bsp`, `.lit`.                     | Colon-separated list of files to copy, or `auto` if you wish to copy all files |
-| gamedir    | Contains a collection of assets intended to be extracted to a mod directory, ex. `quoth2pt2full_2.zip` contains `pak0.pak` - `pak2.pak` at the top level of the zip | Same as `map`                                                                  |
+| type       | explanation                                                                                                                                                         |
+|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| mod-folder | This type of package contains a fully contained mod directory, ex. `sm228.zip` contains a single folder called `sm228`.                                             |
+| map        | This type of package contains only files that should be placed within the `maps` directory of the applicable mod directory, ex. `.bsp`, `.lit`.                     |
+| gamedir    | Contains a collection of assets intended to be extracted to a mod directory, ex. `quoth2pt2full_2.zip` contains `pak0.pak` - `pak2.pak` at the top level of the zip |
 
-Note: Use `auto` for as many packages as possible
+
 ## Usage
 
 ### Download
