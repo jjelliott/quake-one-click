@@ -33,7 +33,6 @@ public class LaunchMessage {
     } else if (split[1].equals("custom")){
       type = split[1];
       modName = split[2];
-
       launchMap = launchMap = split.length >= 5 ? split[4] : null;
     }
     if (launchMap != null) {

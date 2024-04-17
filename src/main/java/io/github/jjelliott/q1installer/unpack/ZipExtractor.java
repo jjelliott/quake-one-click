@@ -1,5 +1,6 @@
 package io.github.jjelliott.q1installer.unpack;
 
+import io.github.jjelliott.q1installer.os.ConfigLocation;
 import jakarta.inject.Singleton;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
@@ -15,10 +16,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static io.github.jjelliott.q1installer.Q1InstallerCommand.confDirPath;
 
 @Singleton
 public class ZipExtractor implements Extractor {
+
+  private final ConfigLocation configLocation;
+
+  public ZipExtractor(ConfigLocation configLocation) {
+    this.configLocation = configLocation;
+  }
 
   public boolean handles(String extension) {
     return extension.equalsIgnoreCase("zip");
@@ -26,7 +32,7 @@ public class ZipExtractor implements Extractor {
 
   public void extract(String filename) {
     System.out.println("extracting " + filename);
-    var outputDir = confDirPath + "/cache/" + FilenameUtils.getBaseName(filename);
+    var outputDir = configLocation.getCacheDirFile(FilenameUtils.getBaseName(filename));
     System.out.println("output dir: " + outputDir);
     try (var inputStream = Files.newInputStream(Paths.get(filename))) {
       ArchiveStreamFactory archiveStreamFactory = new ArchiveStreamFactory();

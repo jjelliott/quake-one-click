@@ -4,15 +4,15 @@ import io.github.jjelliott.q1installer.os.ConfigLocation;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import io.github.jjelliott.q1installer.unpack.Extractor;
 import io.micronaut.configuration.picocli.PicocliRunner;
-import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -28,8 +28,6 @@ import java.util.Scanner;
 @Command(name = "q1-installer", description = "...",
     mixinStandardHelpOptions = true)
 public class Q1InstallerCommand implements Runnable {
-
-  public static String confDirPath;
 
   UserProps userProps;
   Timer timer;
@@ -54,10 +52,9 @@ public class Q1InstallerCommand implements Runnable {
   }
 
   void initConfig() {
-    confDirPath = configLocation.getConfig();
-    var cacheDir = new File(confDirPath + "/cache");
+    var cacheDir = new File(configLocation.getCacheDir());
     cacheDir.mkdirs();
-    var userPropsFile = new File(confDirPath + "/user.properties");
+    var userPropsFile = new File(configLocation.getUserPropertiesFile());
     if (!userPropsFile.exists()) {
       try {
         userPropsFile.createNewFile();
@@ -86,7 +83,7 @@ public class Q1InstallerCommand implements Runnable {
     } else {
       List<String> installed;
       try {
-        installed = Files.readAllLines(Path.of(confDirPath + "/installed.list"));
+        installed = Files.readAllLines(Path.of(configLocation.getConfig() + "/installed.list"));
       } catch (IOException e) {
         installed = new ArrayList<>();
       }
@@ -100,11 +97,11 @@ public class Q1InstallerCommand implements Runnable {
           extractors.stream()
               .filter(it -> it.handles(FilenameUtils.getExtension(fileName)))
               .findFirst().orElseThrow()
-              .extract(confDirPath + "/cache/" + fileName);
+              .extract(configLocation.getCacheDirFile(fileName));
           timer.stop();
           timer.start("copying");
           Files.createDirectories(quakeDirectoryPath(launchMessage.modName + "/maps/"));
-          Files.list(Path.of(confDirPath + "/cache/" + FilenameUtils.getBaseName(fileName) + "/")).forEach(packageFilePath -> {
+          Files.list(Path.of(configLocation.getCacheDirFile(FilenameUtils.getBaseName(fileName) + "/"))).forEach(packageFilePath -> {
             try {
               if (Files.isDirectory(packageFilePath)) {
                 if (packageFilePath.getFileName().toString().equals(launchMessage.modName)) {
@@ -121,7 +118,7 @@ public class Q1InstallerCommand implements Runnable {
           });
           timer.stop();
 
-          Files.writeString(Path.of(confDirPath + "/installed"), (!installed.isEmpty() ? "\n" : "") + launchMessage.url, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+          Files.writeString(Path.of(configLocation.getConfig() + "/installed"), (!installed.isEmpty() ? "\n" : "") + launchMessage.url, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
         } catch (IOException e) {
           System.out.println("exception thrown");
         }
@@ -217,7 +214,7 @@ public class Q1InstallerCommand implements Runnable {
     }
     timer.start("downloaded file write");
     try {
-      Files.write(Path.of(confDirPath + "/cache/" + fileName), response.body(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+      Files.write(Path.of(configLocation.getCacheDirFile(fileName)), response.body(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -257,7 +254,7 @@ public class Q1InstallerCommand implements Runnable {
             System.out.println("Does this look correct? (y/yes/n/no)");
             var answer = scanner.nextLine().toLowerCase();
             if (answer.equals("y") || answer.equals("yes")) {
-              try (FileOutputStream out = new FileOutputStream(confDirPath + "/props")) {
+              try (FileOutputStream out = new FileOutputStream(configLocation.getUserPropertiesFile())) {
                 System.out.println("Writing configuration...");
                 userProps.quakeDirectoryPath = quakeDirPath;
                 userProps.quakeEnginePath = quakeEnginePath;
@@ -272,7 +269,7 @@ public class Q1InstallerCommand implements Runnable {
 
         }
         case "3" -> {
-          try (FileOutputStream out = new FileOutputStream(confDirPath + "/props")) {
+          try (FileOutputStream out = new FileOutputStream(configLocation.getUserPropertiesFile())) {
             System.out.println(userProps.installerAutoClose ? "Disabling auto-close" : "Enabling auto-close");
             userProps.installerAutoClose = !userProps.installerAutoClose;
             userProps.toProperties().store(out, null);
@@ -311,10 +308,3 @@ public class Q1InstallerCommand implements Runnable {
 
 }
 
-@Factory
-class ScannerFactory {
-  @Singleton
-  Scanner scanner(){
-    return new Scanner(System.in);
-  }
-}
