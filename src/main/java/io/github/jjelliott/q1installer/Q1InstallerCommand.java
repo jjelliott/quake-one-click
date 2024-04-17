@@ -82,15 +82,7 @@ public class Q1InstallerCommand implements Runnable {
 
   public void run() {
 
-    try {
-      initConfig();
-    } catch (IOException e) {
-      System.out.println("Unable to create / load configuration files");
-      e.printStackTrace();
-      System.out.println("Press enter to close...");
-      scanner.nextLine();
-      System.exit(1);
-    }
+    doOrExit(this::initConfig, "Unable to create / load configuration files", 1);
 
     if (args.isEmpty()) {
       menu();
@@ -99,34 +91,26 @@ public class Q1InstallerCommand implements Runnable {
     } else {
       var launchMessage = new LaunchMessage(args.get(0));
       if (!installed.contains(launchMessage.url)) {
-        try {
-          installPackage(launchMessage);
-        } catch (IOException | InterruptedException e) {
-          System.out.println("Failed to install package");
-          e.printStackTrace();
-          scanner.nextLine();
-          System.exit(2);
-        }
+        doOrExit(() -> installPackage(launchMessage), "Failed to install package", 2);
       } else {
         System.out.println("Skipping install step because already installed");
       }
       if (launchMessage.action.equals("run")) {
-        try {
-          launchGame(launchMessage);
-        } catch (IOException e) {
-          System.out.println("Unable to launch game");
-          e.printStackTrace();
-          System.out.println("Press enter to close...");
-          scanner.nextLine();
-          System.exit(3);
-        }
+        doOrExit(() -> launchGame(launchMessage), "Unable to launch game", 3);
       }
     }
-//    if (!userProps.installerAutoClose) {
-//      System.out.println("Press enter key to close");
-//      scanner.nextLine();
-//    }
+  }
 
+  void doOrExit(ExceptionRunnable fn, String message, int code) {
+    try {
+      fn.run();
+    } catch (Exception e) {
+      System.out.println(message);
+      e.printStackTrace();
+      System.out.println("Press enter to close...");
+      scanner.nextLine();
+      System.exit(code);
+    }
   }
 
   void installPackage(LaunchMessage launchMessage) throws IOException, InterruptedException {
@@ -136,23 +120,23 @@ public class Q1InstallerCommand implements Runnable {
         .filter(it -> it.handles(FilenameUtils.getExtension(fileName)))
         .findFirst().orElseThrow()
         .extract(configLocation.getCacheDirFile(fileName));
-    if (launchMessage.type.equals("map"))
+    Files.createDirectories(quakeDirectoryPath(launchMessage.modName));
+    if (launchMessage.type.equals("map")) {
       Files.createDirectories(quakeDirectoryPath(launchMessage.modName + "/maps/"));
-    Files.list(Path.of(configLocation.getCacheDirFile(FilenameUtils.getBaseName(fileName) + "/"))).forEach(packageFilePath -> {
-      try {
-        if (Files.isDirectory(packageFilePath)) {
-          if (packageFilePath.getFileName().toString().toLowerCase().equals(launchMessage.modName)) {
-            copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName));
-          } else {
-            copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName + "/" + packageFilePath.getFileName().toString().toLowerCase()));
-          }
+    }
+    try (var fileStream = Files.list(Path.of(configLocation.getCacheDirFile(FilenameUtils.getBaseName(fileName) + "/")))){
+    for (Path packageFilePath : fileStream.toList()) {
+      if (Files.isDirectory(packageFilePath)) {
+        if (packageFilePath.getFileName().toString().toLowerCase().equals(launchMessage.modName)) {
+          copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName));
         } else {
-          Files.copy(packageFilePath, quakeDirectoryPath(launchMessage.modName + (launchMessage.type.equals("map") ? "/maps/" : "/") + packageFilePath.getFileName().toString().toLowerCase()), StandardCopyOption.REPLACE_EXISTING);
+          copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName + "/" + packageFilePath.getFileName().toString().toLowerCase()));
         }
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+      } else {
+        Files.copy(packageFilePath, quakeDirectoryPath(launchMessage.modName + (launchMessage.type.equals("map") ? "/maps/" : "/") + packageFilePath.getFileName().toString().toLowerCase()), StandardCopyOption.REPLACE_EXISTING);
       }
-    });
+    }
+    }
 
     Files.writeString(Path.of(configLocation.getInstalledList()), (!installed.isEmpty() ? "\n" : "") + launchMessage.url, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
 
@@ -172,9 +156,8 @@ public class Q1InstallerCommand implements Runnable {
   }
 
   public static void copyFolder(Path src, Path dest) throws IOException {
-
-    Files.walk(src).forEach(s -> {
-      try {
+    try (var files = Files.walk(src)) {
+      for (Path s : files.toList()) {
         Path d = dest.resolve(src.relativize(s));
         if (Files.isDirectory(s)) {
           if (!Files.exists(d))
@@ -182,10 +165,8 @@ public class Q1InstallerCommand implements Runnable {
         } else {
           Files.copy(s, d, StandardCopyOption.REPLACE_EXISTING);// use flag to override existing
         }
-      } catch (Exception e) {
-        e.printStackTrace();
       }
-    });
+    }
   }
 
   String downloadFile(LaunchMessage launchMessage) throws IOException, InterruptedException {
@@ -224,7 +205,6 @@ public class Q1InstallerCommand implements Runnable {
       System.out.println("Select an option:");
       System.out.println("1: Install handler");
       System.out.println("2: Set Quake paths");
-//      System.out.println("3: Toggle auto-close");
       System.out.println("X: Exit this menu");
 
       var input = scanner.nextLine();
@@ -257,11 +237,6 @@ public class Q1InstallerCommand implements Runnable {
           }
 
         }
-//        case "3" -> {
-//          System.out.println(userProps.installerAutoClose ? "Disabling auto-close" : "Enabling auto-close");
-//          userProps.installerAutoClose = !userProps.installerAutoClose;
-//          writeProperties();
-//        }
         case "x" -> menu = false;
         default -> System.out.println("Invalid input, please try again.");
       }
@@ -277,5 +252,19 @@ public class Q1InstallerCommand implements Runnable {
     }
   }
 
+}
+
+@FunctionalInterface
+interface ExceptionRunnable extends Runnable {
+  @Override
+  default void run() {
+    try {
+      runThrows();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  void runThrows() throws Exception;
 }
 

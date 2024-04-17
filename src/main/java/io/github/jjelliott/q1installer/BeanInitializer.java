@@ -8,10 +8,12 @@ import java.util.Scanner;
 
 @Factory
 public class BeanInitializer {
+
   @Singleton
   Scanner scanner(){
     return new Scanner(System.in);
   }
+
   @Singleton
   HttpClient client(){
     return HttpClient.newBuilder()

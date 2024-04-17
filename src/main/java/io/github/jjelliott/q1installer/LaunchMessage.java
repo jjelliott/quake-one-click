@@ -1,8 +1,5 @@
 package io.github.jjelliott.q1installer;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class LaunchMessage {
   String command;
   String action;
