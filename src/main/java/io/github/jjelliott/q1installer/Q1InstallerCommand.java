@@ -145,11 +145,15 @@ public class Q1InstallerCommand implements Runnable {
   void launchGame(LaunchMessage launchMessage) throws IOException {
     List<String> commandList = new ArrayList<>();
     commandList.add(userProps.quakeEnginePath);
+    commandList.add("-basedir");
+    commandList.add(userProps.quakeDirectoryPath);
     if (!launchMessage.modName.equals("id1")) {
-      commandList.add("-game " + launchMessage.modName);
+      commandList.add("-game");
+      commandList.add(launchMessage.modName);
     }
-    commandList.add("+map " +launchMessage.launchMap);
-    var launched = Runtime.getRuntime().exec(commandList.toArray(new String[0]), null, new File(userProps.quakeDirectoryPath));
+    commandList.add("+map");
+    commandList.add(launchMessage.launchMap);
+    var launched = Runtime.getRuntime().exec(commandList.toArray(new String[0]));
 
   }
 
