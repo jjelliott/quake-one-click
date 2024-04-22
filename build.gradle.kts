@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     annotationProcessor("info.picocli:picocli-codegen")
+    annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     implementation("info.picocli:picocli")
     implementation("io.micronaut.picocli:micronaut-picocli")
@@ -23,11 +24,11 @@ dependencies {
 application {
     mainClass.set("io.github.jjelliott.q1installer.Q1InstallerCommand")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")
 }
-
 
 micronaut {
     testRuntime("junit5")
@@ -40,5 +41,19 @@ micronaut {
 graalvmNative {
     toolchainDetection.set(true)
 }
+
+tasks{
+    jar{
+        enabled = false;
+    }
+    runnerJar {
+        enabled = false;
+    }
+    shadowJar {
+        archiveClassifier.set("");
+        archiveVersion.set("");
+    }
+}
+
 
 
