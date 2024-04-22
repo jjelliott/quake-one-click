@@ -34,15 +34,21 @@ Binaries will be available from the Releases section.
 
 ### Installation
 
-Obtain the appropriate binary for your system.
+#### Windows
+Download the Windows package and extract it to the desired location.
 
-On Linux, place the binary on your path. On Windows, place the binary where you want it.
+Run the binary (`q1-installer.exe`) and set up the configuration via menu. You must install the handler and set the quake paths.
 
-Run the binary and set up the configuration via menu. You must install the handler and set the quake paths.
+If you move `q1-installer.exe` you _must_ re-run the handler installation.
 
-Once setup, one-click links should work.
+#### Linux
+Install Java 17 or higher and download the Java package. Extract to desired location.
 
-Windows users: If you move `q1-installer.exe` you _must_ re-run the handler installation.
+Run `java -jar /path/to/q1-installer.jar` and set up the configuration via menu. You must install the handler and set the quake paths.
+
+
+
+
 
 ## Development
 
