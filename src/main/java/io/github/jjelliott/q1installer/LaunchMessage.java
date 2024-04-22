@@ -10,7 +10,6 @@ public class LaunchMessage {
 
   public LaunchMessage(String command) {
     this.command = command;
-    System.out.println("parsing command: " + command);
     String commandWithoutProtocol;
     action = "install";
     commandWithoutProtocol = command.replace("q1package:", "");
@@ -29,6 +28,7 @@ public class LaunchMessage {
         // TODO: json string?
         launchMap = split.length >= 5 ? split[4] : null;
       }
+      default -> throw new IllegalStateException("Unexpected value: " + split[1]);
     }
     if (launchMap != null) {
       action = "run";
