@@ -44,7 +44,7 @@ graalvmNative {
 
 tasks{
     jar{
-        enabled = false;
+//        enabled = false;
     }
     runnerJar {
         enabled = false;
