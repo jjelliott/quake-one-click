@@ -143,15 +143,14 @@ public class Q1InstallerCommand implements Runnable {
   }
 
   void launchGame(LaunchMessage launchMessage) throws IOException {
-    String runCommand = userProps.quakeEnginePath;
+    List<String> commandList = new ArrayList<>();
+    commandList.add(userProps.quakeEnginePath);
     if (!launchMessage.modName.equals("id1")) {
-      runCommand += " -game " + launchMessage.modName;
+      commandList.add("-game " + launchMessage.modName);
     }
-    runCommand += " +map " + launchMessage.launchMap;
-    var launched = Runtime.getRuntime().exec(runCommand, null, new File(userProps.quakeDirectoryPath));
-    while (!launched.isAlive()){
-      System.out.println("waiting for launch...");
-    }
+    commandList.add("+map " +launchMessage.launchMap);
+    var launched = Runtime.getRuntime().exec(commandList.toArray(new String[0]), null, new File(userProps.quakeDirectoryPath));
+
   }
 
   Path quakeDirectoryPath(String subPath) {
