@@ -27,7 +27,7 @@ public class Linux implements ConfigLocation, HandlerInstaller {
     }
 
     try {
-      Runtime.getRuntime().exec("bash -c \"xdg-mime default q1package.desktop x-scheme-handler/q1package\"");
+      Runtime.getRuntime().exec("xdg-mime default q1package.desktop x-scheme-handler/q1package");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
