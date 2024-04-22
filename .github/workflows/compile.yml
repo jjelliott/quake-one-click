@@ -14,7 +14,38 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-java:
+    name: Jar build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
+      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew assemble
+
+      # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
+      # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
+      #
+      # - name: Setup Gradle
+      #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+      #   with:
+      #     gradle-version: '8.5'
+      #
+      # - name: Build with Gradle 8.5
+      #   run: gradle build
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: q1-installer-java
+          path: build/libs/q1-installer.jar
+
+  build-native:
     name: Native compile on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -55,5 +86,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
        name: q1-installer-${{ matrix.os }}
-       path: build/native/nativeCompile/q1-installer*
+       path: build/native/nativeCompile/q1-installer(.exe)?
 
