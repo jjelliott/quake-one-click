@@ -148,7 +148,10 @@ public class Q1InstallerCommand implements Runnable {
       runCommand += " -game " + launchMessage.modName;
     }
     runCommand += " +map " + launchMessage.launchMap;
-    Runtime.getRuntime().exec(runCommand, null, new File(userProps.quakeDirectoryPath));
+    var launched = Runtime.getRuntime().exec(runCommand, null, new File(userProps.quakeDirectoryPath));
+    while (!launched.isAlive()){
+      System.out.println("waiting for launch...");
+    }
   }
 
   Path quakeDirectoryPath(String subPath) {
