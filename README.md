@@ -62,6 +62,6 @@ To run the test suite, run `./gradlew check`.
 
 [SM228 (via Slipseer)](q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start)
 
-[Enforced Entropy (via Slipseer)](q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,auto,spasp1)
+[Enforced Entropy (via Slipseer)](q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,spasp1)
 
 [Quoth 2.2 (via Quaddicted)](q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start)
