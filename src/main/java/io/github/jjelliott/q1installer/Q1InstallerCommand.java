@@ -153,7 +153,8 @@ public class Q1InstallerCommand implements Runnable {
     }
     commandList.add("+map");
     commandList.add(launchMessage.launchMap);
-    System.out.println(Runtime.getRuntime().exec(commandList.toArray(new String[0])).pid());
+    var builder = new ProcessBuilder(commandList);
+    System.out.println(builder.start().pid());
 
   }
 
