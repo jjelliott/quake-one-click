@@ -92,5 +92,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
        name: q1-installer-${{ matrix.os }}
-       path: build/native/nativeCompile/q1-installer(.exe)?
+       path: |
+        build/native/nativeCompile/q1-installer
+        build/native/nativeCompile/q1-installer.exe
 
