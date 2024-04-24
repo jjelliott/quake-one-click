@@ -42,13 +42,14 @@ Run the binary (`q1-installer.exe`) and set up the configuration via menu. You m
 If you move `q1-installer.exe` you _must_ re-run the handler installation.
 
 #### Linux
-Install Java 17 or higher and download the Java package. Extract to desired location.
+Download the Linux package and extract it to a location on your path.
 
-Run `java -jar /path/to/q1-installer.jar` and set up the configuration via menu. You must install the handler and set the quake paths.
+Run the binary from a terminal (`q1-installer`) and set up the configuration via menu. You must install the handler and set the quake paths.
 
-
-
-
+Known incompatibilities: 
+- XWayland browsers will not launch the game. XOrg or native Wayland appear to work fine. 
+- You may need to set `XDG_CURRENT_DESKTOP`. `xdg-open q1package:asdf` will return `file 'q1package:asdf' does not exist` if this is the issue.  
+- Browsers installed via Snap do not allow custom URL handlers, use a natively installed browser instead. Not sure if Flatpak works.
 
 ## Development
 
