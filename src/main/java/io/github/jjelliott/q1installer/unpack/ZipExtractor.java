@@ -31,26 +31,24 @@ public class ZipExtractor implements Extractor {
   }
 
   public void extract(String filename) {
-    System.out.println("extracting " + filename);
     var outputDir = configLocation.getCacheDirFile(FilenameUtils.getBaseName(filename));
-    System.out.println("output dir: " + outputDir);
     try (var inputStream = Files.newInputStream(Paths.get(filename))) {
       ArchiveStreamFactory archiveStreamFactory = new ArchiveStreamFactory();
-      ArchiveInputStream archiveInputStream = archiveStreamFactory.createArchiveInputStream(ArchiveStreamFactory.ZIP, inputStream);
-      ArchiveEntry archiveEntry = null;
-      while ((archiveEntry = archiveInputStream.getNextEntry()) != null){
+      ArchiveInputStream<? extends ArchiveEntry> archiveInputStream = archiveStreamFactory.createArchiveInputStream(ArchiveStreamFactory.ZIP, inputStream);
+      ArchiveEntry archiveEntry;
+      while ((archiveEntry = archiveInputStream.getNextEntry()) != null) {
         Path path = Paths.get(outputDir, archiveEntry.getName());
         File file = path.toFile();
-        if (archiveEntry.isDirectory()){
-          if (!file.isDirectory()){
+        if (archiveEntry.isDirectory()) {
+          if (!file.isDirectory()) {
             file.mkdirs();
           }
         } else {
           File parent = file.getParentFile();
-          if (!parent.isDirectory()){
+          if (!parent.isDirectory()) {
             parent.mkdirs();
           }
-          try (OutputStream outputStream = Files.newOutputStream(path)){
+          try (OutputStream outputStream = Files.newOutputStream(path)) {
             IOUtils.copy(archiveInputStream, outputStream);
           }
         }

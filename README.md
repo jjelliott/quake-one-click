@@ -34,15 +34,22 @@ Binaries will be available from the Releases section.
 
 ### Installation
 
-Obtain the appropriate binary for your system.
+#### Windows
+Download the Windows package and extract it to the desired location.
 
-On Linux, place the binary on your path. On Windows, place the binary where you want it.
+Run the binary (`q1-installer.exe`) and set up the configuration via menu. You must install the handler and set the quake paths.
 
-Run the binary and set up the configuration via menu. You must install the handler and set the quake paths.
+If you move `q1-installer.exe` you _must_ re-run the handler installation.
 
-Once setup, one-click links should work.
+#### Linux
+Download the Linux package and extract it to a location on your path.
 
-Windows users: If you move `q1-installer.exe` you _must_ re-run the handler installation.
+Run the binary from a terminal (`q1-installer`) and set up the configuration via menu. You must install the handler and set the quake paths.
+
+Known incompatibilities: 
+- XWayland browsers will not launch the game. XOrg or native Wayland appear to work fine. 
+- You may need to set `XDG_CURRENT_DESKTOP`. `xdg-open q1package:asdf` will return `file 'q1package:asdf' does not exist` if this is the issue.  
+- Browsers installed via Snap do not allow custom URL handlers, use a natively installed browser instead. Not sure if Flatpak works.
 
 ## Development
 
@@ -62,6 +69,6 @@ To run the test suite, run `./gradlew check`.
 
 [SM228 (via Slipseer)](q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start)
 
-[Enforced Entropy (via Slipseer)](q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,auto,spasp1)
+[Enforced Entropy (via Slipseer)](q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,spasp1)
 
 [Quoth 2.2 (via Quaddicted)](q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start)
