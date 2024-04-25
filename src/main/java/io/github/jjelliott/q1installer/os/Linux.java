@@ -18,6 +18,16 @@ public class Linux implements ConfigLocation, HandlerInstaller {
   }
 
   @Override
+  public String getExampleQuakePath() {
+    return "/home/username/Games/quake";
+  }
+
+  @Override
+  public String getExampleEnginePath() {
+    return getExampleQuakePath() + "/ironwail";
+  }
+
+  @Override
   public void install() {
     try (var resource = Objects.requireNonNull(this.getClass().getClassLoader().getResource("q1package.desktop")).openStream()) {
       Files.createDirectories(Path.of(System.getProperty("user.home") + "/.local/share/applications/"));

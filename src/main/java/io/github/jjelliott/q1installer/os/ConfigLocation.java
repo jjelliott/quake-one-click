@@ -19,4 +19,7 @@ public interface ConfigLocation {
   default String getInstalledList(){
     return getConfig() + "/installed.list";
   }
+
+  String getExampleQuakePath();
+  String getExampleEnginePath();
 }

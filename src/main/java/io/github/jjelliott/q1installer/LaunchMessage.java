@@ -7,6 +7,7 @@ public class LaunchMessage {
   String type;
   String modName;
   String launchMap;
+  LaunchMessage  modPackage;
 
   public LaunchMessage(String command) {
     this.command = command;
@@ -21,6 +22,12 @@ public class LaunchMessage {
         type = split[1];
         modName = split[2];
         launchMap = split.length >= 4 ? split[3] : null;
+      }
+      case "mod-map" ->{
+        type = split[1];
+        modName = split[2];
+        modPackage = new LaunchMessage(split[3]);
+        launchMap = split.length >= 5 ? split[4] : null;
       }
       case "custom" -> {
         type = split[1];

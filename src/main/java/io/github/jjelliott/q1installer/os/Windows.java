@@ -48,4 +48,14 @@ public class Windows implements HandlerInstaller, ConfigLocation {
   public String getConfig() {
     return System.getProperty("user.home") + "/AppData/Local/q1-installer";
   }
+
+  @Override
+  public String getExampleQuakePath() {
+    return "C:\\Quake";
+  }
+
+  @Override
+  public String getExampleEnginePath() {
+    return getExampleQuakePath() + "\\glquake.exe";
+  }
 }
