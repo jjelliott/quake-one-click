@@ -73,8 +73,10 @@ To run the test suite, run `./gradlew check`.
 
 ## Test links
 
-<?>
-<p><a href="q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start">SM228 (via Slipseer)</a></p>
-<p><a href="q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,spasp1">Enforced Entropy (via Slipseer)</a></p>
-<p><a href="q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start">Quoth 2.2 (via Quaddicted)</a></p>
-<?>
+
+[SM228 (via Slipseer)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start)
+
+
+[Enforced Entropy (via Slipseer)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,spasp1)
+
+[Quoth 2.2 (via Quaddicted)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start)
