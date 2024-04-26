@@ -1,6 +1,6 @@
 package io.github.jjelliott.q1installer;
 
-import io.github.jjelliott.q1installer.os.ConfigLocation;
+import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
 
@@ -11,14 +11,14 @@ public class Menu {
 
   private final UserProps userProps;
   private final Scanner scanner;
-  private final ConfigLocation configLocation;
   private final HandlerInstaller handlerInstaller;
+  private final ExamplePath examplePath;
 
-  public Menu(UserProps userProps, Scanner scanner, ConfigLocation configLocation, HandlerInstaller handlerInstaller) {
+  public Menu(UserProps userProps, Scanner scanner, HandlerInstaller handlerInstaller, ExamplePath examplePath) {
     this.userProps = userProps;
     this.scanner = scanner;
-    this.configLocation = configLocation;
     this.handlerInstaller = handlerInstaller;
+    this.examplePath = examplePath;
   }
 
   void mainMenu() {
@@ -95,7 +95,7 @@ public class Menu {
   }
 
   String directoryPrompt() {
-    return prompt("Enter Quake directory path (example: " + configLocation.getExampleQuakePath() + "): ");
+    return prompt("Enter Quake directory path (example: " + examplePath.quakeDir() + "): ");
   }
 
   void updateDirectory(String quakeDirPath) {
@@ -107,7 +107,7 @@ public class Menu {
   }
 
   String enginePrompt() {
-    return prompt("Enter Quake engine path (example: " + configLocation.getExampleEnginePath() + "): ");
+    return prompt("Enter Quake engine path (example: " + examplePath.engine() + "): ");
   }
 
   void updateEngine(String quakeEnginePath) {

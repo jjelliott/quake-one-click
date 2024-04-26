@@ -11,20 +11,20 @@ import java.util.Objects;
 
 @Singleton
 @Requires(os = Requires.Family.LINUX)
-public class Linux implements ConfigLocation, HandlerInstaller {
+public class Linux implements ConfigLocation, HandlerInstaller,ExamplePath {
   @Override
   public String getConfig() {
     return System.getProperty("user.home") + "/.config/q1-installer";
   }
 
   @Override
-  public String getExampleQuakePath() {
+  public String quakeDir() {
     return "/home/username/Games/quake";
   }
 
   @Override
-  public String getExampleEnginePath() {
-    return getExampleQuakePath() + "/ironwail";
+  public String engine() {
+    return quakeDir() + "/ironwail";
   }
 
   @Override

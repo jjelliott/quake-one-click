@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static io.github.jjelliott.q1installer.FileUtil.copyFolder;
+
 public class Q1Installer {
 
   private final UserProps userProps;
@@ -96,7 +98,7 @@ public class Q1Installer {
 
   }
 
-  void launchGame(LaunchMessage launchMessage) throws IOException {
+  List<String> generateLaunchCommand(LaunchMessage launchMessage){
     List<String> commandList = new ArrayList<>();
     commandList.add(userProps.getQuakeEnginePath());
     commandList.add("-basedir");
@@ -107,7 +109,11 @@ public class Q1Installer {
     }
     commandList.add("+map");
     commandList.add(launchMessage.launchMap);
-    var builder = new ProcessBuilder(commandList);
+    return commandList;
+  }
+
+  void launchGame(LaunchMessage launchMessage) throws IOException {
+    var builder = new ProcessBuilder(generateLaunchCommand(launchMessage));
     System.out.println(builder.start().pid());
 
   }
@@ -116,19 +122,7 @@ public class Q1Installer {
     return Path.of(userProps.getQuakeDirectoryPath() + "/" + subPath);
   }
 
-  public static void copyFolder(Path src, Path dest) throws IOException {
-    try (var files = Files.walk(src)) {
-      for (Path s : files.toList()) {
-        Path d = dest.resolve(src.relativize(s));
-        if (Files.isDirectory(s)) {
-          if (!Files.exists(d))
-            Files.createDirectory(d);
-        } else {
-          Files.copy(s, d, StandardCopyOption.REPLACE_EXISTING);// use flag to override existing
-        }
-      }
-    }
-  }
+
 
   String downloadFile(LaunchMessage launchMessage) throws IOException, InterruptedException {
     String fileName = "";

@@ -9,6 +9,11 @@ public class UserProps {
   private String quakeEnginePath;
   String location;
 
+  UserProps(String dirPath, String enginePath) {
+    quakeDirectoryPath = dirPath;
+    quakeEnginePath = enginePath;
+  }
+
   public UserProps(Properties properties, String location) {
     quakeDirectoryPath = properties.getProperty("quake.directory-path");
     quakeEnginePath = properties.getProperty("quake.engine-path");
@@ -36,11 +41,17 @@ public class UserProps {
   }
 
   public void setQuakeDirectoryPath(String quakeDirectoryPath) {
-    this.quakeDirectoryPath = quakeDirectoryPath;
-    write();
+    setQuakeDirectoryPath(quakeDirectoryPath, true);
   }
 
-  public boolean hasQuakeDirectoryPath(){
+  public void setQuakeDirectoryPath(String quakeDirectoryPath, boolean write) {
+    this.quakeDirectoryPath = quakeDirectoryPath;
+    if (write) {
+      write();
+    }
+  }
+
+  public boolean hasQuakeDirectoryPath() {
     return quakeDirectoryPath != null && !quakeDirectoryPath.isEmpty();
   }
 
@@ -49,10 +60,17 @@ public class UserProps {
   }
 
   public void setQuakeEnginePath(String quakeEnginePath) {
-    this.quakeEnginePath = quakeEnginePath;
-    write();
+    setQuakeEnginePath(quakeEnginePath, true);
   }
-  public boolean hasQuakeEnginePath(){
+
+  public void setQuakeEnginePath(String quakeEnginePath, boolean write) {
+    this.quakeEnginePath = quakeEnginePath;
+    if (write) {
+      write();
+    }
+  }
+
+  public boolean hasQuakeEnginePath() {
     return quakeEnginePath != null && !quakeEnginePath.isEmpty();
   }
 
