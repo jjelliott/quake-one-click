@@ -2,28 +2,41 @@
 
 This program enables one-click installation and run of Quake 1 maps and mods.
 
+Home page: [Quake One-Click Installer](https://jjelliott.github.io/quake-one-click)
+
 Repository: [Github](https://github.com/jjelliott/quake-one-click)
 
 ## Link format
+
+For packages without dependencies:
 
 ```
 q1package:{download-url},{type},{gamedir},{map-to-start?}
 ```
 
-| field        | explanation                                            |
-|--------------|--------------------------------------------------------|
-| download-url | Url to download the resource                           |
-| type         | `mod-folder`, `map` or `gamedir`, more info below      |
-| gamedir      | Gamedir to extract files to (ex. `id1`, `quoth`, `ad`) | 
-| map-to-start | (Optional) map to start after completing installation. |
+For packages with dependencies:
+
+```
+q1package:{download-url},{type},{gamedir},{parent-package-install-link},{map-to-start?}
+```
+
+| field                       | explanation                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| download-url                | Url to download the resource                                                |
+| type                        | see table below                                                             |
+| gamedir                     | Gamedir to extract files to (ex. `id1`, `quoth`, `ad`)                      | 
+| parent-package-install-link | One-click install link for required package, with commas replaced with `\|` | 
+| map-to-start                | (Optional) map to start after completing installation.                      |
 
 ### Install types
 
-| type       | explanation                                                                                                                                                         |
-|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| mod-folder | This type of package contains a fully contained mod directory, ex. `sm228.zip` contains a single folder called `sm228`.                                             |
-| map        | This type of package contains only files that should be placed within the `maps` directory of the applicable mod directory, ex. `.bsp`, `.lit`.                     |
-| gamedir    | Contains a collection of assets intended to be extracted to a mod directory, ex. `quoth2pt2full_2.zip` contains `pak0.pak` - `pak2.pak` at the top level of the zip |
+| type                | explanation                                                                                                                                                         |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `root`/`mod-folder` | This type of package contains files that should be extracted directly to the Quake directory, ex. `sm228.zip` contains a single folder called `sm228`.              |
+| `map`               | This type of package contains only files that should be placed within the `maps` directory of the applicable mod directory, ex. `.bsp`, `.lit`.                     |
+| `gamedir`           | Contains a collection of assets intended to be extracted to a mod directory, ex. `quoth2pt2full_2.zip` contains `pak0.pak` - `pak2.pak` at the top level of the zip |
+| `mod-map`           | This package type is identical to `map` but has a dependency on a mod package.                                                                                      |
+| `mod-gamedir`       | This package type is identical to `gamedir` but has a dependency on a mod package.                                                                                  |
 
 ## Usage
 
@@ -73,10 +86,13 @@ To run the test suite, run `./gradlew check`.
 
 ## Test links
 
-
+`root`/`mod-folder` type:
 [SM228 (via Slipseer)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start)
 
-
+`map` type:
 [Enforced Entropy (via Slipseer)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,spasp1)
 
+`gamedir` type:
 [Quoth 2.2 (via Quaddicted)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start)
+`mod-gamedir` type:
+[Blood Colored Rust (via Quaddicted)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.quaddicted.com/filebase/mhsp01.zip,mod-gamedir,quoth,https://www.quaddicted.com/filebase/quoth2pt2full_2.zip|gamedir|quoth,mhsp01)

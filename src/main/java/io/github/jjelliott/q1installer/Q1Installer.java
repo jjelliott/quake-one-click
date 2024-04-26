@@ -44,8 +44,19 @@ public class Q1Installer {
 
   public void run() {
 
+    if (launchMessage.modPackage != null) {
+      if (installed.stream().noneMatch(installedPackage -> installedPackage.sourceUrl().equals(launchMessage.modPackage.url))) {
+
+        doOrExit(() -> {
+          var modFileName = downloadFile(launchMessage.modPackage);
+          installPackage(launchMessage.modPackage, modFileName);
+
+        }, "Failed to install parent package", 4);
+      }
+    }
     if (installed.stream().noneMatch(installedPackage -> installedPackage.sourceUrl().equals(launchMessage.url))) {
       doOrExit(() -> {
+
         var filename = downloadFile(launchMessage);
         installPackage(launchMessage, filename);
       }, "Failed to install package", 2);
@@ -83,13 +94,13 @@ public class Q1Installer {
     try (var fileStream = Files.list(Path.of(configLocation.getCacheDirFile(FilenameUtils.getBaseName(fileName) + "/")))) {
       for (Path packageFilePath : fileStream.toList()) {
         if (Files.isDirectory(packageFilePath)) {
-          if (packageFilePath.getFileName().toString().toLowerCase().equals(launchMessage.modName)) {
+          if (packageFilePath.getFileName().toString().toLowerCase().equals(launchMessage.modName) || launchMessage.type.equals("root")) {
             copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName));
           } else {
             copyFolder(packageFilePath, quakeDirectoryPath(launchMessage.modName + "/" + packageFilePath.getFileName().toString().toLowerCase()));
           }
         } else {
-          Files.copy(packageFilePath, quakeDirectoryPath(launchMessage.modName + (launchMessage.type.equals("map") ? "/maps/" : "/") + packageFilePath.getFileName().toString().toLowerCase()), StandardCopyOption.REPLACE_EXISTING);
+          Files.copy(packageFilePath, quakeDirectoryPath(launchMessage.modName + (launchMessage.type.contains("map") ? "/maps/" : "/") + packageFilePath.getFileName().toString().toLowerCase()), StandardCopyOption.REPLACE_EXISTING);
         }
       }
     }
@@ -98,7 +109,7 @@ public class Q1Installer {
 
   }
 
-  List<String> generateLaunchCommand(LaunchMessage launchMessage){
+  List<String> generateLaunchCommand(LaunchMessage launchMessage) {
     List<String> commandList = new ArrayList<>();
     commandList.add(userProps.getQuakeEnginePath());
     commandList.add("-basedir");
@@ -121,7 +132,6 @@ public class Q1Installer {
   Path quakeDirectoryPath(String subPath) {
     return Path.of(userProps.getQuakeDirectoryPath() + "/" + subPath);
   }
-
 
 
   String downloadFile(LaunchMessage launchMessage) throws IOException, InterruptedException {

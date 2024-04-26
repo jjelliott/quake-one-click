@@ -18,15 +18,15 @@ public class LaunchMessage {
     var split = commandWithoutProtocol.split(",");
     url = split[0];
     switch (split[1]) {
-      case "mod-folder", "gamedir", "map" -> {
-        type = split[1];
+      case "root", "mod-folder", "gamedir", "map" -> {
+        type = split[1].equals("mod-folder") ? "root" : split[1];
         modName = split[2];
         launchMap = split.length >= 4 ? split[3] : null;
       }
-      case "mod-map" -> {
+      case "mod-gamedir","mod-map" -> {
         type = split[1];
         modName = split[2];
-        modPackage = new LaunchMessage(split[3].replaceAll("\\|", ","));
+        modPackage = new LaunchMessage(split[3].replaceAll("%7C", ",").replaceAll("\\|", ","));
         launchMap = split.length >= 5 ? split[4] : null;
       }
       case "custom" -> {
