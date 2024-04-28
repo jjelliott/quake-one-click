@@ -90,7 +90,7 @@ jobs:
       contents: read
 
     concurrency:
-      group: native-compile
+      group: native-compile-${{ matrix.os }}
       cancel-in-progress: true
     steps:
     - uses: actions/checkout@v4
