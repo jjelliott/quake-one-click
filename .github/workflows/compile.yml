@@ -38,9 +38,6 @@ jobs:
   build-java:
     name: Jar build
     runs-on: ubuntu-latest
-    concurrency:
-      group: java-compile
-      cancel-in-progress: true
     needs:
       - test
     permissions:
@@ -89,9 +86,6 @@ jobs:
     permissions:
       contents: read
 
-    concurrency:
-      group: native-compile-${{ matrix.os }}
-      cancel-in-progress: true
     steps:
     - uses: actions/checkout@v4
     - uses: graalvm/setup-graalvm@v1
