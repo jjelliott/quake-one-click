@@ -1,4 +1,4 @@
-package io.github.jjelliott.q1installer;
+package io.github.jjelliott.q1installer.config;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,7 +9,7 @@ public class UserProps {
   private String quakeEnginePath;
   String location;
 
-  UserProps(String dirPath, String enginePath) {
+  public UserProps(String dirPath, String enginePath) {
     quakeDirectoryPath = dirPath;
     quakeEnginePath = enginePath;
   }

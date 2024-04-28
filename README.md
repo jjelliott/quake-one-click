@@ -94,5 +94,6 @@ To run the test suite, run `./gradlew check`.
 
 `gamedir` type:
 [Quoth 2.2 (via Quaddicted)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start)
+
 `mod-gamedir` type:
 [Blood Colored Rust (via Quaddicted)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.quaddicted.com/filebase/mhsp01.zip,mod-gamedir,quoth,https://www.quaddicted.com/filebase/quoth2pt2full_2.zip|gamedir|quoth,mhsp01)

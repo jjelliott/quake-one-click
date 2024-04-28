@@ -1,4 +1,4 @@
-package io.github.jjelliott.q1installer;
+package io.github.jjelliott.q1installer.install;
 
 import java.io.IOException;
 import java.nio.file.Files;

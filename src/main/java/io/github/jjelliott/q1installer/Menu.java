@@ -1,9 +1,15 @@
 package io.github.jjelliott.q1installer;
 
+import io.github.jjelliott.q1installer.config.UserProps;
+import io.github.jjelliott.q1installer.os.ConfigLocation;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Scanner;
 
 @Singleton
@@ -11,12 +17,14 @@ public class Menu {
 
   private final UserProps userProps;
   private final Scanner scanner;
+  private final ConfigLocation configLocation;
   private final HandlerInstaller handlerInstaller;
   private final ExamplePath examplePath;
 
-  public Menu(UserProps userProps, Scanner scanner, HandlerInstaller handlerInstaller, ExamplePath examplePath) {
+  public Menu(UserProps userProps, Scanner scanner, ConfigLocation configLocation, HandlerInstaller handlerInstaller, ExamplePath examplePath) {
     this.userProps = userProps;
     this.scanner = scanner;
+    this.configLocation = configLocation;
     this.handlerInstaller = handlerInstaller;
     this.examplePath = examplePath;
   }
@@ -36,11 +44,17 @@ public class Menu {
           """);
 
       switch (input.toLowerCase()) {
-        case "1" -> {
-          installHandler();
-        }
-        case "2" -> {
-          pathMenu();
+        case "1" -> installHandler();
+        case "2" -> pathMenu();
+        case "3" -> {
+          try (var fileStream = Files.walk(Path.of(configLocation.getCacheDir()))) {
+            for (Path path : fileStream.sorted(Comparator.reverseOrder()).toList()) {
+              Files.deleteIfExists(path);
+            }
+            Files.createDirectories(Path.of(configLocation.getCacheDir()));
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
         }
         case "x" -> menu = false;
         default -> System.out.println("Invalid input, please try again.");
@@ -81,15 +95,9 @@ public class Menu {
           X: Done modifying
           """);
       switch (modify.toLowerCase()) {
-        case "1" -> {
-          updateDirectory(directoryPrompt());
-        }
-        case "2" -> {
-          updateEngine(enginePrompt());
-        }
-        case "x" -> {
-          submenu = false;
-        }
+        case "1" -> updateDirectory(directoryPrompt());
+        case "2" -> updateEngine(enginePrompt());
+        case "x" -> submenu = false;
       }
     }
   }
