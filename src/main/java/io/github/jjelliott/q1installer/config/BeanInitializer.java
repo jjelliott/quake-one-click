@@ -10,12 +10,12 @@ import java.util.Scanner;
 public class BeanInitializer {
 
   @Singleton
-  Scanner scanner(){
+  Scanner scanner() {
     return new Scanner(System.in);
   }
 
   @Singleton
-  HttpClient client(){
+  HttpClient client() {
     return HttpClient.newBuilder()
         .version(HttpClient.Version.HTTP_1_1)
         .followRedirects(HttpClient.Redirect.NEVER)

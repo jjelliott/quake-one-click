@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Singleton
 @Requires(os = Requires.Family.LINUX)
-public class Linux implements ConfigLocation, HandlerInstaller,ExamplePath {
+public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
   @Override
   public String getConfig() {
     return System.getProperty("user.home") + "/.config/q1-installer";

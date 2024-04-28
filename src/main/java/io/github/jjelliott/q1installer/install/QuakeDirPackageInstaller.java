@@ -1,7 +1,7 @@
 package io.github.jjelliott.q1installer.install;
 
-import io.github.jjelliott.q1installer.config.InstalledPackage;
 import io.github.jjelliott.q1installer.InstallerArguments;
+import io.github.jjelliott.q1installer.config.InstalledPackage;
 import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.os.ConfigLocation;
 import jakarta.inject.Singleton;

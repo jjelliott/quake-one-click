@@ -35,7 +35,7 @@ class Q1InstallerSpec extends Specification {
     then:
       1 * packageDownloader.downloadFile(arg) >> "map.zip"
       1 * packageInstaller.installPackage(arg, "map.zip")
-      1 * gameLauncher.launchGame(arg) >> {throw new IOException("something happened, oh no")}
+      1 * gameLauncher.launchGame(arg) >> { throw new IOException("something happened, oh no") }
       def exception = thrown(ExitCodeException)
       exception.exitCode == 3
       exception.message == "Unable to launch game"

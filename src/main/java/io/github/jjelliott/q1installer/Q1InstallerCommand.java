@@ -43,7 +43,7 @@ public class Q1InstallerCommand implements Runnable {
     } else {
       try {
         installer.run(new InstallerArguments(arg));
-      } catch (ExitCodeException e){
+      } catch (ExitCodeException e) {
         System.out.println(e.getMessage());
         e.printStackTrace();
         System.out.println("Press enter to close...");

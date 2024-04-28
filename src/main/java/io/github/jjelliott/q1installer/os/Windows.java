@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 @Singleton
 @Requires(os = Requires.Family.WINDOWS)
-public class Windows implements HandlerInstaller, ConfigLocation,ExamplePath {
+public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
 
   private final Scanner scanner;
 

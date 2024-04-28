@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class QuakeDirPackageInstallerTest {
 
   @Test
   @DisplayName("Test installer creates Quake directory path correctly")
-  void testQuakeDirectoryPath(){
+  void testQuakeDirectoryPath() {
     var props = new UserProps("/path/to/directory", "/path/to/directory/engine");
-    var installer = new QuakeDirPackageInstaller(props, null,null,null);
+    var installer = new QuakeDirPackageInstaller(props, null, null, null);
     assertEquals(Path.of("/path/to/directory/mod"), installer.quakeDirectoryPath("mod"));
   }
 }
