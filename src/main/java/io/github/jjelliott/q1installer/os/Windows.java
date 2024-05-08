@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 @Singleton
 @Requires(os = Requires.Family.WINDOWS)
-public class Windows implements HandlerInstaller, ConfigLocation {
+public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
 
   private final Scanner scanner;
 
@@ -47,5 +47,15 @@ public class Windows implements HandlerInstaller, ConfigLocation {
   @Override
   public String getConfig() {
     return System.getProperty("user.home") + "/AppData/Local/q1-installer";
+  }
+
+  @Override
+  public String quakeDir() {
+    return "C:\\Quake";
+  }
+
+  @Override
+  public String engine() {
+    return quakeDir() + "\\glquake.exe";
   }
 }

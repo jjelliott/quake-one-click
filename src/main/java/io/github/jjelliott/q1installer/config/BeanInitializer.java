@@ -1,4 +1,4 @@
-package io.github.jjelliott.q1installer;
+package io.github.jjelliott.q1installer.config;
 
 import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Singleton;
@@ -10,12 +10,12 @@ import java.util.Scanner;
 public class BeanInitializer {
 
   @Singleton
-  Scanner scanner(){
+  Scanner scanner() {
     return new Scanner(System.in);
   }
 
   @Singleton
-  HttpClient client(){
+  HttpClient client() {
     return HttpClient.newBuilder()
         .version(HttpClient.Version.HTTP_1_1)
         .followRedirects(HttpClient.Redirect.NEVER)

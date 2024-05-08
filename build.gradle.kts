@@ -1,6 +1,7 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.2.1"
+    id("groovy")
 }
 
 version = "0.1"
@@ -18,6 +19,10 @@ dependencies {
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("org.apache.commons:commons-compress:1.26.1")
     runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation(platform("org.apache.groovy:groovy-bom:4.0.20"))
+    testImplementation("org.apache.groovy:groovy")
+    testImplementation(platform("org.spockframework:spock-bom:2.3-groovy-4.0"))
+    testImplementation("org.spockframework:spock-core")
 }
 
 
@@ -43,15 +48,21 @@ graalvmNative {
 }
 
 tasks{
-    jar{
-//        enabled = false;
+    compileGroovy{
+        enabled = false
     }
     runnerJar {
-        enabled = false;
+        enabled = false
     }
     shadowJar {
-        archiveClassifier.set("");
-        archiveVersion.set("");
+        archiveClassifier.set("")
+        archiveVersion.set("")
+    }
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events ("passed", "skipped", "failed")
+        }
     }
 }
 

@@ -4,19 +4,19 @@ public interface ConfigLocation {
 
   String getConfig();
 
-  default String getCacheDir(){
+  default String getCacheDir() {
     return getConfig() + "/cache";
   }
 
-  default String getCacheDirFile(String subPath){
+  default String getCacheDirFile(String subPath) {
     return getCacheDir() + "/" + subPath;
   }
 
-  default String getUserPropertiesFile(){
+  default String getUserPropertiesFile() {
     return getConfig() + "/user.properties";
   }
 
-  default String getInstalledList(){
+  default String getInstalledList() {
     return getConfig() + "/installed.list";
   }
 }

@@ -1,4 +1,4 @@
-package io.github.jjelliott.q1installer.unpack;
+package io.github.jjelliott.q1installer.install;
 
 import io.github.jjelliott.q1installer.os.ConfigLocation;
 import jakarta.inject.Singleton;
