@@ -1,5 +1,6 @@
 package io.github.jjelliott.q1installer.install;
 
+import io.github.jjelliott.q1installer.Game;
 import io.github.jjelliott.q1installer.InstallerArguments;
 import io.github.jjelliott.q1installer.config.InstalledPackage;
 import io.github.jjelliott.q1installer.config.UserProps;
@@ -36,24 +37,25 @@ public class QuakeDirPackageInstaller implements PackageInstaller {
   public void installPackage(InstallerArguments installerArguments, String fileName) throws IOException {
     var type = installerArguments.getType();
     var modName = installerArguments.getModName();
+    var game = installerArguments.getGame();
     extractors.stream()
         .filter(it -> it.handles(FilenameUtils.getExtension(fileName)))
         .findFirst().orElseThrow()
         .extract(configLocation.getCacheDirFile(fileName));
-    Files.createDirectories(quakeDirectoryPath(modName));
+    Files.createDirectories(quakeDirectoryPath(game,modName));
     if (installerArguments.getType().equals("map")) {
-      Files.createDirectories(quakeDirectoryPath(modName + "/maps/"));
+      Files.createDirectories(quakeDirectoryPath(game, modName + "/maps/"));
     }
     try (var fileStream = Files.list(Path.of(configLocation.getCacheDirFile(FilenameUtils.getBaseName(fileName) + "/")))) {
       for (Path packageFilePath : fileStream.toList()) {
         if (Files.isDirectory(packageFilePath)) {
           if (packageFilePath.getFileName().toString().toLowerCase().equals(modName) || type.equals("root")) {
-            copyFolder(packageFilePath, quakeDirectoryPath(modName));
+            copyFolder(packageFilePath, quakeDirectoryPath(game, modName));
           } else {
-            copyFolder(packageFilePath, quakeDirectoryPath(modName + "/" + packageFilePath.getFileName().toString().toLowerCase()));
+            copyFolder(packageFilePath, quakeDirectoryPath(game, modName + "/" + packageFilePath.getFileName().toString().toLowerCase()));
           }
         } else {
-          Files.copy(packageFilePath, quakeDirectoryPath(modName + (type.contains("map") ? "/maps/" : "/") + packageFilePath.getFileName().toString().toLowerCase()), StandardCopyOption.REPLACE_EXISTING);
+          Files.copy(packageFilePath, quakeDirectoryPath(game, modName + (type.contains("map") ? "/maps/" : "/") + packageFilePath.getFileName().toString().toLowerCase()), StandardCopyOption.REPLACE_EXISTING);
         }
       }
     }
@@ -63,7 +65,7 @@ public class QuakeDirPackageInstaller implements PackageInstaller {
   }
 
 
-  Path quakeDirectoryPath(String subPath) {
-    return Path.of(userProps.getQuakeDirectoryPath() + "/" + subPath);
+  Path quakeDirectoryPath(Game game, String subPath) {
+    return Path.of(userProps.getGameProps(game).getDirectoryPath() + "/" + subPath);
   }
 }

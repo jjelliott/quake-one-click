@@ -8,5 +8,14 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\q1package\shell\open]
 
 [HKEY_CLASSES_ROOT\q1package\shell\open\command]
-@="%WORKDIR%q1-installer.exe \"%1\""
+@="%WORKDIR%quake-one-click.exe \"%1\""
 
+[HKEY_CLASSES_ROOT\q2package]
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\q2package\shell]
+
+[HKEY_CLASSES_ROOT\q2package\shell\open]
+
+[HKEY_CLASSES_ROOT\q2package\shell\open\command]
+@="%WORKDIR%quake-one-click.exe \"%1\""

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=q1package Scheme Handler
+Name=q2package Scheme Handler
 Exec=quake-one-click %u
 StartupNotify=false
-MimeType=x-scheme-handler/q1package;
+MimeType=x-scheme-handler/q2package;

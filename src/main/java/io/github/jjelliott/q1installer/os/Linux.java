@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
   @Override
   public String getConfig() {
-    return System.getProperty("user.home") + "/.config/q1-installer";
+    return "%s/.config/quake-one-click".formatted(System.getProperty("user.home"));
   }
 
   @Override
@@ -29,15 +29,21 @@ public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
 
   @Override
   public void install() {
-    try (var resource = Objects.requireNonNull(this.getClass().getClassLoader().getResource("q1package.desktop")).openStream()) {
-      Files.createDirectories(Path.of(System.getProperty("user.home") + "/.local/share/applications/"));
-      Files.write(Path.of(System.getProperty("user.home") + "/.local/share/applications/q1package.desktop"), resource.readAllBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+    installHandler("q1package");
+    installHandler("q2package");
+  }
+
+  private void installHandler(String protocol){
+    var userHome = System.getProperty("user.home");
+    try (var resource = Objects.requireNonNull(this.getClass().getClassLoader().getResource("%s.desktop".formatted(protocol))).openStream()) {
+      Files.createDirectories(Path.of("%s/.local/share/applications/".formatted(userHome)));
+      Files.write(Path.of("%s/.local/share/applications/%s.desktop".formatted(userHome, protocol)), resource.readAllBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
 
     try {
-      Runtime.getRuntime().exec("xdg-mime default q1package.desktop x-scheme-handler/q1package");
+      Runtime.getRuntime().exec("xdg-mime default %s.desktop x-scheme-handler/%s".formatted(protocol, protocol));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

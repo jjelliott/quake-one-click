@@ -71,8 +71,8 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: q1-installer-java
-          path: build/libs/q1-installer.jar
+          name: quake-one-click-java
+          path: build/libs/quake-one-click.jar
 
   build-native:
     name: Native compile on ${{ matrix.os }}
@@ -116,8 +116,8 @@ jobs:
     - name: Upload binary
       uses: actions/upload-artifact@v4
       with: 
-       name: q1-installer-${{ matrix.os }}
+       name: quake-one-click-${{ matrix.os }}
        path: |
-        build/native/nativeCompile/q1-installer
-        build/native/nativeCompile/q1-installer.exe
+        build/native/nativeCompile/quake-one-click
+        build/native/nativeCompile/quake-one-click.exe
 

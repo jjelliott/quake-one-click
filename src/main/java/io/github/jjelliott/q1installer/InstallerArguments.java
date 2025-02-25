@@ -1,7 +1,10 @@
 package io.github.jjelliott.q1installer;
 
+import static io.github.jjelliott.q1installer.Game.*;
+
 public class InstallerArguments {
   private final String command;
+  private final Game game;
   private final String action;
   private String url;
   private final String type;
@@ -12,6 +15,7 @@ public class InstallerArguments {
   public InstallerArguments(String command) {
     String tempAction;
     this.command = command;
+    game = command.startsWith("q1package") ? QUAKE : (command.startsWith("q2package") ? QUAKE2 : UNSUPPORTED);
     String commandWithoutProtocol;
     tempAction = "install";
     commandWithoutProtocol = command.replace("q1package:", "");
@@ -83,4 +87,8 @@ public class InstallerArguments {
   public String toString() {
     return command;
   }
+
+    public Game getGame() {
+        return game;
+    }
 }
