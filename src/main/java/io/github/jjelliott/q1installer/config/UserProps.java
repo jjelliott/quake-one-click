@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class UserProps {
+
   private final GameProps quake;
   private final GameProps quake2;
   private int skill;
@@ -22,7 +23,7 @@ public class UserProps {
   public UserProps(Properties properties, String location) {
     quake = new GameProps("quake", properties);
     quake2 = new GameProps("quake2", properties);
-      skill = Integer.parseInt(properties.getProperty("skill", "1"));
+    skill = Integer.parseInt(properties.getProperty("skill", "1"));
     this.location = location;
   }
 
@@ -44,15 +45,16 @@ public class UserProps {
     }
   }
 
-  public GameProps getQuake(){
+  public GameProps getQuake() {
     return quake;
   }
-  public GameProps getQuake2(){
+
+  public GameProps getQuake2() {
     return quake2;
   }
 
-  public GameProps getGameProps(Game game){
-    return switch (game){
+  public GameProps getGameProps(Game game) {
+    return switch (game) {
       case QUAKE -> quake;
       case QUAKE2 -> quake2;
       default -> throw new RuntimeException("unsupported game found");
@@ -61,8 +63,9 @@ public class UserProps {
 
 
   public int getSkill() {
-        return skill;
-    }
+    return skill;
+  }
+
   public void setSkill(int skill) {
     setSkill(skill, true);
   }
@@ -75,19 +78,22 @@ public class UserProps {
   }
 
   public class GameProps {
+
     private String directoryPath = "unset";
     private String enginePath = "unset";
     private String prefix;
-    public GameProps(String prefix){
-      this.prefix=  prefix;
+
+    public GameProps(String prefix) {
+      this.prefix = prefix;
     }
-    public GameProps(String prefix, Properties properties){
+
+    public GameProps(String prefix, Properties properties) {
       this.prefix = prefix;
       directoryPath = properties.getProperty("%s.directory-path".formatted(prefix), "unset");
       enginePath = properties.getProperty("%s.engine-path".formatted(prefix), "unset");
     }
 
-    void addToProperties(Properties properties){
+    void addToProperties(Properties properties) {
       properties.setProperty("%s.directory-path".formatted(prefix), directoryPath);
       properties.setProperty("%s.engine-path".formatted(prefix), enginePath);
     }

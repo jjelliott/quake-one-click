@@ -29,7 +29,6 @@ public class Q1InstallerCommand implements Runnable {
   String arg;
 
 
-
   public static void main(String[] args) {
     PicocliRunner.run(Q1InstallerCommand.class, args);
   }
@@ -38,14 +37,11 @@ public class Q1InstallerCommand implements Runnable {
 
     if (arg.isEmpty()) {
       menu.mainMenu();
-    } else if (arg.toLowerCase().startsWith("q1package")){
-      if (!userProps.getQuake().hasDirectoryPath() || !userProps.getQuake().hasEnginePath()) {
-        System.out.println("Paths not set, please run setup and set them.");
-        System.out.println("Press enter to close...");
-        scanner.nextLine();
-      } else {
+    } else {
+      var installerArgs = new InstallerArguments(arg);
+      if (checkPathsSet(userProps.getGameProps(installerArgs.getGame()))) {
         try {
-          installer.run(new InstallerArguments(arg));
+          installer.run(installerArgs);
         } catch (ExitCodeException e) {
           System.out.println(e.getMessage());
           e.printStackTrace();
@@ -55,24 +51,34 @@ public class Q1InstallerCommand implements Runnable {
 
         }
       }
-    } else if (arg.toLowerCase().startsWith("q2package")){
-      System.out.println("Quake 2 support coming soon...");
     }
+
   }
 
+  private boolean checkPathsSet(UserProps.GameProps gameProps) {
+    if (!gameProps.hasDirectoryPath() || !gameProps.hasEnginePath()) {
+      System.out.println("Paths not set, please run setup and set them.");
+      System.out.println("Press enter to close...");
+      scanner.nextLine();
+      return false;
+    }
+    return true;
+  }
 }
 
 @Command(name = "config")
 class ConfigCommand implements Runnable {
+
   @Inject
   UserProps userProps;
   @Parameters(index = "0", defaultValue = "")
   String field;
   @Parameters(index = "1", defaultValue = "")
   String value;
+
   @Override
   public void run() {
-    switch (field){
+    switch (field) {
       case "q1-game-path" -> userProps.getQuake().setDirectoryPath(value);
       case "q1-engine-path" -> userProps.getQuake().setEnginePath(value);
       case "q2-game-path" -> userProps.getQuake2().setDirectoryPath(value);
@@ -80,11 +86,11 @@ class ConfigCommand implements Runnable {
       case "skill" -> {
         try {
           userProps.setSkill(Integer.parseInt(value));
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
           System.out.println("Invalid number format");
         }
-        }
       }
+    }
   }
 }
 
