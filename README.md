@@ -99,3 +99,6 @@ To run the test suite, run `./gradlew check`.
 
 `mod-gamedir` type:
 [Blood Colored Rust (via Quaddicted)](https://jjelliott.github.io/http-protocol-redirector/?r=q1package:https://www.quaddicted.com/filebase/mhsp01.zip,mod-gamedir,quoth,https://www.quaddicted.com/filebase/quoth2pt2full_2.zip|gamedir|quoth,mhsp01)
+
+Quake 2 `map` type:
+[Infiltrate :: Subjugate :: Eliminate (via Quaddicted)](https://jjelliott.github.io/http-protocol-redirector/?r=q2package:https://www.quaddicted.com/files/idgames2/quake2/levels/g-i/ise.zip,map,baseq2,ise)
