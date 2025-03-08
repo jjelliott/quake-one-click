@@ -18,6 +18,7 @@ public class UserProps {
     quake2 = new GameProps("quake2");
     quake.setDirectoryPath(dirPath, false);
     quake.setEnginePath(enginePath, false);
+    skill = 1;
   }
 
   public UserProps(Properties properties, String location) {
