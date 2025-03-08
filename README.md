@@ -1,12 +1,14 @@
-# q1-installer
+# quake-one-click
 
-This program enables one-click installation and run of Quake 1 maps and mods.
+This program enables one-click installation and run of Quake 1 and 2 maps and mods.
 
 Home page: [Quake One-Click Installer](https://jjelliott.github.io/quake-one-click)
 
 Repository: [Github](https://github.com/jjelliott/quake-one-click)
 
 ## Link format
+
+The program will register handlers for `q1package` and `q2package` links. All of the following information applies to both protocols.
 
 For packages without dependencies:
 
@@ -50,16 +52,16 @@ Binaries will be available from the Releases section.
 
 Download the Windows package and extract it to the desired location.
 
-Run the binary (`q1-installer.exe`) and set up the configuration via menu. You must install the handler and set the
+Run the binary (`quake-one-click.exe`) and set up the configuration via menu. You must install the handler and set the
 quake paths.
 
-If you move `q1-installer.exe` you _must_ re-run the handler installation.
+If you move `quake-one-click.exe` you _must_ re-run the handler installation.
 
 #### Linux
 
 Download the Linux package and extract it to a location on your path.
 
-Run the binary from a terminal (`q1-installer`) and set up the configuration via menu. You must install the handler and
+Run the binary from a terminal (`quake-one-click`) and set up the configuration via menu. You must install the handler and
 set the quake paths.
 
 Known incompatibilities:

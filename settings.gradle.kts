@@ -1,3 +1,3 @@
 
-rootProject.name="q1-installer"
+rootProject.name="quake-one-click"
 

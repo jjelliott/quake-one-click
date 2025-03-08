@@ -1,18 +1,6 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
 name: Java CI with Gradle
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+on: push
 
 jobs:
   test:
@@ -27,9 +15,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
-      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
@@ -49,30 +34,16 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
-      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
       - name: Build with Gradle Wrapper
         run: ./gradlew assemble
-
-      # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-      # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-      #
-      # - name: Setup Gradle
-      #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-      #   with:
-      #     gradle-version: '8.5'
-      #
-      # - name: Build with Gradle 8.5
-      #   run: gradle build
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: q1-installer-java
-          path: build/libs/q1-installer.jar
+          name: quake-one-click-java
+          path: build/libs/quake-one-click.jar
 
   build-native:
     name: Native compile on ${{ matrix.os }}
@@ -94,30 +65,16 @@ jobs:
           java-version: '17'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-    # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
     - name: Build with Gradle Wrapper
       run: ./gradlew nativeCompile
-
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-    #   with:
-    #     gradle-version: '8.5'
-    #
-    # - name: Build with Gradle 8.5
-    #   run: gradle build
     - name: Upload binary
       uses: actions/upload-artifact@v4
       with: 
-       name: q1-installer-${{ matrix.os }}
+       name: quake-one-click-${{ matrix.os }}
        path: |
-        build/native/nativeCompile/q1-installer
-        build/native/nativeCompile/q1-installer.exe
+        build/native/nativeCompile/quake-one-click
+        build/native/nativeCompile/quake-one-click.exe
 

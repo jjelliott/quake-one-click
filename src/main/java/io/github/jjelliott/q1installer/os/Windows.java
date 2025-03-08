@@ -46,7 +46,7 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
 
   @Override
   public String getConfig() {
-    return System.getProperty("user.home") + "/AppData/Local/q1-installer";
+    return System.getProperty("user.home") + "/AppData/Local/quake-one-click";
   }
 
   @Override
