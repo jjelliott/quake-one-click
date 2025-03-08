@@ -34,6 +34,8 @@ public class ProcessBuilderGameLauncher implements GameLauncher {
     var modName = installerArguments.getModName();
     List<String> commandList = new ArrayList<>();
 
+    commandList.add(gameProps.getEnginePath());
+
     if (installerArguments.getGame() == QUAKE) {
       setBaseDir(commandList, gameProps, List.of("-basedir"));
       if (!modName.equals("id1")) {
@@ -41,7 +43,9 @@ public class ProcessBuilderGameLauncher implements GameLauncher {
         commandList.add(modName);
       }
     } else if (installerArguments.getGame() == QUAKE2) {
-      setBaseDir(commandList, gameProps, List.of("+set", "basedir"));
+      if (!gameProps.getDirectoryPath().contains("Saved Games")) {// q2ex doesn't like this
+        setBaseDir(commandList, gameProps, List.of("+set", "basedir"));
+      }
       if (!modName.equals("baseq2")) {
         commandList.add("+set");
         commandList.add("game");
@@ -54,7 +58,7 @@ public class ProcessBuilderGameLauncher implements GameLauncher {
     }
     commandList.add("+map");
     commandList.add(installerArguments.getLaunchMap());
-    System.out.println(commandList.toString());
+    System.out.println(commandList);
     return commandList;
   }
 
@@ -65,7 +69,6 @@ public class ProcessBuilderGameLauncher implements GameLauncher {
 
   private void setBaseDir(List<String> commandList, UserProps.GameProps gameProps,
       List<String> commandsToAdd) {
-    commandList.add(gameProps.getEnginePath());
     commandList.addAll(commandsToAdd);
     commandList.add(gameProps.getDirectoryPath());
   }
