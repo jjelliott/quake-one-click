@@ -1,12 +1,14 @@
 # quake-one-click
 
-This program enables one-click installation and run of Quake 1 maps and mods.
+This program enables one-click installation and run of Quake 1 and 2 maps and mods.
 
 Home page: [Quake One-Click Installer](https://jjelliott.github.io/quake-one-click)
 
 Repository: [Github](https://github.com/jjelliott/quake-one-click)
 
 ## Link format
+
+The program will register handlers for `q1package` and `q2package` links. All of the following information applies to both protocols.
 
 For packages without dependencies:
 
