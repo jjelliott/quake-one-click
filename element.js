@@ -1,3 +1,5 @@
+let changeChoice;
+async function run(){
 async function fetchJsonData(sha) {
     const url = `https://raw.githubusercontent.com/Quaddicted/quaddicted-data/refs/heads/main/json/by-sha256/${sha.slice(0,2)}/${sha}.json`;
 
@@ -17,7 +19,7 @@ function buildResultString(json) {
     const tag = json.tags.find(tag => tag.includes("zipbasedir"));
     let type;
     let gamedir;
-    if (tag) {
+    if (tag && tag != "zipbasedir=/") {
          type = tag.includes("maps") ? "map" : "gamedir";
          gamedir = tag.replace("zipbasedir=", "").replace("/maps/", "").replace("/", "");
     } else {
@@ -32,9 +34,10 @@ function buildResultString(json) {
 const segments = new URL(location.href).pathname.split("/");
 const last = segments.pop() || segments.pop();
 const json = await fetchJsonData(last);
+window.packageInfo = json;
 console.log(json)
 const result = buildResultString(json);
-function changeChoice(value) {
+changeChoice = function(value) {
     document.querySelector("#one-click").href = result + "," + value;
 }
 let mapChoices = [];
@@ -42,7 +45,10 @@ let startmapTags = json.tags.filter(it => it.includes("startmap"))
 if (startmapTags.length > 0){
     startmapTags.map(it => it.replace("startmap=", "")).forEach(it => mapChoices.push(it));
 } else {
-   mapChoices.push("start")
+	Object.keys(window.packageInfo.files).filter(it => it.toLowerCase().includes("bsp")).map(bsp => bsp.toLowerCase().replace("maps/", "").replace(".bsp", "")).forEach(contentFile => mapChoices.push(contentFile))
+Object.keys(window.packageInfo.files).filter(it => it.toLowerCase().includes("pak")).forEach(pakfile => Object.keys(window.packageInfo.files[pakfile].files).filter(contentFile => contentFile.includes("bsp")).map(bsp => bsp.replace("maps/", "").replace(".bsp", "")).forEach(contentFile => mapChoices.push(contentFile)))
+
+  // mapChoices.push("start")
 }
 function createElement(){
     var div = document.createElement("tr")
@@ -51,3 +57,6 @@ function createElement(){
 }
 document.querySelector("#infos tbody").prepend(createElement())
 if (result) console.log(result);
+}
+
+run()
