@@ -14,3 +14,5 @@ out/
 .classpath
 .factorypath
 history.txt
+hs_err*
+imgui.ini

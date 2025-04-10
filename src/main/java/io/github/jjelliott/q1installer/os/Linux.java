@@ -28,6 +28,12 @@ public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
   }
 
   @Override
+  public String textPrompt() {
+    var userHome = System.getProperty("user.home");
+    return "The handler desktop files will be installed to %s/.local/share/applications/".formatted(userHome);
+  }
+
+  @Override
   public void install() {
     installHandler("q1package");
     installHandler("q2package");

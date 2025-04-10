@@ -15,6 +15,7 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen")
     annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.github.spair:imgui-java-app:1.89.0")
     implementation("info.picocli:picocli")
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("org.apache.commons:commons-compress:1.26.1")
@@ -44,11 +45,25 @@ micronaut {
 }
 
 graalvmNative {
-    toolchainDetection.set(true)
+    binaries {
+        all {
+            resources.autodetect()
+        }
+        named("main") { // Use named("main") to configure the 'main' binary
+            javaLauncher.set(javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(21))
+                vendor.set(JvmVendorSpec.GRAAL_VM)
+            })
+            buildArgs.set(listOf("--static"))
+        }
+    }
+    agent {
+        enabled.set(true)
+    }
 }
 
-tasks{
-    compileGroovy{
+tasks {
+    compileGroovy {
         enabled = false
     }
     runnerJar {
@@ -61,7 +76,7 @@ tasks{
     test {
         useJUnitPlatform()
         testLogging {
-            events ("passed", "skipped", "failed")
+            events("passed", "skipped", "failed")
         }
     }
 }
