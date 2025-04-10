@@ -44,8 +44,8 @@ public class JavaHttpClientPackageDownloader implements PackageDownloader {
     }
     if (fileName.isEmpty()) {
       var disposition = response.headers().firstValue("content-disposition").orElseThrow();
-      if (disposition.contains("attachment; filename=\"")) {
-        fileName = disposition.replace("attachment; filename=\"", "").replace("\"", "");
+      if (disposition.contains("attachment; filename=")) {
+        fileName = disposition.replace("attachment; filename=", "").replaceAll("\"", "");
       }
     }
     Files.write(Path.of(configLocation.getCacheDirFile(fileName)), response.body(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);

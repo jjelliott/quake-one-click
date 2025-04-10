@@ -18,6 +18,7 @@ dependencies {
     implementation("info.picocli:picocli")
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("org.apache.commons:commons-compress:1.26.1")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation(platform("org.apache.groovy:groovy-bom:4.0.20"))
     testImplementation("org.apache.groovy:groovy")

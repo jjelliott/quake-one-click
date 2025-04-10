@@ -1,6 +1,13 @@
 package io.github.jjelliott.q1installer;
 
-import static io.github.jjelliott.q1installer.Game.*;
+import static io.github.jjelliott.q1installer.Game.QUAKE;
+import static io.github.jjelliott.q1installer.Game.QUAKE2;
+import static io.github.jjelliott.q1installer.Game.UNSUPPORTED;
+
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class InstallerArguments {
 
@@ -12,6 +19,7 @@ public class InstallerArguments {
   private final String modName;
   private final String launchMap;
   private final InstallerArguments modPackage;
+  private final String installStepJson;
 
   public InstallerArguments(String command) {
     String tempAction;
@@ -29,20 +37,29 @@ public class InstallerArguments {
         type = split[1].equals("mod-folder") ? "root" : split[1];
         modName = split[2];
         modPackage = null;
+        installStepJson = "[]";
         launchMap = split.length >= 4 ? split[3] : null;
       }
       case "mod-gamedir", "mod-map" -> {
         type = split[1];
         modName = split[2];
         modPackage = new InstallerArguments(split[3].replaceAll("%7C", ",").replaceAll("\\|", ","));
+        installStepJson = "[]";
         launchMap = split.length >= 5 ? split[4] : null;
       }
       case "custom" -> {
         type = split[1];
         modName = split[2];
         modPackage = null;
-        // TODO: json string?
-        launchMap = split.length >= 5 ? split[4] : null;
+        launchMap = split[split.length - 1].contains("]") ? null : split[split.length - 1];
+        if (split[3].startsWith("[")) {
+          var arrayLength = launchMap == null ? split.length - 3 : split.length - 4;
+          var jsonArray = new String[arrayLength];
+          System.arraycopy(split, 3, jsonArray, 0, arrayLength);
+          installStepJson = String.join(",", jsonArray);
+        } else { // base64
+          installStepJson = new String(Base64.getDecoder().decode(split[3]));
+        }
       }
       default -> throw new IllegalStateException("Unexpected value: " + split[1]);
     }
@@ -92,5 +109,9 @@ public class InstallerArguments {
 
   public Game getGame() {
     return game;
+  }
+
+  public String getInstallStepJson() {
+    return installStepJson;
   }
 }
