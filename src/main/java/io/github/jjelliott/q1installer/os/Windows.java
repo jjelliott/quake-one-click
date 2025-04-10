@@ -1,5 +1,7 @@
 package io.github.jjelliott.q1installer.os;
 
+import io.github.jjelliott.q1installer.ActiveRun;
+import io.github.jjelliott.q1installer.ActiveRun.RunMode;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
@@ -16,14 +18,25 @@ import java.util.Scanner;
 public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
 
   private final Scanner scanner;
+  private final ActiveRun activeRun;
 
-  public Windows(Scanner scanner) {
+  public Windows(Scanner scanner, ActiveRun activeRun) {
     this.scanner = scanner;
+    this.activeRun = activeRun;
+  }
+
+  @Override
+  public String textPrompt() {
+    return """
+        A prompt should pop up to write to the registry.
+        You may review %s/cache/q1package.reg if you wish before continuing.""".formatted(
+        getConfig());
   }
 
   @Override
   public void install() {
-    try (var resource = Objects.requireNonNull(this.getClass().getClassLoader().getResource("q1package.reg")).openStream()) {
+    try (var resource = Objects.requireNonNull(
+        this.getClass().getClassLoader().getResource("q1package.reg")).openStream()) {
       var outPath = Path.of(getConfig() + "/cache/q1package.reg");
       var escapedPath = System.getProperty("user.dir")
           .replaceAll("\\\\", "\\\\\\\\") + "\\\\"; // XXX: this is gross
@@ -33,10 +46,11 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    System.out.println("A prompt should pop up to write to the registry.");
-    System.out.println("You may review " + getConfig() + "/cache/q1package.reg if you wish before continuing.");
-    System.out.println("Press enter to continue when you are ready...");
-    scanner.nextLine();
+    if (activeRun.runMode() == RunMode.TEXT_MENU) {
+      System.out.println(textPrompt());
+      System.out.println("Press enter to continue when you are ready...");
+      scanner.nextLine();
+    }
     try {
       Runtime.getRuntime().exec("cmd /c \"" + getConfig() + "/cache/q1package.reg\"");
     } catch (IOException e) {
