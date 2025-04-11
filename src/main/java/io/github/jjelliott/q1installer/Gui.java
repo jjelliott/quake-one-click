@@ -5,6 +5,7 @@ import imgui.ImGuiViewport;
 import imgui.ImVec2;
 import imgui.app.Application;
 import imgui.app.Configuration;
+import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
@@ -13,8 +14,14 @@ import io.github.jjelliott.q1installer.os.ConfigLocation;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
-import java.util.Scanner;
-
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 @Singleton
 public class Gui extends Application {
 
@@ -41,10 +48,19 @@ public class Gui extends Application {
   @Override
   protected void configure(Configuration config) {
     config.setTitle("Quake One-Click Installer");
+    config.setWidth(550);
+    config.setHeight(650);
   }
 
   @Override
   public void process() {
+    if (logoTextureID == 0) {
+      System.out.println("loading image!");
+      loadImage("q1c.png");
+    }
+    ImGui.getStyle().setColor(ImGuiCol.WindowBg, 0.4f,0.4f,0.45f,1f);
+    ImGui.getStyle().setColor(ImGuiCol.Border, 0.3f,0.3f,0.25f,1f);
+    ImGui.getStyle().setColor(ImGuiCol.Separator, 0.3f,0.3f,0.25f,1f);
     ImGuiViewport mainViewport = ImGui.getMainViewport();
     ImVec2 pos = mainViewport.getPos();
     ImVec2 size = mainViewport.getSize();
@@ -59,116 +75,68 @@ public class Gui extends Application {
             ImGuiWindowFlags.NoMove |
             ImGuiWindowFlags.NoBringToFrontOnFocus |
             ImGuiWindowFlags.NoNavFocus)) {
-      if (ImGui.button("Install handler")) {
+      float windowWidth = ImGui.getWindowWidth();
+      float windowHeight = ImGui.getWindowHeight();
+      float spacing = ImGui.getStyle().getItemSpacing().y;
+
+      float totalHeight = 356 + ImGui.getTextLineHeightWithSpacing() + (ImGui.getFrameHeightWithSpacing() * 6) + (spacing * 7); // Calculate total height of elements
+
+      ImGui.setCursorPosY((windowHeight - totalHeight) * 0.5f); // Center vertically
+
+      // Center the logo
+      ImGui.setCursorPosX((windowWidth - 256) * 0.5f);
+      ImGui.image(logoTextureID, 256, 356);
+      ImGui.setCursorPosX((windowWidth - ImGui.calcTextSize("Quake One-Click Installer Menu").x) * 0.5f);
+
+      ImGui.text("Quake One-Click Installer Menu");
+
+      float buttonWidth = 200; // Fixed button width
+      ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
+      if (ImGui.button("Install handler", new ImVec2(buttonWidth, 0))) {
         handlerOpen = true;
       }
-      ImGui.button("Set Quake 1 Paths");
-      ImGui.button("Set Quake 2 Paths");
-      ImGui.button("Set default skill");
-      if (ImGui.button("Clear cache")) {
+
+      ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
+      ImGui.button("Set Quake 1 Paths", new ImVec2(buttonWidth, 0));
+
+      ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
+      ImGui.button("Set Quake 2 Paths", new ImVec2(buttonWidth, 0));
+
+      ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
+      ImGui.button("Set default skill", new ImVec2(buttonWidth, 0));
+
+      ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
+      if (ImGui.button("Clear cache", new ImVec2(buttonWidth, 0))) {
         cacheOpen = true;
       }
-      ImGui.button("Exit");
+
+      ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
+      if (ImGui.button("Exit", new ImVec2(buttonWidth, 0))) {
+         dispose(); // Replace with your exit logic
+      }
 
       ImGui.end();
 
     }
 
-    ImVec2 screenMidpoint = mainViewport.getSize().div(2, 2);
-
     if (handlerOpen) {
       String text = handlerInstaller.textPrompt();
-      float textWidth = ImGui.calcTextSize(text).x;
-      float textHeight = ImGui.calcTextSize(text).y;
-
-      ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
-          screenMidpoint.y - ((textHeight * 6) * 0.5F), ImGuiCond.Always);
-      ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0,
-          ImGuiCond.Always);
-      if (ImGui.begin("Install Handler", null,
-          ImGuiWindowFlags.NoDocking |
-              ImGuiWindowFlags.NoResize |
-              ImGuiWindowFlags.NoMove |
-              ImGuiWindowFlags.NoCollapse |
-              ImGuiWindowFlags.Modal)) {
-
-        float windowWidth = ImGui.getWindowWidth();
-        for (String s : text.split("\n")) {
-
-          ImGui.textWrapped(s);
-        }
-        ImGui.separator();
-        float buttonWidth = 100; // Adjust as needed
-        float spacing = ImGui.getStyle().getItemSpacing().x;
-        float totalWidth = (buttonWidth * 2) + spacing;
-
-        ImGui.setCursorPosX((windowWidth - totalWidth) * 0.5f);
-        if (ImGui.button("Cancel", new ImVec2(buttonWidth, 20))) {
-          handlerOpen = false;
-        }
-
-        ImGui.sameLine(); // Place the next item on the same line
-        if (ImGui.button("Install", new ImVec2(buttonWidth, 20))) {
-          handlerInstaller.install();
-          handlerOpen = false;
-        }
-
-      }
-      ImGui.end();
+      openConfirm("Install Handler", text, "Install",
+          () -> {
+            handlerInstaller.install();
+            handlerOpen = false;
+          },
+          () -> handlerOpen = false);
     }
 
     if (cacheOpen) {
       String text = "Cache currently sized at " + menuOperations.getCacheSize()
           + ".\nWould you like to clear it?";
-//      float textWidth = ImGui.calcTextSize(text).x;
-//      float textHeight = ImGui.calcTextSize(text).y;
-//
-//      ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
-//          screenMidpoint.y - ((textHeight * 6) * 0.5F), ImGuiCond.Always);
-//      ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0, ImGuiCond.Always);
-//      if (ImGui.begin("Clear Cache", null,
-//          ImGuiWindowFlags.NoDocking |
-//              ImGuiWindowFlags.NoResize |
-//              ImGuiWindowFlags.NoMove |
-//              ImGuiWindowFlags.NoCollapse |
-//              ImGuiWindowFlags.Modal)) {
-//
-//        float windowWidth = ImGui.getWindowWidth();
-//        for (String s : text.split("\n")) {
-//          ImGui.textWrapped(s);
-//        }
-//        ImGui.separator();
-//        float buttonWidth = 100; // Adjust as needed
-//        float spacing = ImGui.getStyle().getItemSpacing().x;
-//        float totalWidth = (buttonWidth * 2) + spacing;
-//
-//        ImGui.setCursorPosX((windowWidth - totalWidth) * 0.5f);
-//        if (ImGui.button("Cancel", new ImVec2(buttonWidth, 20))) {
-//          cacheOpen = false;
-//        }
-//
-//        ImGui.sameLine(); // Place the next item on the same line
-//        if (ImGui.button("Clear Cache", new ImVec2(buttonWidth, 20))) {
-//          menuOperations.clearCache();
-//          cacheOpen = false;
-//        }
-//
-//      }
-//      ImGui.end();
       openConfirm("Clear Cache", text, "Clear Cache", () -> {
         menuOperations.clearCache();
         cacheOpen = false;
       }, () -> cacheOpen = false);
     }
-
-//    if (ImGui.beginMenuBar()){
-//      if(ImGui.beginMenu("File")){
-//        if(ImGui.menuItem("Quit", "Ctrl+Q")){}
-//        ImGui.endMenu();
-//      }
-//      ImGui.endMenuBar();
-//    }
-//    ImGui.text("Hello, World!");
   }
 
   private void openConfirm(String title, String text, String confirmText, Runnable confirmAction,
@@ -176,7 +144,7 @@ public class Gui extends Application {
 
     ImGuiViewport mainViewport = ImGui.getMainViewport();
     ImVec2 screenMidpoint = mainViewport.getSize().div(2, 2);
-    float textWidth = ImGui.calcTextSize(text).x;
+    float textWidth = Math.max(Math.min(ImGui.calcTextSize(text).x, 450), 300);
     float textHeight = ImGui.calcTextSize(text).y;
 
     ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
@@ -212,4 +180,58 @@ public class Gui extends Application {
     }
     ImGui.end();
   }
+
+  private int logoTextureID = 0;
+  private int logoImageWidth = 0;
+  private int logoImageHeight = 0;
+
+  private boolean loadImage(String resourcePath) {
+    try (MemoryStack stack = MemoryStack.stackPush()) {
+      InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
+      if (inputStream == null) {
+        System.err.println("Failed to load resource: " + resourcePath);
+        return false;
+      }
+
+      byte[] bytes = inputStream.readAllBytes();
+      ByteBuffer buffer = ByteBuffer.allocateDirect(bytes.length);
+      buffer.put(bytes);
+      buffer.flip();
+
+      IntBuffer w = stack.mallocInt(1);
+      IntBuffer h = stack.mallocInt(1);
+      IntBuffer channels = stack.mallocInt(1);
+
+      ByteBuffer image = STBImage.stbi_load_from_memory(buffer, w, h, channels, 4);
+
+      if (image == null) {
+        System.err.println("Failed to decode image: " + STBImage.stbi_failure_reason());
+        return false;
+      }
+
+      logoImageWidth = w.get();
+      logoImageHeight = h.get();
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      logoTextureID = glGenTextures();
+      glBindTexture(GL_TEXTURE_2D, logoTextureID);
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, logoImageWidth, logoImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+      glDisable(GL_BLEND);
+      STBImage.stbi_image_free(image);
+      inputStream.close();
+
+      return true;
+    } catch (IOException e) {
+      System.err.println("Error loading resource: " + resourcePath);
+      e.printStackTrace();
+      return false;
+    }
+  }
+
 }
