@@ -17,18 +17,25 @@ import java.util.Scanner;
 
 @Singleton
 public class Gui extends Application {
+
   private final UserProps userProps;
   private final ConfigLocation configLocation;
   private final HandlerInstaller handlerInstaller;
   private final ExamplePath examplePath;
+  private final MenuOperations menuOperations;
   private boolean handlerOpen = false;
+  private boolean quakePathsOpen = false;
+  private boolean quake2PathsOpen = false;
+  private boolean skillsOpen = false;
+  private boolean cacheOpen = false;
 
   public Gui(UserProps userProps, ConfigLocation configLocation, HandlerInstaller handlerInstaller,
-      ExamplePath examplePath) {
+      ExamplePath examplePath, MenuOperations menuOperations) {
     this.userProps = userProps;
     this.configLocation = configLocation;
     this.handlerInstaller = handlerInstaller;
     this.examplePath = examplePath;
+    this.menuOperations = menuOperations;
   }
 
   @Override
@@ -58,7 +65,9 @@ public class Gui extends Application {
       ImGui.button("Set Quake 1 Paths");
       ImGui.button("Set Quake 2 Paths");
       ImGui.button("Set default skill");
-      ImGui.button("Clear cache");
+      if (ImGui.button("Clear cache")) {
+        cacheOpen = true;
+      }
       ImGui.button("Exit");
 
       ImGui.end();
@@ -72,9 +81,10 @@ public class Gui extends Application {
       float textWidth = ImGui.calcTextSize(text).x;
       float textHeight = ImGui.calcTextSize(text).y;
 
-      ImGui.setNextWindowPos(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F),
+      ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
           screenMidpoint.y - ((textHeight * 6) * 0.5F), ImGuiCond.Always);
-      ImGui.setNextWindowSize(textWidth * 1.1F, 0, ImGuiCond.Always);
+      ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0,
+          ImGuiCond.Always);
       if (ImGui.begin("Install Handler", null,
           ImGuiWindowFlags.NoDocking |
               ImGuiWindowFlags.NoResize |
@@ -83,8 +93,10 @@ public class Gui extends Application {
               ImGuiWindowFlags.Modal)) {
 
         float windowWidth = ImGui.getWindowWidth();
-        ImGui.setCursorPosX((windowWidth - textWidth) * 0.5f);
-        ImGui.text(text);
+        for (String s : text.split("\n")) {
+
+          ImGui.textWrapped(s);
+        }
         ImGui.separator();
         float buttonWidth = 100; // Adjust as needed
         float spacing = ImGui.getStyle().getItemSpacing().x;
@@ -105,6 +117,50 @@ public class Gui extends Application {
       ImGui.end();
     }
 
+    if (cacheOpen) {
+      String text = "Cache currently sized at " + menuOperations.getCacheSize()
+          + ".\nWould you like to clear it?";
+//      float textWidth = ImGui.calcTextSize(text).x;
+//      float textHeight = ImGui.calcTextSize(text).y;
+//
+//      ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
+//          screenMidpoint.y - ((textHeight * 6) * 0.5F), ImGuiCond.Always);
+//      ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0, ImGuiCond.Always);
+//      if (ImGui.begin("Clear Cache", null,
+//          ImGuiWindowFlags.NoDocking |
+//              ImGuiWindowFlags.NoResize |
+//              ImGuiWindowFlags.NoMove |
+//              ImGuiWindowFlags.NoCollapse |
+//              ImGuiWindowFlags.Modal)) {
+//
+//        float windowWidth = ImGui.getWindowWidth();
+//        for (String s : text.split("\n")) {
+//          ImGui.textWrapped(s);
+//        }
+//        ImGui.separator();
+//        float buttonWidth = 100; // Adjust as needed
+//        float spacing = ImGui.getStyle().getItemSpacing().x;
+//        float totalWidth = (buttonWidth * 2) + spacing;
+//
+//        ImGui.setCursorPosX((windowWidth - totalWidth) * 0.5f);
+//        if (ImGui.button("Cancel", new ImVec2(buttonWidth, 20))) {
+//          cacheOpen = false;
+//        }
+//
+//        ImGui.sameLine(); // Place the next item on the same line
+//        if (ImGui.button("Clear Cache", new ImVec2(buttonWidth, 20))) {
+//          menuOperations.clearCache();
+//          cacheOpen = false;
+//        }
+//
+//      }
+//      ImGui.end();
+      openConfirm("Clear Cache", text, "Clear Cache", () -> {
+        menuOperations.clearCache();
+        cacheOpen = false;
+      }, () -> cacheOpen = false);
+    }
+
 //    if (ImGui.beginMenuBar()){
 //      if(ImGui.beginMenu("File")){
 //        if(ImGui.menuItem("Quit", "Ctrl+Q")){}
@@ -113,5 +169,47 @@ public class Gui extends Application {
 //      ImGui.endMenuBar();
 //    }
 //    ImGui.text("Hello, World!");
+  }
+
+  private void openConfirm(String title, String text, String confirmText, Runnable confirmAction,
+      Runnable cancelAction) {
+
+    ImGuiViewport mainViewport = ImGui.getMainViewport();
+    ImVec2 screenMidpoint = mainViewport.getSize().div(2, 2);
+    float textWidth = ImGui.calcTextSize(text).x;
+    float textHeight = ImGui.calcTextSize(text).y;
+
+    ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
+        screenMidpoint.y - ((textHeight * 6) * 0.5F), ImGuiCond.Always);
+    ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0,
+        ImGuiCond.Always);
+    if (ImGui.begin(title, null,
+        ImGuiWindowFlags.NoDocking |
+            ImGuiWindowFlags.NoResize |
+            ImGuiWindowFlags.NoMove |
+            ImGuiWindowFlags.NoCollapse |
+            ImGuiWindowFlags.Modal)) {
+
+      for (String s : text.split("\n")) {
+        ImGui.textWrapped(s);
+      }
+      ImGui.separator();
+      float windowWidth = ImGui.getWindowWidth();
+      float buttonWidth = 100; // Adjust as needed
+      float spacing = ImGui.getStyle().getItemSpacing().x;
+      float totalWidth = (buttonWidth * 2) + spacing;
+
+      ImGui.setCursorPosX((windowWidth - totalWidth) * 0.5f);
+      if (ImGui.button("Cancel", new ImVec2(buttonWidth, 20))) {
+        cancelAction.run();
+      }
+
+      ImGui.sameLine(); // Place the next item on the same line
+      if (ImGui.button(confirmText, new ImVec2(buttonWidth, 20))) {
+        confirmAction.run();
+      }
+
+    }
+    ImGui.end();
   }
 }

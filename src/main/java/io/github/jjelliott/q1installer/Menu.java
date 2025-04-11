@@ -21,14 +21,16 @@ public class Menu {
   private final ConfigLocation configLocation;
   private final HandlerInstaller handlerInstaller;
   private final ExamplePath examplePath;
+  private final MenuOperations menuOperations;
 
   public Menu(UserProps userProps, Scanner scanner, ConfigLocation configLocation,
-      HandlerInstaller handlerInstaller, ExamplePath examplePath) {
+      HandlerInstaller handlerInstaller, ExamplePath examplePath, MenuOperations menuOperations) {
     this.userProps = userProps;
     this.scanner = scanner;
     this.configLocation = configLocation;
     this.handlerInstaller = handlerInstaller;
     this.examplePath = examplePath;
+    this.menuOperations = menuOperations;
   }
 
   void mainMenu() {
@@ -53,14 +55,7 @@ public class Menu {
         case "3" -> pathMenu(userProps.getQuake2());
         case "4" -> skillMenu();
         case "5" -> {
-          try (var fileStream = Files.walk(Path.of(configLocation.getCacheDir()))) {
-            for (Path path : fileStream.sorted(Comparator.reverseOrder()).toList()) {
-              Files.deleteIfExists(path);
-            }
-            Files.createDirectories(Path.of(configLocation.getCacheDir()));
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
+          menuOperations.clearCache();
         }
         case "x" -> menu = false;
         default -> System.out.println("Invalid input, please try again.");
