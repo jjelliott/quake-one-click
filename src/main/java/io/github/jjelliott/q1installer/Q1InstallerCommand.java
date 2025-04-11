@@ -1,5 +1,6 @@
 package io.github.jjelliott.q1installer;
 
+import io.github.jjelliott.q1installer.ActiveRun.RunMode;
 import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.error.ExitCodeException;
 import io.micronaut.configuration.picocli.PicocliRunner;
@@ -10,7 +11,7 @@ import picocli.CommandLine.Parameters;
 import java.util.Scanner;
 
 @Command(name = "quake-one-click", description = "...",
-    mixinStandardHelpOptions = true, subcommands = {ConfigCommand.class})
+    mixinStandardHelpOptions = true, subcommands = {ConfigCommand.class, ConsoleCommand.class})
 public class Q1InstallerCommand implements Runnable {
 
   @Inject
@@ -20,10 +21,16 @@ public class Q1InstallerCommand implements Runnable {
   Menu menu;
 
   @Inject
+  ActiveRun activeRun;
+
+  @Inject
   Q1Installer installer;
 
   @Inject
   Scanner scanner;
+
+  @Inject
+  Gui gui;
 
   @Parameters(index = "0", defaultValue = "")
   String arg;
@@ -36,8 +43,11 @@ public class Q1InstallerCommand implements Runnable {
   public void run() {
 
     if (arg.isEmpty()) {
-      menu.mainMenu();
+//      menu.mainMenu();
+      activeRun.setRunMode(RunMode.GUI_MENU);
+      Gui.launch(gui);
     } else {
+      activeRun.setRunMode(RunMode.INSTALL_COMMAND);
       var installerArgs = new InstallerArguments(arg);
       if (checkPathsSet(userProps.getGameProps(installerArgs.getGame()))) {
         try {
@@ -70,6 +80,8 @@ public class Q1InstallerCommand implements Runnable {
 class ConfigCommand implements Runnable {
 
   @Inject
+  ActiveRun activeRun;
+  @Inject
   UserProps userProps;
   @Parameters(index = "0", defaultValue = "")
   String field;
@@ -78,6 +90,7 @@ class ConfigCommand implements Runnable {
 
   @Override
   public void run() {
+    activeRun.setRunMode(RunMode.CONFIG_COMMAND);
     switch (field) {
       case "q1-game-path" -> userProps.getQuake().setDirectoryPath(value);
       case "q1-engine-path" -> userProps.getQuake().setEnginePath(value);
@@ -94,3 +107,18 @@ class ConfigCommand implements Runnable {
   }
 }
 
+@Command(name = "console-menu")
+class ConsoleCommand implements Runnable {
+
+  @Inject
+  ActiveRun activeRun;
+
+  @Inject
+  Menu menu;
+
+  @Override
+  public void run() {
+    activeRun.setRunMode(RunMode.TEXT_MENU);
+    menu.mainMenu();
+  }
+}
