@@ -1,0 +1,253 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "^.+?\\.(cl|dll|dylib|frag|jpg|mhr|obj|ogg|png|so|ttf|vert)$"
+      },
+      {
+        "pattern": "\\QMETA-INF/linux/x64/org/lwjgl/glfw/libglfw.so.sha1\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/linux/x64/org/lwjgl/liblwjgl.so.sha1\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/linux/x64/org/lwjgl/opengl/liblwjgl_opengl.so.sha1\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/linux/x64/org/lwjgl/stb/liblwjgl_stb.so.sha1\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.context.ApplicationContextConfigurer\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.context.env.PropertySourceLoader\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.core.convert.TypeConverterRegistrar\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.inject.BeanConfiguration\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/ch.qos.logback.classic.spi.Configurator\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.context.ApplicationContextConfigurer\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.context.env.PropertySourceLoader\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.core.convert.TypeConverterRegistrar\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.core.optim.StaticOptimizations$Loader\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.inject.BeanConfiguration\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.inject.BeanDefinitionReference\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.lang.System$LoggerFinder\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.net.spi.InetAddressResolverProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.net.spi.URLStreamHandlerProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.nio.channels.spi.SelectorProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.nio.file.spi.FileSystemProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.time.zone.ZoneRulesProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/javax.management.remote.JMXConnectorServerProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/javax.xml.parsers.SAXParserFactory\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
+      },
+      {
+        "pattern": "\\Qapplication-cli.properties\\E"
+      },
+      {
+        "pattern": "\\Qapplication.properties\\E"
+      },
+      {
+        "pattern": "\\Qimgui/imgui-java.properties\\E"
+      },
+      {
+        "pattern": "\\Qio/imgui/java/native-bin/libimgui-java64.so\\E"
+      },
+      {
+        "pattern": "\\QlibGLX.so.0\\E"
+      },
+      {
+        "pattern": "\\Qlinux/x64/org/lwjgl/glfw/libglfw.so\\E"
+      },
+      {
+        "pattern": "\\Qlinux/x64/org/lwjgl/liblwjgl.so\\E"
+      },
+      {
+        "pattern": "\\Qlinux/x64/org/lwjgl/opengl/liblwjgl_opengl.so\\E"
+      },
+      {
+        "pattern": "\\Qlinux/x64/org/lwjgl/stb/liblwjgl_stb.so\\E"
+      },
+      {
+        "pattern": "\\Qlogback-test.scmo\\E"
+      },
+      {
+        "pattern": "\\Qlogback-test.xml\\E"
+      },
+      {
+        "pattern": "\\Qlogback.scmo\\E"
+      },
+      {
+        "pattern": "\\Qlogback.xml\\E"
+      },
+      {
+        "pattern": "\\Qq1c.png\\E"
+      },
+      {
+        "pattern": "jdk.jfr:\\Qjdk/jfr/internal/query/view.ini\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.context.ApplicationContextConfigurer\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.context.env.PropertySourceLoader\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.core.convert.TypeConverterRegistrar\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.inject.BeanConfiguration\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/ch.qos.logback.classic.spi.Configurator\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.context.ApplicationContextConfigurer\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.context.env.PropertySourceLoader\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.core.convert.TypeConverterRegistrar\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.core.optim.StaticOptimizations$Loader\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.inject.BeanConfiguration\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/io.micronaut.inject.BeanDefinitionReference\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.lang.System$LoggerFinder\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.net.spi.InetAddressResolverProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.net.spi.URLStreamHandlerProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.nio.channels.spi.SelectorProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.nio.file.spi.FileSystemProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/java.time.zone.ZoneRulesProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/javax.management.remote.JMXConnectorServerProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/javax.xml.parsers.SAXParserFactory\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/services/org.slf4j.spi.SLF4JServiceProvider\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/windows/x64/org/lwjgl/glfw/glfw.dll.sha1\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/windows/x64/org/lwjgl/lwjgl.dll.sha1\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/windows/x64/org/lwjgl/opengl/lwjgl_opengl.dll.sha1\\E"
+      },
+      {
+        "pattern": "\\QMETA-INF/windows/x64/org/lwjgl/stb/lwjgl_stb.dll.sha1\\E"
+      },
+      {
+        "pattern": "\\Qapplication-cli.properties\\E"
+      },
+      {
+        "pattern": "\\Qapplication.properties\\E"
+      },
+      {
+        "pattern": "\\Qimgui/imgui-java.properties\\E"
+      },
+      {
+        "pattern": "\\Qio/imgui/java/native-bin/imgui-java64.dll\\E"
+      },
+      {
+        "pattern": "\\Qlogback-test.scmo\\E"
+      },
+      {
+        "pattern": "\\Qlogback-test.xml\\E"
+      },
+      {
+        "pattern": "\\Qlogback.scmo\\E"
+      },
+      {
+        "pattern": "\\Qlogback.xml\\E"
+      },
+      {
+        "pattern": "\\Qopengl32.dll\\E"
+      },
+      {
+        "pattern": "\\Qq1c.png\\E"
+      },
+      {
+        "pattern": "\\Qq1package.reg\\E"
+      },
+      {
+        "pattern": "\\Qwindows/x64/org/lwjgl/glfw/glfw.dll\\E"
+      },
+      {
+        "pattern": "\\Qwindows/x64/org/lwjgl/lwjgl.dll\\E"
+      },
+      {
+        "pattern": "\\Qwindows/x64/org/lwjgl/opengl/lwjgl_opengl.dll\\E"
+      },
+      {
+        "pattern": "\\Qwindows/x64/org/lwjgl/stb/lwjgl_stb.dll\\E"
+      },
+      {
+        "pattern": "jdk.jfr:\\Qjdk/jfr/internal/query/view.ini\\E"
+      }
+    ]
+  },
+  "bundles": []
+}
