@@ -15,6 +15,13 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen")
     annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.github.spair:imgui-java-app:1.89.0")
+
+    implementation("org.lwjgl:lwjgl-stb")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-windows")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-macos")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-macos-arm64")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-linux")
     implementation("info.picocli:picocli")
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("org.apache.commons:commons-compress:1.26.1")
@@ -44,11 +51,25 @@ micronaut {
 }
 
 graalvmNative {
-    toolchainDetection.set(true)
+    binaries {
+        all {
+            resources.autodetect()
+        }
+        named("main") { // Use named("main") to configure the 'main' binary
+            javaLauncher.set(javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(21))
+                vendor.set(JvmVendorSpec.GRAAL_VM)
+            })
+            buildArgs.set(listOf("--static"))
+        }
+    }
+    agent {
+        enabled.set(true)
+    }
 }
 
-tasks{
-    compileGroovy{
+tasks {
+    compileGroovy {
         enabled = false
     }
     runnerJar {
@@ -61,7 +82,7 @@ tasks{
     test {
         useJUnitPlatform()
         testLogging {
-            events ("passed", "skipped", "failed")
+            events("passed", "skipped", "failed")
         }
     }
 }
