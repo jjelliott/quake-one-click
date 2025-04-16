@@ -14,16 +14,16 @@ public class UserProps {
   String location;
 
   public UserProps(String dirPath, String enginePath) {
-    quake = new GameProps("quake");
-    quake2 = new GameProps("quake2");
+    quake = new GameProps(Game.QUAKE);
+    quake2 = new GameProps(Game.QUAKE2);
     quake.setDirectoryPath(dirPath, false);
     quake.setEnginePath(enginePath, false);
     skill = 1;
   }
 
   public UserProps(Properties properties, String location) {
-    quake = new GameProps("quake", properties);
-    quake2 = new GameProps("quake2", properties);
+    quake = new GameProps(Game.QUAKE, properties);
+    quake2 = new GameProps(Game.QUAKE2, properties);
     skill = Integer.parseInt(properties.getProperty("skill", "1"));
     this.location = location;
   }
@@ -80,16 +80,18 @@ public class UserProps {
 
   public class GameProps {
 
+    private final Game game;
     private String directoryPath = "unset";
     private String enginePath = "unset";
-    private String prefix;
+    private final String prefix;
 
-    public GameProps(String prefix) {
-      this.prefix = prefix;
+    public GameProps(Game game) {
+      this.game = game;
+      this.prefix = game.name().toLowerCase();
     }
 
-    public GameProps(String prefix, Properties properties) {
-      this.prefix = prefix;
+    public GameProps(Game game, Properties properties) {
+      this(game);
       directoryPath = properties.getProperty("%s.directory-path".formatted(prefix), "unset");
       enginePath = properties.getProperty("%s.engine-path".formatted(prefix), "unset");
     }
@@ -141,6 +143,10 @@ public class UserProps {
       this.enginePath = enginePath;
       this.directoryPath = directoryPath;
       write();
+    }
+
+    public Game game() {
+      return game;
     }
   }
 }

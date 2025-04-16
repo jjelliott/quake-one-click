@@ -113,6 +113,7 @@ public class Gui extends Application {
       ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
       if (ImGui.button("Exit", new ImVec2(buttonWidth, 0))) {
          dispose(); // Replace with your exit logic
+        System.exit(0);
       }
 
       ImGui.end();

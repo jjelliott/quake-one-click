@@ -2,6 +2,7 @@ package io.github.jjelliott.q1installer.os;
 
 import io.github.jjelliott.q1installer.ActiveRun;
 import io.github.jjelliott.q1installer.ActiveRun.RunMode;
+import io.github.jjelliott.q1installer.Game;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
@@ -64,12 +65,20 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
   }
 
   @Override
-  public String quakeDir() {
-    return "C:\\Quake";
+  public String gameDir(Game game) {
+    return switch (game){
+      case QUAKE -> "C:\\Quake";
+      case QUAKE2 -> "C:\\Quake2";
+      case UNSUPPORTED -> "you aren't supposed to be here";
+    };
   }
 
   @Override
-  public String engine() {
-    return quakeDir() + "\\glquake.exe";
+  public String engine(Game game) {
+    return gameDir(game) + switch (game) {
+      case QUAKE -> "\\glquake.exe";
+      case QUAKE2 -> "\\yquake2.exe";
+      case UNSUPPORTED -> "what are you doing with your life";
+    };
   }
 }

@@ -1,15 +1,11 @@
 package io.github.jjelliott.q1installer;
 
 import io.github.jjelliott.q1installer.config.UserProps;
-import io.github.jjelliott.q1installer.os.ConfigLocation;
+import io.github.jjelliott.q1installer.config.UserProps.GameProps;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,16 +14,14 @@ public class Menu {
 
   private final UserProps userProps;
   private final Scanner scanner;
-  private final ConfigLocation configLocation;
   private final HandlerInstaller handlerInstaller;
   private final ExamplePath examplePath;
   private final MenuOperations menuOperations;
 
-  public Menu(UserProps userProps, Scanner scanner, ConfigLocation configLocation,
+  public Menu(UserProps userProps, Scanner scanner,
       HandlerInstaller handlerInstaller, ExamplePath examplePath, MenuOperations menuOperations) {
     this.userProps = userProps;
     this.scanner = scanner;
-    this.configLocation = configLocation;
     this.handlerInstaller = handlerInstaller;
     this.examplePath = examplePath;
     this.menuOperations = menuOperations;
@@ -54,9 +48,7 @@ public class Menu {
         case "2" -> pathMenu(userProps.getQuake());
         case "3" -> pathMenu(userProps.getQuake2());
         case "4" -> skillMenu();
-        case "5" -> {
-          menuOperations.clearCache();
-        }
+        case "5" -> menuOperations.clearCache();
         case "x" -> menu = false;
         default -> System.out.println("Invalid input, please try again.");
       }
@@ -99,15 +91,15 @@ public class Menu {
           X: Done modifying
           """);
       switch (modify.toLowerCase()) {
-        case "1" -> updateDirectory(game, directoryPrompt());
-        case "2" -> updateEngine(game, enginePrompt());
+        case "1" -> updateDirectory(game, directoryPrompt(game));
+        case "2" -> updateEngine(game, enginePrompt(game));
         case "x" -> submenu = false;
       }
     }
   }
 
-  String directoryPrompt() {
-    return prompt("Enter Quake directory path (example: " + examplePath.quakeDir() + "): ");
+  String directoryPrompt(GameProps gameProps) {
+    return prompt("Enter Quake directory path (example: " + examplePath.gameDir(gameProps.game()) + "): ");
   }
 
   void updateDirectory(UserProps.GameProps game, String quakeDirPath) {
@@ -118,8 +110,8 @@ public class Menu {
     }
   }
 
-  String enginePrompt() {
-    return prompt("Enter Quake engine path (example: " + examplePath.engine() + "): ");
+  String enginePrompt(GameProps gameProps) {
+    return prompt("Enter Quake engine path (example: " + examplePath.engine(gameProps.game()) + "): ");
   }
 
   void updateEngine(UserProps.GameProps game, String quakeEnginePath) {
@@ -131,8 +123,8 @@ public class Menu {
   }
 
   boolean initialPathEntry(UserProps.GameProps game) {
-    var quakeDirPath = directoryPrompt();
-    var quakeEnginePath = enginePrompt();
+    var quakeDirPath = directoryPrompt(game);
+    var quakeEnginePath = enginePrompt(game);
 
     System.out.println("Directory path: " + quakeDirPath);
     System.out.println("Engine path: " + quakeEnginePath);
