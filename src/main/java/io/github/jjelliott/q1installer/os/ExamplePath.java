@@ -1,7 +1,11 @@
 package io.github.jjelliott.q1installer.os;
 
-public interface ExamplePath {
-  String quakeDir();
+import io.github.jjelliott.q1installer.Game;
+import io.github.jjelliott.q1installer.config.UserProps.GameProps;
 
-  String engine();
+public interface ExamplePath {
+
+  String gameDir(Game game);
+
+  String engine(Game game);
 }

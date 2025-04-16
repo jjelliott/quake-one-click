@@ -1,6 +1,8 @@
 package io.github.jjelliott.q1installer.os;
 
+import io.github.jjelliott.q1installer.Game;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.annotation.Requires.Family;
 import jakarta.inject.Singleton;
 
 import java.io.IOException;
@@ -10,7 +12,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
 @Singleton
-@Requires(os = Requires.Family.LINUX)
+@Requires(os = Family.LINUX)
 public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
   @Override
   public String getConfig() {
@@ -18,13 +20,21 @@ public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
   }
 
   @Override
-  public String quakeDir() {
-    return "/home/username/Games/quake";
+  public String gameDir(Game game) {
+    return switch (game) {
+      case QUAKE -> "/home/username/Games/quake";
+      case QUAKE2 -> "/home/username/Games/quake2";
+      case UNSUPPORTED -> "how tf did you get here";
+    };
   }
 
   @Override
-  public String engine() {
-    return quakeDir() + "/ironwail";
+  public String engine(Game game) {
+    return gameDir(game) + switch (game) {
+      case QUAKE -> "/ironwail";
+      case QUAKE2 -> "/yquake2";
+      default -> "seriously how";
+    };
   }
 
   @Override
