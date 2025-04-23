@@ -31,7 +31,7 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
     return """
         A prompt should pop up to write to the registry.
         You may review %s/cache/q1package.reg if you wish before continuing.""".formatted(
-        getConfig());
+        getConfig()).replaceAll("/", "\\\\");
   }
 
   @Override
