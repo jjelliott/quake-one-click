@@ -44,8 +44,12 @@ public class Q1InstallerCommand implements Runnable {
 
     if (arg.isEmpty()) {
 //      menu.mainMenu();
-      activeRun.setRunMode(RunMode.GUI_MENU);
-      Gui.launch(gui);
+      if (userProps.getMenuType().equals("gui")) {
+        activeRun.setRunMode(RunMode.GUI_MENU);
+        Gui.launch(gui);
+      } else if (userProps.getMenuType().equals("console")){
+        menu.mainMenu();
+      }
     } else {
       activeRun.setRunMode(RunMode.INSTALL_COMMAND);
       var installerArgs = new InstallerArguments(arg);

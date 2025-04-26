@@ -12,6 +12,7 @@ public class UserProps {
   private final GameProps quake2;
   private int skill;
   String location;
+  String menuType;
 
   public UserProps(String dirPath, String enginePath) {
     quake = new GameProps(Game.QUAKE);
@@ -19,6 +20,7 @@ public class UserProps {
     quake.setDirectoryPath(dirPath, false);
     quake.setEnginePath(enginePath, false);
     skill = 1;
+    menuType = "gui";
   }
 
   public UserProps(Properties properties, String location) {
@@ -26,6 +28,7 @@ public class UserProps {
     quake2 = new GameProps(Game.QUAKE2, properties);
     skill = Integer.parseInt(properties.getProperty("skill", "1"));
     this.location = location;
+    menuType = properties.getProperty("menu-type","gui");
   }
 
   public Properties toProperties() {
@@ -33,6 +36,7 @@ public class UserProps {
     quake.addToProperties(props);
     quake2.addToProperties(props);
     props.setProperty("skill", Integer.toString(skill));
+    props.setProperty("menu-type",menuType);
     return props;
   }
 
@@ -76,6 +80,10 @@ public class UserProps {
     if (write) {
       write();
     }
+  }
+
+  public String getMenuType(){
+    return menuType;
   }
 
   public class GameProps {

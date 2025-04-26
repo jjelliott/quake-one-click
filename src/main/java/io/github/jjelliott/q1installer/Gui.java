@@ -11,7 +11,7 @@ import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
 import imgui.type.ImInt;
 import io.github.jjelliott.q1installer.config.UserProps;
-import io.github.jjelliott.q1installer.os.ConfigLocation;
+import io.github.jjelliott.q1installer.gui.PathsWindow;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -35,25 +37,27 @@ import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 public class Gui extends Application {
 
     private final UserProps userProps;
-    private final ConfigLocation configLocation;
     private final HandlerInstaller handlerInstaller;
     private final ExamplePath examplePath;
     private final MenuOperations menuOperations;
     private boolean handlerOpen = false;
+    private PathsWindow quakePathWindow;
+    private PathsWindow quake2PathWindow;
     private boolean quakePathsOpen = false;
     private boolean quake2PathsOpen = false;
     private boolean skillsOpen = false;
-    private ImInt skillChoice;
+    private final ImInt skillChoice;
     private boolean cacheOpen = false;
 
-    public Gui(UserProps userProps, ConfigLocation configLocation, HandlerInstaller handlerInstaller,
+    public Gui(UserProps userProps, HandlerInstaller handlerInstaller,
                ExamplePath examplePath, MenuOperations menuOperations) {
         this.userProps = userProps;
-        this.configLocation = configLocation;
         this.handlerInstaller = handlerInstaller;
         this.examplePath = examplePath;
         this.menuOperations = menuOperations;
-        skillChoice =  new ImInt(userProps.getSkill()+1);
+        skillChoice = new ImInt(userProps.getSkill() + 1);
+        this.quakePathWindow = new PathsWindow(Game.QUAKE, userProps, examplePath);
+        this.quake2PathWindow = new PathsWindow(Game.QUAKE2, userProps, examplePath);
     }
 
     @Override
@@ -156,10 +160,14 @@ public class Gui extends Application {
             }
 
             ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
-            ImGui.button("Set Quake 1 Paths", new ImVec2(buttonWidth, 0));
+            if (ImGui.button("Set Quake 1 Paths", new ImVec2(buttonWidth, 0))){
+                    quakePathWindow.open();
+            }
 
             ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
-            ImGui.button("Set Quake 2 Paths", new ImVec2(buttonWidth, 0));
+            if (ImGui.button("Set Quake 2 Paths", new ImVec2(buttonWidth, 0))){
+                quake2PathWindow.open();
+            }
 
             ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
             if (ImGui.button("Set default skill", new ImVec2(buttonWidth, 0))) {
@@ -191,7 +199,8 @@ public class Gui extends Application {
                     },
                     () -> handlerOpen = false);
         }
-
+        quakePathWindow.render();
+        quake2PathWindow.render();
         if (skillsOpen) {
             createConfigWindow("Default Skill",
                     "What skill would you like to launch?",
@@ -199,7 +208,7 @@ public class Gui extends Application {
                     () -> skillsOpen = false,
                     choice -> {
                         skillsOpen = false;
-                        userProps.setSkill(choice-1);
+                        userProps.setSkill(choice - 1);
                     }
 
             );
@@ -226,6 +235,7 @@ public class Gui extends Application {
             }, () -> cacheOpen = false);
         }
 
+
         ImGui.popStyleColor();
     }
 
@@ -239,7 +249,7 @@ public class Gui extends Application {
         float textHeight = ImGui.calcTextSize(text).y;
 
         ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
-                (screenMidpoint.y * 0.85F) , ImGuiCond.Always);
+                (screenMidpoint.y * 0.85F), ImGuiCond.Always);
         ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0,
                 ImGuiCond.Always);
         if (ImGui.begin(title, null,
@@ -278,7 +288,7 @@ public class Gui extends Application {
         }
     }
 
-    public  void createConfigWindow(String windowTitle, String text, List<String> options, Runnable cancelAction, Consumer<Integer> confirmAction) {
+    public void createConfigWindow(String windowTitle, String text, List<String> options, Runnable cancelAction, Consumer<Integer> confirmAction) {
 
         String[] optionsArray = options.toArray(new String[0]);
 
@@ -288,7 +298,7 @@ public class Gui extends Application {
         float textHeight = ImGui.calcTextSize(text).y;
 
         ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
-                screenMidpoint.y *.85f, ImGuiCond.Always);
+                screenMidpoint.y * .85f, ImGuiCond.Always);
         ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0,
                 ImGuiCond.Always);
         ImGui.begin(windowTitle, null,
