@@ -50,28 +50,28 @@ jobs:
       - test
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
-#        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [ windows-latest, ubuntu-latest ]
+    #        os: [macos-latest, windows-latest, ubuntu-latest]
     permissions:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: graalvm/setup-graalvm@v1
-      with:
+      - uses: actions/checkout@v4
+      - uses: graalvm/setup-graalvm@v1
+        with:
           distribution: "graalvm-community"
           java-version: '21'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew nativeCompile
-    - name: Upload binary
-      uses: actions/upload-artifact@v4
-      with: 
-       name: quake-one-click-${{ matrix.os }}
-       path: |
-        build/native/nativeCompile/quake-one-click
-        build/native/nativeCompile/quake-one-click.exe
+      - name: Build with Gradle Wrapper
+        run: ./gradlew nativeCompile
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: quake-one-click-${{ matrix.os }}
+          path: |
+            build/native/nativeCompile/quake-one-click
+            build/native/nativeCompile/quake-one-click.exe
 

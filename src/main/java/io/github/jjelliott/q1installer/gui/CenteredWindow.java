@@ -5,10 +5,11 @@ import imgui.ImGuiViewport;
 import imgui.ImVec2;
 import imgui.flag.ImGuiCond;
 
-public class CenteredWindow extends Window{
+public class CenteredWindow extends Window {
+
   protected String text;
 
-  protected void position(){
+  protected void position() {
     ImGuiViewport mainViewport = ImGui.getMainViewport();
     ImVec2 screenMidpoint = mainViewport.getSize().div(2, 2);
     float textWidth = Math.max(Math.min(ImGui.calcTextSize(text).x, 450), 300);

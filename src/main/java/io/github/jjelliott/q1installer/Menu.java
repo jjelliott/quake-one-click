@@ -5,7 +5,6 @@ import io.github.jjelliott.q1installer.config.UserProps.GameProps;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -80,9 +79,9 @@ public class Menu {
     var submenu = true;
 
     while (submenu) {
-        if (!first) {
-            printCurrentPaths(game);
-        }
+      if (!first) {
+        printCurrentPaths(game);
+      }
       first = false;
       var modify = prompt("""
           Which path would you like to modify?
@@ -99,7 +98,8 @@ public class Menu {
   }
 
   String directoryPrompt(GameProps gameProps) {
-    return prompt("Enter Quake directory path (example: " + examplePath.gameDir(gameProps.game()) + "): ");
+    return prompt(
+        "Enter Quake directory path (example: " + examplePath.gameDir(gameProps.game()) + "): ");
   }
 
   void updateDirectory(UserProps.GameProps game, String quakeDirPath) {
@@ -111,7 +111,8 @@ public class Menu {
   }
 
   String enginePrompt(GameProps gameProps) {
-    return prompt("Enter Quake engine path (example: " + examplePath.engine(gameProps.game()) + "): ");
+    return prompt(
+        "Enter Quake engine path (example: " + examplePath.engine(gameProps.game()) + "): ");
   }
 
   void updateEngine(UserProps.GameProps game, String quakeEnginePath) {
@@ -165,11 +166,11 @@ public class Menu {
         a - Ask every time
         """);
     if (validInputs.contains(skillStr)) {
-        if (skillStr.equals("a")) {
-            userProps.setSkill(-1);
-        } else {
-            userProps.setSkill(Integer.parseInt(skillStr));
-        }
+      if (skillStr.equals("a")) {
+        userProps.setSkill(-1);
+      } else {
+        userProps.setSkill(Integer.parseInt(skillStr));
+      }
     } else {
       System.out.println("Invalid input, please try again.");
       skillMenu();

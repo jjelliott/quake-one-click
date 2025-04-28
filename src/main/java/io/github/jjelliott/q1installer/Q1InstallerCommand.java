@@ -5,10 +5,9 @@ import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.error.ExitCodeException;
 import io.micronaut.configuration.picocli.PicocliRunner;
 import jakarta.inject.Inject;
+import java.util.Scanner;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
-
-import java.util.Scanner;
 
 @Command(name = "quake-one-click", description = "...",
     mixinStandardHelpOptions = true, subcommands = {ConfigCommand.class, ConsoleCommand.class})
@@ -47,7 +46,7 @@ public class Q1InstallerCommand implements Runnable {
       if (userProps.getMenuType().equals("gui")) {
         activeRun.setRunMode(RunMode.GUI_MENU);
         Gui.launch(gui);
-      } else if (userProps.getMenuType().equals("console")){
+      } else if (userProps.getMenuType().equals("console")) {
         menu.mainMenu();
       }
     } else {

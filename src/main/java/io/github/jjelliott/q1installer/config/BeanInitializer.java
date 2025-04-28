@@ -2,7 +2,6 @@ package io.github.jjelliott.q1installer.config;
 
 import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Singleton;
-
 import java.net.http.HttpClient;
 import java.util.Scanner;
 

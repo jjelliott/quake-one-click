@@ -1,6 +1,8 @@
 package io.github.jjelliott.q1installer;
 
-import static io.github.jjelliott.q1installer.Game.*;
+import static io.github.jjelliott.q1installer.Game.QUAKE;
+import static io.github.jjelliott.q1installer.Game.QUAKE2;
+import static io.github.jjelliott.q1installer.Game.UNSUPPORTED;
 
 public class InstallerArguments {
 

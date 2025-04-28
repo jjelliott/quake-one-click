@@ -1,12 +1,9 @@
 package io.github.jjelliott.q1installer.gui;
 
 import imgui.ImGui;
-import imgui.ImGuiViewport;
 import imgui.ImVec2;
-import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImInt;
-import java.security.Provider;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -65,7 +62,7 @@ public class DropdownWindow extends CenteredWindow {
 
     if (ImGui.button("Cancel", new ImVec2(buttonWidth, 0))) {
       cancelAction.run();
-      open=false;
+      open = false;
     }
     ImGui.sameLine();
     if (ImGui.button("Save", new ImVec2(buttonWidth, 0))) {

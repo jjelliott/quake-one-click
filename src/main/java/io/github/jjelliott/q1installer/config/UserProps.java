@@ -1,7 +1,6 @@
 package io.github.jjelliott.q1installer.config;
 
 import io.github.jjelliott.q1installer.Game;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -28,7 +27,7 @@ public class UserProps {
     quake2 = new GameProps(Game.QUAKE2, properties);
     skill = Integer.parseInt(properties.getProperty("skill", "1"));
     this.location = location;
-    menuType = properties.getProperty("menu-type","gui");
+    menuType = properties.getProperty("menu-type", "gui");
   }
 
   public Properties toProperties() {
@@ -36,7 +35,7 @@ public class UserProps {
     quake.addToProperties(props);
     quake2.addToProperties(props);
     props.setProperty("skill", Integer.toString(skill));
-    props.setProperty("menu-type",menuType);
+    props.setProperty("menu-type", menuType);
     return props;
   }
 
@@ -82,7 +81,7 @@ public class UserProps {
     }
   }
 
-  public String getMenuType(){
+  public String getMenuType() {
     return menuType;
   }
 
