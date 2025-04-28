@@ -65,7 +65,6 @@ graalvmNative {
                 languageVersion.set(JavaLanguageVersion.of(21))
                 vendor.set(JvmVendorSpec.GRAAL_VM)
             })
-            buildArgs.set(listOf("--static"))
         }
     }
     agent {
