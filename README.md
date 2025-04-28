@@ -54,8 +54,7 @@ Binaries will be available from the Releases section.
 Download the Windows package and extract it to the desired location.
 
 Run the binary (`quake-one-click.exe`) and set up the configuration via menu. You must install the
-handler and set the
-quake paths.
+handler and set the :quake paths.
 
 If you move `quake-one-click.exe` you _must_ re-run the handler installation.
 
@@ -64,8 +63,7 @@ If you move `quake-one-click.exe` you _must_ re-run the handler installation.
 Download the Linux package and extract it to a location on your path.
 
 Run the binary from a terminal (`quake-one-click`) and set up the configuration via menu. You must
-install the handler and
-set the quake paths.
+install the handler and set the quake paths.
 
 Known incompatibilities:
 
@@ -73,8 +71,7 @@ Known incompatibilities:
 - You may need to set `XDG_CURRENT_DESKTOP`. `xdg-open q1package:asdf` will
   return `file 'q1package:asdf' does not exist` if this is the issue.
 - Browsers installed via Snap do not allow custom URL handlers, use a natively installed browser
-  instead. Not sure if
-  Flatpak works.
+  instead. Not sure if Flatpak works.
 
 ## Development
 
