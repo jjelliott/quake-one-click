@@ -52,11 +52,7 @@ public class Gui extends Application {
     this.skillWindow = new DropdownWindow("Default Skill",
         "What skill would you like to launch?",
         List.of("Ask every time", "Easy", "Normal", "Hard", "Nightmare"),
-        () -> {
-        },
-        choice -> {
-          userProps.setSkill(choice - 1);
-        },
+        choice -> userProps.setSkill(choice - 1),
         () -> userProps.getSkill() + 1);
   }
 
@@ -192,7 +188,6 @@ public class Gui extends Application {
   }
 
   private void button(String text, Runnable action) {
-
     ImGui.setCursorPosX((windowWidth - buttonWidth) * 0.5f);
     if (ImGui.button(text, new ImVec2(buttonWidth, 0))) {
       action.run();
