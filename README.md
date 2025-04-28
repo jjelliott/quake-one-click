@@ -52,8 +52,8 @@ Binaries will be available from the Releases section.
 
 Download the Windows package and extract it to the desired location.
 
-Run the binary (`quake-one-click.exe`) and set up the configuration via menu. You must install the handler and set the
-quake paths.
+Run the binary (`quake-one-click.exe`) and set up the configuration via menu. You must install the
+handler and set the quake paths.
 
 If you move `quake-one-click.exe` you _must_ re-run the handler installation.
 
