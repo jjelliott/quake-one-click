@@ -31,6 +31,9 @@ public class DropdownWindow extends CenteredWindow {
     this.choiceProvider = choiceProvider;
     skillChoice = new ImInt(choiceProvider.get());
   }
+  public DropdownWindow(String windowTitle, String text, List<String> options, Consumer<Integer> confirmAction, Supplier<Integer> choiceProvider) {
+    this(windowTitle, text, options, ()->{}, confirmAction, choiceProvider);
+  }
 
   @Override
   public void open() {
@@ -75,48 +78,4 @@ public class DropdownWindow extends CenteredWindow {
 
     ImGui.end();
   }
-//  public void createDropdownWindow(String windowTitle, String text, List<String> options,
-//      Runnable cancelAction, Consumer<Integer> confirmAction) {
-//
-//    String[] optionsArray = options.toArray(new String[0]);
-//
-//    ImGuiViewport mainViewport = ImGui.getMainViewport();
-//    ImVec2 screenMidpoint = mainViewport.getSize().div(2, 2);
-//    float textWidth = Math.max(Math.min(ImGui.calcTextSize(text).x, 450), 300);
-//    float textHeight = ImGui.calcTextSize(text).y;
-//
-//    ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
-//        screenMidpoint.y * .85f, ImGuiCond.Always);
-//    ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0,
-//        ImGuiCond.Always);
-//    ImGui.begin(windowTitle, null,
-//        ImGuiWindowFlags.NoDocking |
-//            ImGuiWindowFlags.NoResize |
-//            ImGuiWindowFlags.NoMove |
-//            ImGuiWindowFlags.NoCollapse |
-//            ImGuiWindowFlags.Modal);
-//
-//    ImGui.text(text);
-//
-//    ImGui.combo("##", skillChoice, optionsArray);
-//
-//    ImGui.separator();
-//
-//    float buttonWidth = 80;
-//    float spacing = ImGui.getStyle().getItemSpacing().x;
-//    float totalButtonWidth = (buttonWidth * 2) + spacing;
-//    float windowWidth = ImGui.getWindowWidth();
-//
-//    ImGui.setCursorPosX((windowWidth - totalButtonWidth) * 0.5f); // Center buttons horizontally
-//
-//    if (ImGui.button("Cancel", new ImVec2(buttonWidth, 0))) {
-//      cancelAction.run();
-//    }
-//    ImGui.sameLine();
-//    if (ImGui.button("Save", new ImVec2(buttonWidth, 0))) {
-//      confirmAction.accept(skillChoice.get());
-//    }
-//
-//    ImGui.end();
-//  }
 }
