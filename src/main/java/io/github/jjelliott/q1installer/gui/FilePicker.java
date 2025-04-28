@@ -34,7 +34,7 @@ public class FilePicker {
     }
 
     public void render() {
-        ImGui.text(label + ":");
+        ImGui.textWrapped(label + ":");
         ImGui.pushItemWidth(-1); // Make input take available width
         ImGui.inputText("##file_path_" + idFrag, new ImString(filePath));//,  ImGuiInputTextFlags.ReadOnly);
         ImGui.popItemWidth();
