@@ -28,8 +28,11 @@ public class DropdownWindow extends CenteredWindow {
     this.choiceProvider = choiceProvider;
     skillChoice = new ImInt(choiceProvider.get());
   }
-  public DropdownWindow(String windowTitle, String text, List<String> options, Consumer<Integer> confirmAction, Supplier<Integer> choiceProvider) {
-    this(windowTitle, text, options, ()->{}, confirmAction, choiceProvider);
+
+  public DropdownWindow(String windowTitle, String text, List<String> options,
+      Consumer<Integer> confirmAction, Supplier<Integer> choiceProvider) {
+    this(windowTitle, text, options, () -> {
+    }, confirmAction, choiceProvider);
   }
 
   @Override
