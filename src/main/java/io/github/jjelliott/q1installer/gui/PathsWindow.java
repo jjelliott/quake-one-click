@@ -10,17 +10,17 @@ import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import jakarta.inject.Singleton;
 
-public class PathsWindow {
+public class PathsWindow extends CenteredWindow{
 
-    private static final String text = "Set paths";
+    private static final String TEXT = "Set paths";
 
     Game game;
     UserProps.GameProps gameProps;
     FilePicker enginePicker;
     FilePicker gamedirPicker;
-    boolean open;
 
     public PathsWindow(Game game, UserProps userProps, ExamplePath examplePath) {
+        this.text = TEXT;
         this.game = game;
         this.gameProps = userProps.getGameProps(game);
         enginePicker = new FilePicker(game.name() + "_engine","Engine path (Example " + examplePath.engine(game) + ")", "Select", false, gameProps.getEnginePath(), () -> {
@@ -37,15 +37,7 @@ public class PathsWindow {
 
     public void render() {
         if (!open) return;
-        ImGuiViewport mainViewport = ImGui.getMainViewport();
-        ImVec2 screenMidpoint = mainViewport.getSize().div(2, 2);
-        float textWidth = Math.max(Math.min(ImGui.calcTextSize(text).x, 450), 300);
-        float textHeight = ImGui.calcTextSize(text).y;
-
-        ImGui.setNextWindowPos(Math.max(screenMidpoint.x - ((textWidth * 1.1F) * 0.5F), 0),
-                (screenMidpoint.y * 0.85F), ImGuiCond.Always);
-        ImGui.setNextWindowSize(Math.min(textWidth * 1.1F, mainViewport.getSize().x), 0,
-                ImGuiCond.Always);
+        position();
         if (ImGui.begin("Paths for " + game.name(), null,
                 ImGuiWindowFlags.NoDocking |
                         ImGuiWindowFlags.NoResize |
