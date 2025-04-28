@@ -8,7 +8,8 @@ Repository: [Github](https://github.com/jjelliott/quake-one-click)
 
 ## Link format
 
-The program will register handlers for `q1package` and `q2package` links. All of the following information applies to both protocols.
+The program will register handlers for `q1package` and `q2package` links. All of the following
+information applies to both protocols.
 
 For packages without dependencies:
 
@@ -61,7 +62,8 @@ If you move `quake-one-click.exe` you _must_ re-run the handler installation.
 
 Download the Linux package and extract it to a location on your path.
 
-Run the binary from a terminal (`quake-one-click`) and set up the configuration via menu. You must install the handler and
+Run the binary from a terminal (`quake-one-click`) and set up the configuration via menu. You must
+install the handler and
 set the quake paths.
 
 Known incompatibilities:
@@ -69,7 +71,8 @@ Known incompatibilities:
 - XWayland browsers will not launch the game. XOrg or native Wayland appear to work fine.
 - You may need to set `XDG_CURRENT_DESKTOP`. `xdg-open q1package:asdf` will
   return `file 'q1package:asdf' does not exist` if this is the issue.
-- Browsers installed via Snap do not allow custom URL handlers, use a natively installed browser instead. Not sure if
+- Browsers installed via Snap do not allow custom URL handlers, use a natively installed browser
+  instead. Not sure if
   Flatpak works.
 
 ## Development

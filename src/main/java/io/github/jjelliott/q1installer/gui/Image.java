@@ -29,6 +29,7 @@ import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
 public class Image {
+
   private int textureId = 0;
   private int imageWidth = 0;
   private int imageHeight = 0;
@@ -52,7 +53,8 @@ public class Image {
       ByteBuffer image = STBImage.stbi_load_from_memory(buffer, w, h, channels, 4);
 
       if (image == null) {
-        throw new FileNotFoundException("Failed to decode image: " + STBImage.stbi_failure_reason());
+        throw new FileNotFoundException(
+            "Failed to decode image: " + STBImage.stbi_failure_reason());
       }
 
       imageWidth = w.get();
@@ -87,7 +89,7 @@ public class Image {
     return imageWidth;
   }
 
-  public int imageHeight () {
+  public int imageHeight() {
     return imageHeight;
   }
 }

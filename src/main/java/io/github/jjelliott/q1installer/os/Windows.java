@@ -5,7 +5,6 @@ import io.github.jjelliott.q1installer.ActiveRun.RunMode;
 import io.github.jjelliott.q1installer.Game;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -66,7 +65,7 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
 
   @Override
   public String gameDir(Game game) {
-    return switch (game){
+    return switch (game) {
       case QUAKE -> "C:\\Quake";
       case QUAKE2 -> "C:\\Quake2";
       case UNSUPPORTED -> "you aren't supposed to be here";

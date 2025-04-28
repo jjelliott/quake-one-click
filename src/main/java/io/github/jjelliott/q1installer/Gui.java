@@ -17,16 +17,15 @@ import io.github.jjelliott.q1installer.gui.PathsWindow;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWImage;
-import org.lwjgl.stb.STBImage;
-import org.lwjgl.system.MemoryStack;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
 
 @Singleton
 public class Gui extends Application {
@@ -172,15 +171,16 @@ public class Gui extends Application {
     ImGui.popStyleColor();
   }
 
-  private void centerImage(Image image, int squareSize){
+  private void centerImage(Image image, int squareSize) {
     centerImage(image, squareSize, squareSize);
   }
-  private void centerImage(Image image, int sizeX, int sizeY){
+
+  private void centerImage(Image image, int sizeX, int sizeY) {
     ImGui.setCursorPosX((windowWidth - sizeX) * 0.5f);
     ImGui.image(image.textureId(), sizeX, sizeY);
   }
 
-  private void centerText(String text){
+  private void centerText(String text) {
     ImGui.setCursorPosX(
         (windowWidth - ImGui.calcTextSize(text).x) * 0.5f);
 
@@ -193,7 +193,6 @@ public class Gui extends Application {
       action.run();
     }
   }
-
 
 
 }

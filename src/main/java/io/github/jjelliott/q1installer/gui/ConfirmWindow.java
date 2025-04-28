@@ -1,9 +1,7 @@
 package io.github.jjelliott.q1installer.gui;
 
 import imgui.ImGui;
-import imgui.ImGuiViewport;
 import imgui.ImVec2;
-import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiWindowFlags;
 import java.util.function.Supplier;
 
@@ -25,7 +23,9 @@ public class ConfirmWindow extends CenteredWindow {
     this.cancelAction = cancelAction;
     open = false;
   }
-  public ConfirmWindow(String title, Supplier<String> textProvider, String confirmText, Runnable confirmAction,
+
+  public ConfirmWindow(String title, Supplier<String> textProvider, String confirmText,
+      Runnable confirmAction,
       Runnable cancelAction) {
     this.title = title;
     this.textProvider = textProvider;
@@ -34,16 +34,21 @@ public class ConfirmWindow extends CenteredWindow {
     this.cancelAction = cancelAction;
     open = false;
   }
+
   public ConfirmWindow(String title, String text, String confirmText, Runnable confirmAction) {
-    this(title, text, confirmText, confirmAction, ()->{});
+    this(title, text, confirmText, confirmAction, () -> {
+    });
   }
-  public ConfirmWindow(String title, Supplier<String> textProvider, String confirmText, Runnable confirmAction) {
-    this(title, textProvider, confirmText, confirmAction, ()->{});
+
+  public ConfirmWindow(String title, Supplier<String> textProvider, String confirmText,
+      Runnable confirmAction) {
+    this(title, textProvider, confirmText, confirmAction, () -> {
+    });
   }
 
   @Override
   public void open() {
-    if (textProvider != null){
+    if (textProvider != null) {
       text = textProvider.get();
     }
     super.open();

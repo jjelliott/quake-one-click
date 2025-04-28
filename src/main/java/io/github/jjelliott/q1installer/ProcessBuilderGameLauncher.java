@@ -1,15 +1,14 @@
 package io.github.jjelliott.q1installer;
 
+import static io.github.jjelliott.q1installer.Game.QUAKE;
+import static io.github.jjelliott.q1installer.Game.QUAKE2;
+
 import io.github.jjelliott.q1installer.config.UserProps;
 import jakarta.inject.Singleton;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import static io.github.jjelliott.q1installer.Game.QUAKE;
-import static io.github.jjelliott.q1installer.Game.QUAKE2;
 
 @Singleton
 public class ProcessBuilderGameLauncher implements GameLauncher {

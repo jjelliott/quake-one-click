@@ -1,14 +1,13 @@
 package io.github.jjelliott.q1installer;
 
+import static io.github.jjelliott.q1installer.error.ExitCodeException.doOrExit;
+
 import io.github.jjelliott.q1installer.config.InstalledPackage;
 import io.github.jjelliott.q1installer.error.ExitCodeException;
 import io.github.jjelliott.q1installer.install.PackageDownloader;
 import io.github.jjelliott.q1installer.install.PackageInstaller;
 import jakarta.inject.Singleton;
-
 import java.util.List;
-
-import static io.github.jjelliott.q1installer.error.ExitCodeException.doOrExit;
 
 @Singleton
 public class Q1Installer {
@@ -19,9 +18,9 @@ public class Q1Installer {
   private final GameLauncher gameLauncher;
 
   public Q1Installer(List<InstalledPackage> installed,
-                     PackageDownloader packageDownloader,
-                     PackageInstaller packageInstaller,
-                     GameLauncher gameLauncher) {
+      PackageDownloader packageDownloader,
+      PackageInstaller packageInstaller,
+      GameLauncher gameLauncher) {
     this.installed = installed;
     this.packageDownloader = packageDownloader;
     this.packageInstaller = packageInstaller;
@@ -53,10 +52,12 @@ public class Q1Installer {
 
   boolean isNotInstalled(InstallerArguments installerArguments) {
     return installed.stream()
-        .noneMatch(installedPackage -> installedPackage.sourceUrl().equals(installerArguments.getUrl()));
+        .noneMatch(
+            installedPackage -> installedPackage.sourceUrl().equals(installerArguments.getUrl()));
   }
 
-  void downloadAndInstall(InstallerArguments installerArguments, String errorMessage, int exitCode) throws ExitCodeException {
+  void downloadAndInstall(InstallerArguments installerArguments, String errorMessage, int exitCode)
+      throws ExitCodeException {
     doOrExit(() -> {
       var filename = packageDownloader.downloadFile(installerArguments);
       packageInstaller.installPackage(installerArguments, filename);
