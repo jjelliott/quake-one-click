@@ -1,131 +1,148 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <title>
-            Quake One-Click Installer
-        </title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-              crossorigin="anonymous">
-    </head>
-    <body class="container">
-        <h1 id="quake-one-click">quake-one-click</h1>
-        <p>This program enables one-click installation and run of Quake maps and mods via a `q1package` or `q2package` URL.</p>
-        <p>Repository: <a href="https://github.com/jjelliott/quake-one-click">Github</a></p>
-        <h2 id="link-format">Link format</h2>
-        <pre><code><span class="xml">q1package:</span><span class="hljs-template-variable">{download-url}</span><span
-                class="xml">,</span><span class="hljs-template-variable">{type}</span><span class="xml">,</span><span
-                class="hljs-template-variable">{gamedir}</span><span class="xml">,</span><span
-                class="hljs-template-variable">{map-to-start?}</span><span
-                class="xml"></span>
+  <head>
+    <title>
+      Quake One-Click Installer
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+  </head>
+  <body class="container">
+    <h1 id="quake-one-click">quake-one-click</h1>
+    <p>This program enables one-click installation and run of Quake maps and mods via a `q1package`
+      or `q2package` URL.</p>
+    <p>Repository: <a href="https://github.com/jjelliott/quake-one-click">Github</a></p>
+    <h2 id="link-format">Link format</h2>
+    <pre><code><span class="xml">q1package:</span><span class="hljs-template-variable">{download-url}</span><span
+        class="xml">,</span><span class="hljs-template-variable">{type}</span><span
+        class="xml">,</span><span
+        class="hljs-template-variable">{gamedir}</span><span class="xml">,</span><span
+        class="hljs-template-variable">{map-to-start?}</span><span
+        class="xml"></span>
 </code></pre>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>field</th>
-                    <th>explanation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>download-url</td>
-                    <td>Url to download the resource</td>
-                </tr>
-                <tr>
-                    <td>type</td>
-                    <td><code>mod-folder</code>, <code>map</code> or <code>gamedir</code>, more info below</td>
-                </tr>
-                <tr>
-                    <td>gamedir</td>
-                    <td>Gamedir to extract files to (ex. <code>id1</code>, <code>quoth</code>, <code>ad</code>)</td>
-                </tr>
-                <tr>
-                    <td>map-to-start</td>
-                    <td>(Optional) map to start after completing installation.</td>
-                </tr>
-            </tbody>
-        </table>
-        <h3 id="install-types">Install types</h3>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>type</th>
-                    <th>explanation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>mod-folder</td>
-                    <td>This type of package contains a fully contained mod directory, ex. <code>sm228.zip</code>
-                        contains a single
-                        folder called <code>sm228</code>.
-                    </td>
-                </tr>
-                <tr>
-                    <td>map</td>
-                    <td>This type of package contains only files that should be placed within the <code>maps</code>
-                        directory of the
-                        applicable mod directory, ex. <code>.bsp</code>, <code>.lit</code>.
-                    </td>
-                </tr>
-                <tr>
-                    <td>gamedir</td>
-                    <td>Contains a collection of assets intended to be extracted to a mod directory, ex.
-                        <code>quoth2pt2full_2.zip</code> contains <code>pak0.pak</code> - <code>pak2.pak</code> at the
-                        top level of
-                        the zip
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <h2 id="usage">Usage</h2>
-        <h3 id="download">Download</h3>
-        <p>Binaries will be available from the Releases section.</p>
-        <h3 id="installation">Installation</h3>
-        <h4 id="windows">Windows</h4>
-        <p>Download the Windows package and extract it to the desired location.</p>
-        <p>Run the binary (<code>quake-one-click.exe</code>) and set up the configuration via menu. You must install the
-            handler
-            and set the quake paths.</p>
-        <p>If you move <code>quake-one-click.exe</code> you <em>must</em> re-run the handler installation.</p>
-        <h4 id="linux">Linux</h4>
-        <p>Download the Linux package and extract it to a location on your path.</p>
-        <p>Run the binary from a terminal (<code>quake-one-click</code>) and set up the configuration via menu. You must
-            install
-            the handler and set the quake paths.</p>
-        <p>Known incompatibilities: </p>
-        <ul>
-            <li>XWayland browsers will not launch the game. XOrg or native Wayland appear to work fine.</li>
-            <li>You may need to set <code>XDG_CURRENT_DESKTOP</code>. <code>xdg-open q1package:asdf</code> will return
-                <code>file
-                    &#39;q1package:asdf&#39; does not exist</code> if this is the issue.
-            </li>
-            <li>Browsers installed via Snap do not allow custom URL handlers, use a natively installed browser instead.
-                Not sure
-                if Flatpak works.
-            </li>
-        </ul>
-        <h2 id="development">Development</h2>
-        <h3 id="building">Building</h3>
-        <p>Use GraalVM CE 17 as your JDK.</p>
-        <p>Run <code>./gradlew nativeCompile</code> to create a binary. Install the binary as you would a release
-            version.</p>
-        <h3 id="running-tests">Running tests</h3>
-        <p><em>Note: Tests are not yet implemented.</em></p>
-        <p>To run the test suite, run <code>./gradlew check</code>.</p>
-        <h2 id="test-links">Test links</h2>
-        <p><a class="btn btn-outline-primary"
-              href="q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start">SM228
-            (via Slipseer)</a></p>
-        <p><a class="btn btn-outline-secondary"
-              href="q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,spasp1">Enforced
-            Entropy (via Slipseer)</a></p>
-        <p><a class="btn btn-outline-info"
-              href="q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start">Quoth 2.2
-            (via
-            Quaddicted)</a></p>
-        <p><a class="btn btn-outline-info"
-              href="q2package:https://www.quaddicted.com/files/idgames2/quake2/levels/g-i/ise.zip,map,baseq2,ise">Infiltrate :: Subjugate :: Eliminate (via Quaddicted)</a></p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>field</th>
+          <th>explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>download-url</td>
+          <td>Url to download the resource</td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td><code>mod-folder</code>, <code>map</code> or <code>gamedir</code>, more info below
+          </td>
+        </tr>
+        <tr>
+          <td>gamedir</td>
+          <td>Gamedir to extract files to (ex. <code>id1</code>, <code>quoth</code>, <code>ad</code>)
+          </td>
+        </tr>
+        <tr>
+          <td>map-to-start</td>
+          <td>(Optional) map to start after completing installation.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="install-types">Install types</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>type</th>
+          <th>explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>mod-folder</td>
+          <td>This type of package contains a fully contained mod directory, ex.
+            <code>sm228.zip</code>
+            contains a single
+            folder called <code>sm228</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>map</td>
+          <td>This type of package contains only files that should be placed within the
+            <code>maps</code>
+            directory of the
+            applicable mod directory, ex. <code>.bsp</code>, <code>.lit</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>gamedir</td>
+          <td>Contains a collection of assets intended to be extracted to a mod directory, ex.
+            <code>quoth2pt2full_2.zip</code> contains <code>pak0.pak</code> - <code>pak2.pak</code>
+            at the
+            top level of
+            the zip
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="usage">Usage</h2>
+    <h3 id="download">Download</h3>
+    <p>Binaries will be available from the Releases section.</p>
+    <h3 id="installation">Installation</h3>
+    <h4 id="windows">Windows</h4>
+    <p>Download the Windows package and extract it to the desired location.</p>
+    <p>Run the binary (<code>quake-one-click.exe</code>) and set up the configuration via menu. You
+      must install the
+      handler
+      and set the quake paths.</p>
+    <p>If you move <code>quake-one-click.exe</code> you <em>must</em> re-run the handler
+      installation.</p>
+    <h4 id="linux">Linux</h4>
+    <p>Download the Linux package and extract it to a location on your path.</p>
+    <p>Run the binary from a terminal (<code>quake-one-click</code>) and set up the configuration
+      via menu. You must
+      install
+      the handler and set the quake paths.</p>
+    <p>Known incompatibilities: </p>
+    <ul>
+      <li>XWayland browsers will not launch the game. XOrg or native Wayland appear to work fine.
+      </li>
+      <li>You may need to set <code>XDG_CURRENT_DESKTOP</code>. <code>xdg-open q1package:asdf</code>
+        will return
+        <code>file
+          &#39;q1package:asdf&#39; does not exist</code> if this is the issue.
+      </li>
+      <li>Browsers installed via Snap do not allow custom URL handlers, use a natively installed
+        browser instead.
+        Not sure
+        if Flatpak works.
+      </li>
+    </ul>
+    <h2 id="development">Development</h2>
+    <h3 id="building">Building</h3>
+    <p>Use GraalVM CE 17 as your JDK.</p>
+    <p>Run <code>./gradlew nativeCompile</code> to create a binary. Install the binary as you would
+      a release
+      version.</p>
+    <h3 id="running-tests">Running tests</h3>
+    <p><em>Note: Tests are not yet implemented.</em></p>
+    <p>To run the test suite, run <code>./gradlew check</code>.</p>
+    <h2 id="test-links">Test links</h2>
+    <p><a class="btn btn-outline-primary"
+          href="q1package:https://www.slipseer.com/index.php?resources/sm228-vanilla.335/download,mod-folder,sm228,start">SM228
+      (via Slipseer)</a></p>
+    <p><a class="btn btn-outline-secondary"
+          href="q1package:https://www.slipseer.com/index.php?resources/enforced-entropy.343/download,map,id1,spasp1">Enforced
+      Entropy (via Slipseer)</a></p>
+    <p><a class="btn btn-outline-info"
+          href="q1package:https://www.quaddicted.com/filebase/quoth2pt2full_2.zip,gamedir,quoth,start">Quoth
+      2.2
+      (via
+      Quaddicted)</a></p>
+    <p><a class="btn btn-outline-info"
+          href="q2package:https://www.quaddicted.com/files/idgames2/quake2/levels/g-i/ise.zip,map,baseq2,ise">Infiltrate
+      :: Subjugate :: Eliminate (via Quaddicted)</a></p>
 
-    </body>
+  </body>
 </html>
