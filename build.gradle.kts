@@ -2,6 +2,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.2.1"
     id("groovy")
+    id("com.diffplug.spotless") version "7.0.3"
 }
 
 version = "0.1"
@@ -88,6 +89,25 @@ tasks {
         testLogging {
             events("passed", "skipped", "failed")
         }
+    }
+}
+
+spotless {
+    java {
+        eclipse()
+            // Optional: Enable the Sort Members feature globally. (default: false)
+            .sortMembersEnabled(true)
+            // Optional: Specify the sort order of the member categories. (default: T,SF,SI,SM,F,I,C,M)
+            //   SF,SI,SM,F,I,C,M,T = Static Fields, Static Initializers, Static Methods, Fields, Initializers, Constructors, Methods, (Nested) Types
+            .sortMembersOrder("SF,SI,SM,F,I,C,M,T")
+            // Optional: Enable the reordering of fields, enum constants, and initializers. (default: true)
+            .sortMembersDoNotSortFields(false)
+            // Optional: Enable reordering of members of the same category by the visibility within the category. (default: false)
+            .sortMembersVisibilityOrderEnabled(true)
+            // Optional: Specify the ordering of members of the same category by the visibility within the category. (default: B,V,R,D)
+            //   B,R,D,V = Public, Protected, Package, Private
+            .sortMembersVisibilityOrder("B,R,D,V")
+        palantirJavaFormat().style("GOOGLE")
     }
 }
 
