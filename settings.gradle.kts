@@ -1,3 +1,2 @@
-
-rootProject.name="quake-one-click"
+rootProject.name = "quake-one-click"
 

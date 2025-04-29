@@ -9,7 +9,7 @@ class ProcessBuilderGameLauncherSpec extends Specification {
   def "GenerateLaunchCommand creates expected launch command from #installer"() {
     given:
       def userProps = new UserProps("./test", "./test/game")
-      def launcher = new ProcessBuilderGameLauncher(userProps,null)
+      def launcher = new ProcessBuilderGameLauncher(userProps, null)
     when:
       def output = launcher.generateLaunchCommand(installer)
     then:

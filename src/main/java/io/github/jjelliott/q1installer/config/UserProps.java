@@ -1,7 +1,6 @@
 package io.github.jjelliott.q1installer.config;
 
 import io.github.jjelliott.q1installer.Game;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -12,20 +11,23 @@ public class UserProps {
   private final GameProps quake2;
   private int skill;
   String location;
+  String menuType;
 
   public UserProps(String dirPath, String enginePath) {
-    quake = new GameProps("quake");
-    quake2 = new GameProps("quake2");
+    quake = new GameProps(Game.QUAKE);
+    quake2 = new GameProps(Game.QUAKE2);
     quake.setDirectoryPath(dirPath, false);
     quake.setEnginePath(enginePath, false);
     skill = 1;
+    menuType = "gui";
   }
 
   public UserProps(Properties properties, String location) {
-    quake = new GameProps("quake", properties);
-    quake2 = new GameProps("quake2", properties);
+    quake = new GameProps(Game.QUAKE, properties);
+    quake2 = new GameProps(Game.QUAKE2, properties);
     skill = Integer.parseInt(properties.getProperty("skill", "1"));
     this.location = location;
+    menuType = properties.getProperty("menu-type", "gui");
   }
 
   public Properties toProperties() {
@@ -33,6 +35,7 @@ public class UserProps {
     quake.addToProperties(props);
     quake2.addToProperties(props);
     props.setProperty("skill", Integer.toString(skill));
+    props.setProperty("menu-type", menuType);
     return props;
   }
 
@@ -78,18 +81,24 @@ public class UserProps {
     }
   }
 
+  public String getMenuType() {
+    return menuType;
+  }
+
   public class GameProps {
 
+    private final Game game;
     private String directoryPath = "unset";
     private String enginePath = "unset";
-    private String prefix;
+    private final String prefix;
 
-    public GameProps(String prefix) {
-      this.prefix = prefix;
+    public GameProps(Game game) {
+      this.game = game;
+      this.prefix = game.name().toLowerCase();
     }
 
-    public GameProps(String prefix, Properties properties) {
-      this.prefix = prefix;
+    public GameProps(Game game, Properties properties) {
+      this(game);
       directoryPath = properties.getProperty("%s.directory-path".formatted(prefix), "unset");
       enginePath = properties.getProperty("%s.engine-path".formatted(prefix), "unset");
     }
@@ -141,6 +150,10 @@ public class UserProps {
       this.enginePath = enginePath;
       this.directoryPath = directoryPath;
       write();
+    }
+
+    public Game game() {
+      return game;
     }
   }
 }

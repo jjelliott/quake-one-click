@@ -3,7 +3,6 @@ package io.github.jjelliott.q1installer.config;
 import io.github.jjelliott.q1installer.os.ConfigLocation;
 import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Singleton;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

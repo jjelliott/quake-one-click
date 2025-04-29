@@ -2,6 +2,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.2.1"
     id("groovy")
+    id("com.diffplug.spotless") version "7.0.3"
 }
 
 version = "0.1"
@@ -15,6 +16,18 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen")
     annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.github.spair:imgui-java-app:1.89.0")
+
+    implementation("org.lwjgl:lwjgl-stb")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-windows")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-macos")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-macos-arm64")
+    runtimeOnly("org.lwjgl:lwjgl-stb:3.3.4:natives-linux")
+    implementation("org.lwjgl:lwjgl-tinyfd")
+    runtimeOnly("org.lwjgl:lwjgl-tinyfd:3.3.4:natives-windows")
+    runtimeOnly("org.lwjgl:lwjgl-tinyfd:3.3.4:natives-macos")
+    runtimeOnly("org.lwjgl:lwjgl-tinyfd:3.3.4:natives-macos-arm64")
+    runtimeOnly("org.lwjgl:lwjgl-tinyfd:3.3.4:natives-linux")
     implementation("info.picocli:picocli")
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("org.apache.commons:commons-compress:1.26.1")
@@ -44,11 +57,24 @@ micronaut {
 }
 
 graalvmNative {
-    toolchainDetection.set(true)
+    binaries {
+        all {
+            resources.autodetect()
+        }
+        named("main") { // Use named("main") to configure the 'main' binary
+            javaLauncher.set(javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(21))
+                vendor.set(JvmVendorSpec.GRAAL_VM)
+            })
+        }
+    }
+    agent {
+        enabled.set(true)
+    }
 }
 
-tasks{
-    compileGroovy{
+tasks {
+    compileGroovy {
         enabled = false
     }
     runnerJar {
@@ -61,8 +87,27 @@ tasks{
     test {
         useJUnitPlatform()
         testLogging {
-            events ("passed", "skipped", "failed")
+            events("passed", "skipped", "failed")
         }
+    }
+}
+
+spotless {
+    java {
+        eclipse()
+            // Optional: Enable the Sort Members feature globally. (default: false)
+            .sortMembersEnabled(true)
+            // Optional: Specify the sort order of the member categories. (default: T,SF,SI,SM,F,I,C,M)
+            //   SF,SI,SM,F,I,C,M,T = Static Fields, Static Initializers, Static Methods, Fields, Initializers, Constructors, Methods, (Nested) Types
+            .sortMembersOrder("SF,SI,SM,F,I,C,M,T")
+            // Optional: Enable the reordering of fields, enum constants, and initializers. (default: true)
+            .sortMembersDoNotSortFields(false)
+            // Optional: Enable reordering of members of the same category by the visibility within the category. (default: false)
+            .sortMembersVisibilityOrderEnabled(true)
+            // Optional: Specify the ordering of members of the same category by the visibility within the category. (default: B,V,R,D)
+            //   B,R,D,V = Public, Protected, Package, Private
+            .sortMembersVisibilityOrder("B,R,D,V")
+        palantirJavaFormat().style("GOOGLE")
     }
 }
 

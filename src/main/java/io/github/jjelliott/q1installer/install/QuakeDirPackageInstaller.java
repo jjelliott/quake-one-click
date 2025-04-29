@@ -1,21 +1,20 @@
 package io.github.jjelliott.q1installer.install;
 
+import static io.github.jjelliott.q1installer.install.FileUtil.copyFolder;
+
 import io.github.jjelliott.q1installer.Game;
 import io.github.jjelliott.q1installer.InstallerArguments;
 import io.github.jjelliott.q1installer.config.InstalledPackage;
 import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.os.ConfigLocation;
 import jakarta.inject.Singleton;
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-
-import static io.github.jjelliott.q1installer.install.FileUtil.copyFolder;
+import org.apache.commons.io.FilenameUtils;
 
 @Singleton
 public class QuakeDirPackageInstaller implements PackageInstaller {
