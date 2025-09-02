@@ -1,8 +1,11 @@
 package io.github.jjelliott.q1installer;
 
-import io.github.jjelliott.q1installer.ActiveRun.RunMode;
+import io.github.jjelliott.q1installer.config.ActiveRun;
+import io.github.jjelliott.q1installer.config.ActiveRun.RunMode;
 import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.error.ExitCodeException;
+import io.github.jjelliott.q1installer.gui.Gui;
+import io.github.jjelliott.q1installer.console.MainMenu;
 import io.micronaut.configuration.picocli.PicocliRunner;
 import jakarta.inject.Inject;
 import java.util.Scanner;
@@ -17,7 +20,7 @@ public class Q1InstallerCommand implements Runnable {
   UserProps userProps;
 
   @Inject
-  Menu menu;
+  MainMenu mainMenu;
 
   @Inject
   ActiveRun activeRun;
@@ -47,7 +50,8 @@ public class Q1InstallerCommand implements Runnable {
         activeRun.setRunMode(RunMode.GUI_MENU);
         Gui.launch(gui);
       } else if (userProps.getMenuType().equals("console")) {
-        menu.mainMenu();
+        activeRun.setRunMode(RunMode.TEXT_MENU);
+        mainMenu.show();
       }
     } else {
       activeRun.setRunMode(RunMode.INSTALL_COMMAND);
@@ -79,49 +83,3 @@ public class Q1InstallerCommand implements Runnable {
   }
 }
 
-@Command(name = "config")
-class ConfigCommand implements Runnable {
-
-  @Inject
-  ActiveRun activeRun;
-  @Inject
-  UserProps userProps;
-  @Parameters(index = "0", defaultValue = "")
-  String field;
-  @Parameters(index = "1", defaultValue = "")
-  String value;
-
-  @Override
-  public void run() {
-    activeRun.setRunMode(RunMode.CONFIG_COMMAND);
-    switch (field) {
-      case "q1-game-path" -> userProps.getQuake().setDirectoryPath(value);
-      case "q1-engine-path" -> userProps.getQuake().setEnginePath(value);
-      case "q2-game-path" -> userProps.getQuake2().setDirectoryPath(value);
-      case "q2-engine-path" -> userProps.getQuake2().setEnginePath(value);
-      case "skill" -> {
-        try {
-          userProps.setSkill(Integer.parseInt(value));
-        } catch (NumberFormatException e) {
-          System.out.println("Invalid number format");
-        }
-      }
-    }
-  }
-}
-
-@Command(name = "console-menu")
-class ConsoleCommand implements Runnable {
-
-  @Inject
-  ActiveRun activeRun;
-
-  @Inject
-  Menu menu;
-
-  @Override
-  public void run() {
-    activeRun.setRunMode(RunMode.TEXT_MENU);
-    menu.mainMenu();
-  }
-}

@@ -2,7 +2,7 @@ package io.github.jjelliott.q1installer.install;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.github.jjelliott.q1installer.Game;
+import io.github.jjelliott.q1installer.config.Game;
 import io.github.jjelliott.q1installer.config.UserProps;
 import java.nio.file.Path;
 import org.junit.jupiter.api.DisplayName;

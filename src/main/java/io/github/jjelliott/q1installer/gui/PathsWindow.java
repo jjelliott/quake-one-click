@@ -1,9 +1,11 @@
 package io.github.jjelliott.q1installer.gui;
 
+import static io.github.jjelliott.q1installer.NoOp.NO_OP;
+
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
-import io.github.jjelliott.q1installer.Game;
+import io.github.jjelliott.q1installer.config.Game;
 import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 
@@ -22,12 +24,10 @@ public class PathsWindow extends CenteredWindow {
     this.gameProps = userProps.getGameProps(game);
     enginePicker = new FilePicker(game.name() + "_engine",
         "Engine path (Example " + examplePath.engine(game) + ")", "Select", false,
-        gameProps.getEnginePath(), () -> {
-    });
+        gameProps.getEnginePath(), NO_OP);
     gamedirPicker = new FilePicker(game.name() + "_gamedir",
         "Game directory (Example " + examplePath.gameDir(game) + ")", "Select", true,
-        gameProps.getDirectoryPath(), () -> {
-    });
+        gameProps.getDirectoryPath(), NO_OP);
   }
 
   public void open() {

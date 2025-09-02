@@ -1,5 +1,7 @@
 package io.github.jjelliott.q1installer.gui;
 
+import static io.github.jjelliott.q1installer.NoOp.NO_OP;
+
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
@@ -36,14 +38,12 @@ public class ConfirmWindow extends CenteredWindow {
   }
 
   public ConfirmWindow(String title, String text, String confirmText, Runnable confirmAction) {
-    this(title, text, confirmText, confirmAction, () -> {
-    });
+    this(title, text, confirmText, confirmAction, NO_OP);
   }
 
   public ConfirmWindow(String title, Supplier<String> textProvider, String confirmText,
       Runnable confirmAction) {
-    this(title, textProvider, confirmText, confirmAction, () -> {
-    });
+    this(title, textProvider, confirmText, confirmAction, NO_OP);
   }
 
   @Override

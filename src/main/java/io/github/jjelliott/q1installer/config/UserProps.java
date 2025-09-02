@@ -1,6 +1,5 @@
 package io.github.jjelliott.q1installer.config;
 
-import io.github.jjelliott.q1installer.Game;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;

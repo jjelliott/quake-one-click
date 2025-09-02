@@ -1,5 +1,7 @@
 package io.github.jjelliott.q1installer.gui;
 
+import static io.github.jjelliott.q1installer.NoOp.NO_OP;
+
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
@@ -31,8 +33,7 @@ public class DropdownWindow extends CenteredWindow {
 
   public DropdownWindow(String windowTitle, String text, List<String> options,
       Consumer<Integer> confirmAction, Supplier<Integer> choiceProvider) {
-    this(windowTitle, text, options, () -> {
-    }, confirmAction, choiceProvider);
+    this(windowTitle, text, options, NO_OP, confirmAction, choiceProvider);
   }
 
   @Override

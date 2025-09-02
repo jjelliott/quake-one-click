@@ -1,6 +1,6 @@
 package io.github.jjelliott.q1installer.os;
 
-import io.github.jjelliott.q1installer.Game;
+import io.github.jjelliott.q1installer.config.Game;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.annotation.Requires.Family;
 import jakarta.inject.Singleton;

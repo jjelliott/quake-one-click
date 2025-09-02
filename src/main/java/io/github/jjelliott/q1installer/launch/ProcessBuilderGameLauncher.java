@@ -1,8 +1,9 @@
-package io.github.jjelliott.q1installer;
+package io.github.jjelliott.q1installer.launch;
 
-import static io.github.jjelliott.q1installer.Game.QUAKE;
-import static io.github.jjelliott.q1installer.Game.QUAKE2;
+import static io.github.jjelliott.q1installer.config.Game.QUAKE;
+import static io.github.jjelliott.q1installer.config.Game.QUAKE2;
 
+import io.github.jjelliott.q1installer.InstallerArguments;
 import io.github.jjelliott.q1installer.config.UserProps;
 import jakarta.inject.Singleton;
 import java.io.IOException;

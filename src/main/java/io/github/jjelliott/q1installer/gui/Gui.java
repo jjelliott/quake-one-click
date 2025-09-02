@@ -1,4 +1,4 @@
-package io.github.jjelliott.q1installer;
+package io.github.jjelliott.q1installer.gui;
 
 import imgui.ImGui;
 import imgui.ImGuiViewport;
@@ -9,11 +9,9 @@ import imgui.flag.ImGuiCol;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
+import io.github.jjelliott.q1installer.config.Game;
 import io.github.jjelliott.q1installer.config.UserProps;
-import io.github.jjelliott.q1installer.gui.ConfirmWindow;
-import io.github.jjelliott.q1installer.gui.DropdownWindow;
-import io.github.jjelliott.q1installer.gui.Image;
-import io.github.jjelliott.q1installer.gui.PathsWindow;
+import io.github.jjelliott.q1installer.os.CacheOperations;
 import io.github.jjelliott.q1installer.os.ExamplePath;
 import io.github.jjelliott.q1installer.os.HandlerInstaller;
 import jakarta.inject.Singleton;
@@ -40,13 +38,13 @@ public class Gui extends Application {
   private Image logoImage;
 
   public Gui(UserProps userProps, HandlerInstaller handlerInstaller,
-      ExamplePath examplePath, MenuOperations menuOperations) {
+      ExamplePath examplePath, CacheOperations cacheOperations) {
     this.handlerWindow = new ConfirmWindow("Install Handler", handlerInstaller.textPrompt(),
         "Install",
         handlerInstaller::install);
     this.cacheWindow = new ConfirmWindow("Clear Cache",
-        () -> "Cache currently sized at " + menuOperations.getCacheSize()
-            + ".\nWould you like to clear it?", "Clear Cache", menuOperations::clearCache);
+        () -> "Cache currently sized at " + cacheOperations.getCacheSize()
+            + ".\nWould you like to clear it?", "Clear Cache", cacheOperations::clearCache);
     this.quakePathWindow = new PathsWindow(Game.QUAKE, userProps, examplePath);
     this.quake2PathWindow = new PathsWindow(Game.QUAKE2, userProps, examplePath);
     this.skillWindow = new DropdownWindow("Default Skill",

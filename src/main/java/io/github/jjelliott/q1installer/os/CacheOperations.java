@@ -1,6 +1,5 @@
-package io.github.jjelliott.q1installer;
+package io.github.jjelliott.q1installer.os;
 
-import io.github.jjelliott.q1installer.os.ConfigLocation;
 import jakarta.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,11 +7,11 @@ import java.nio.file.Path;
 import java.util.Comparator;
 
 @Singleton
-public class MenuOperations {
+public class CacheOperations {
 
   private final ConfigLocation configLocation;
 
-  public MenuOperations(ConfigLocation configLocation) {
+  public CacheOperations(ConfigLocation configLocation) {
     this.configLocation = configLocation;
   }
 

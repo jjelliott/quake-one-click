@@ -1,6 +1,7 @@
 package io.github.jjelliott.q1installer
 
 import io.github.jjelliott.q1installer.config.UserProps
+import io.github.jjelliott.q1installer.launch.ProcessBuilderGameLauncher
 import spock.lang.Specification
 import spock.lang.Unroll
 

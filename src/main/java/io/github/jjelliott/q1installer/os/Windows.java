@@ -1,8 +1,8 @@
 package io.github.jjelliott.q1installer.os;
 
-import io.github.jjelliott.q1installer.ActiveRun;
-import io.github.jjelliott.q1installer.ActiveRun.RunMode;
-import io.github.jjelliott.q1installer.Game;
+import io.github.jjelliott.q1installer.config.ActiveRun;
+import io.github.jjelliott.q1installer.config.ActiveRun.RunMode;
+import io.github.jjelliott.q1installer.config.Game;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import java.io.IOException;

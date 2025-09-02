@@ -6,6 +6,7 @@ import io.github.jjelliott.q1installer.config.InstalledPackage;
 import io.github.jjelliott.q1installer.error.ExitCodeException;
 import io.github.jjelliott.q1installer.install.PackageDownloader;
 import io.github.jjelliott.q1installer.install.PackageInstaller;
+import io.github.jjelliott.q1installer.launch.GameLauncher;
 import jakarta.inject.Singleton;
 import java.util.List;
 
