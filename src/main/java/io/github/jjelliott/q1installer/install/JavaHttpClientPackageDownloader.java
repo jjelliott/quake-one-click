@@ -3,7 +3,6 @@ package io.github.jjelliott.q1installer.install;
 import io.github.jjelliott.q1installer.InstallerArguments;
 import io.github.jjelliott.q1installer.os.ConfigLocation;
 import jakarta.inject.Singleton;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,7 +24,8 @@ public class JavaHttpClientPackageDownloader implements PackageDownloader {
   }
 
   @Override
-  public String downloadFile(InstallerArguments installerArguments) throws IOException, InterruptedException {
+  public String downloadFile(InstallerArguments installerArguments)
+      throws IOException, InterruptedException {
     String fileName = "";
     if (installerArguments.getUrl().endsWith(".zip")) {
       var urlSplit = installerArguments.getUrl().split("/");
@@ -34,7 +34,9 @@ public class JavaHttpClientPackageDownloader implements PackageDownloader {
 
     HttpResponse<byte[]> response;
 
-    response = client.send(HttpRequest.newBuilder(URI.create(installerArguments.getUrl())).build(), HttpResponse.BodyHandlers.ofByteArray());
+    response = client.send(
+        HttpRequest.newBuilder(URI.create(installerArguments.getUrl())).build(),
+        HttpResponse.BodyHandlers.ofByteArray());
 
     if (response.statusCode() >= 300 && response.statusCode() < 400) {
       if (!response.headers().allValues("location").isEmpty()) {
@@ -48,7 +50,11 @@ public class JavaHttpClientPackageDownloader implements PackageDownloader {
         fileName = disposition.replace("attachment; filename=\"", "").replace("\"", "");
       }
     }
-    Files.write(Path.of(configLocation.getCacheDirFile(fileName)), response.body(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+    Files.write(
+        Path.of(configLocation.getCacheDirFile(fileName)),
+        response.body(),
+        StandardOpenOption.CREATE,
+        StandardOpenOption.WRITE);
 
     return fileName;
   }

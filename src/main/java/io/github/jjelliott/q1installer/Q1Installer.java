@@ -1,14 +1,14 @@
 package io.github.jjelliott.q1installer;
 
+import static io.github.jjelliott.q1installer.error.ExitCodeException.doOrExit;
+
 import io.github.jjelliott.q1installer.config.InstalledPackage;
 import io.github.jjelliott.q1installer.error.ExitCodeException;
 import io.github.jjelliott.q1installer.install.PackageDownloader;
 import io.github.jjelliott.q1installer.install.PackageInstaller;
+import io.github.jjelliott.q1installer.launch.GameLauncher;
 import jakarta.inject.Singleton;
-
 import java.util.List;
-
-import static io.github.jjelliott.q1installer.error.ExitCodeException.doOrExit;
 
 @Singleton
 public class Q1Installer {
@@ -18,16 +18,16 @@ public class Q1Installer {
   private final PackageInstaller packageInstaller;
   private final GameLauncher gameLauncher;
 
-  public Q1Installer(List<InstalledPackage> installed,
-                     PackageDownloader packageDownloader,
-                     PackageInstaller packageInstaller,
-                     GameLauncher gameLauncher) {
+  public Q1Installer(
+      List<InstalledPackage> installed,
+      PackageDownloader packageDownloader,
+      PackageInstaller packageInstaller,
+      GameLauncher gameLauncher) {
     this.installed = installed;
     this.packageDownloader = packageDownloader;
     this.packageInstaller = packageInstaller;
     this.gameLauncher = gameLauncher;
   }
-
 
   public void run(InstallerArguments installerArguments) throws ExitCodeException {
 
@@ -48,20 +48,22 @@ public class Q1Installer {
     if (installerArguments.getAction().equals("run")) {
       doOrExit(() -> gameLauncher.launchGame(installerArguments), "Unable to launch game", 3);
     }
-
   }
 
   boolean isNotInstalled(InstallerArguments installerArguments) {
     return installed.stream()
-        .noneMatch(installedPackage -> installedPackage.sourceUrl().equals(installerArguments.getUrl()));
+        .noneMatch(
+            installedPackage -> installedPackage.sourceUrl().equals(installerArguments.getUrl()));
   }
 
-  void downloadAndInstall(InstallerArguments installerArguments, String errorMessage, int exitCode) throws ExitCodeException {
-    doOrExit(() -> {
-      var filename = packageDownloader.downloadFile(installerArguments);
-      packageInstaller.installPackage(installerArguments, filename);
-    }, errorMessage, exitCode);
+  void downloadAndInstall(InstallerArguments installerArguments, String errorMessage, int exitCode)
+      throws ExitCodeException {
+    doOrExit(
+        () -> {
+          var filename = packageDownloader.downloadFile(installerArguments);
+          packageInstaller.installPackage(installerArguments, filename);
+        },
+        errorMessage,
+        exitCode);
   }
-
 }
-

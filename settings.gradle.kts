@@ -1,3 +1,3 @@
-
-rootProject.name="quake-one-click"
+rootProject.name = "quake-one-click"
+include("quake-installer-gui")
 

@@ -1,6 +1,10 @@
 package io.github.jjelliott.q1installer;
 
-import static io.github.jjelliott.q1installer.Game.*;
+import static io.github.jjelliott.q1installer.config.Game.QUAKE;
+import static io.github.jjelliott.q1installer.config.Game.QUAKE2;
+import static io.github.jjelliott.q1installer.config.Game.UNSUPPORTED;
+
+import io.github.jjelliott.q1installer.config.Game;
 
 public class InstallerArguments {
 
@@ -16,7 +20,8 @@ public class InstallerArguments {
   public InstallerArguments(String command) {
     String tempAction;
     this.command = command;
-    game = command.startsWith("q1package") ? QUAKE
+    game = command.startsWith("q1package")
+        ? QUAKE
         : (command.startsWith("q2package") ? QUAKE2 : UNSUPPORTED);
     String commandWithoutProtocol;
     tempAction = "install";

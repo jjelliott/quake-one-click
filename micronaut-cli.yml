@@ -3,4 +3,4 @@ defaultPackage: io.github.jjelliott.q1installer
 testFramework: junit
 sourceLanguage: java
 buildTool: gradle_kotlin
-features: [app-name, gradle, http-client-test, java, junit, logback, micronaut-build, picocli, picocli-java-application, picocli-junit, properties, readme, serialization-jackson, shade]
+features: [ app-name, gradle, http-client-test, java, junit, logback, micronaut-build, picocli, picocli-java-application, picocli-junit, properties, readme, serialization-jackson, shade ]

@@ -1,12 +1,15 @@
 package io.github.jjelliott.q1installer;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @DisplayName("Installer arguments instantiate correctly")
 class InstallerArgumentsTest {
+
   @Test
   @DisplayName("root level mod without a launch map")
   void test_mod_instantiation() {
@@ -16,8 +19,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("root", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
@@ -29,9 +31,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("root", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
-
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
@@ -43,8 +43,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("gamedir", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
@@ -56,9 +55,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("gamedir", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
-
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
@@ -70,8 +67,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/map.zip", msg.getUrl()),
         () -> assertEquals("map", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
@@ -83,14 +79,14 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/map.zip", msg.getUrl()),
         () -> assertEquals("map", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
   @DisplayName("Map package with dependency, no launch map")
   void test_mod_map_instantiation() {
-    var msg = new InstallerArguments("q1package:https://example.com/map.zip,mod-map,testmod,https://example.com/mod.zip|gamedir|testmod");
+    var msg = new InstallerArguments(
+        "q1package:https://example.com/map.zip,mod-map,testmod,https://example.com/mod.zip|gamedir|testmod");
     assertAll(
         () -> assertEquals("install", msg.getAction()),
         () -> assertEquals("https://example.com/map.zip", msg.getUrl()),
@@ -100,14 +96,14 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getModPackage().getUrl()),
         () -> assertEquals("gamedir", msg.getModPackage().getType()),
         () -> assertEquals("testmod", msg.getModPackage().getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
   @DisplayName("Map package with dependency and launch map")
   void test_mod_map_instantiation_with_start_map() {
-    var msg = new InstallerArguments("q1package:https://example.com/map.zip,mod-map,testmod,https://example.com/mod.zip|gamedir|testmod,start");
+    var msg = new InstallerArguments(
+        "q1package:https://example.com/map.zip,mod-map,testmod,https://example.com/mod.zip|gamedir|testmod,start");
     assertAll(
         () -> assertEquals("run", msg.getAction()),
         () -> assertEquals("https://example.com/map.zip", msg.getUrl()),
@@ -117,12 +113,9 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getModPackage().getUrl()),
         () -> assertEquals("gamedir", msg.getModPackage().getType()),
         () -> assertEquals("testmod", msg.getModPackage().getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
-  void test_custom_instantiation() {
-
-  }
+  void test_custom_instantiation() {}
 }

@@ -1,6 +1,7 @@
 package io.github.jjelliott.q1installer.error;
 
 public class ExitCodeException extends Exception {
+
   int exitCode;
   String message;
 
@@ -19,7 +20,8 @@ public class ExitCodeException extends Exception {
     return message;
   }
 
-  public static void doOrExit(ExceptionRunnable fn, String message, int code) throws ExitCodeException {
+  public static void doOrExit(ExceptionRunnable fn, String message, int code)
+      throws ExitCodeException {
     try {
       fn.run();
     } catch (Exception e) {

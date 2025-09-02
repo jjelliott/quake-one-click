@@ -3,6 +3,7 @@ package io.github.jjelliott.q1installer
 import io.github.jjelliott.q1installer.error.ExitCodeException
 import io.github.jjelliott.q1installer.install.PackageDownloader
 import io.github.jjelliott.q1installer.install.PackageInstaller
+import io.github.jjelliott.q1installer.launch.GameLauncher
 import spock.lang.Specification
 
 class Q1InstallerSpec extends Specification {
