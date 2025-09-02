@@ -48,7 +48,7 @@ public class Q1InstallerCommand implements Runnable {
 //      menu.mainMenu();
       if (userProps.getMenuType().equals("gui")) {
         activeRun.setRunMode(RunMode.GUI_MENU);
-        Gui.launch(gui);
+        imgui.app.Application.launch(gui);
       } else if (userProps.getMenuType().equals("console")) {
         activeRun.setRunMode(RunMode.TEXT_MENU);
         mainMenu.show();

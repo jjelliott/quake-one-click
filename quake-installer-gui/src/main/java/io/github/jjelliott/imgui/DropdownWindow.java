@@ -1,6 +1,4 @@
-package io.github.jjelliott.q1installer.gui;
-
-import static io.github.jjelliott.q1installer.NoOp.NO_OP;
+package io.github.jjelliott.imgui;
 
 import imgui.ImGui;
 import imgui.ImVec2;
@@ -10,6 +8,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * A modal window with a dropdown selection.
+ */
 public class DropdownWindow extends CenteredWindow {
 
   private final String windowTitle;
@@ -17,9 +18,20 @@ public class DropdownWindow extends CenteredWindow {
   private final String[] optionsArray;
   private final Runnable cancelAction;
   private final Consumer<Integer> confirmAction;
-  private final ImInt skillChoice;
+  private final ImInt currentChoice;
   private final Supplier<Integer> choiceProvider;
+  private static final Runnable NO_OP = () -> {};
 
+  /**
+   * Creates a new dropdown window.
+   *
+   * @param windowTitle The window title
+   * @param text The description text
+   * @param options The list of options for the dropdown
+   * @param cancelAction The action to run when canceled
+   * @param confirmAction The action to run with the selected index when confirmed
+   * @param choiceProvider A supplier that provides the current choice index
+   */
   public DropdownWindow(String windowTitle, String text, List<String> options,
       Runnable cancelAction, Consumer<Integer> confirmAction, Supplier<Integer> choiceProvider) {
     this.optionsArray = options.toArray(new String[0]);
@@ -28,9 +40,18 @@ public class DropdownWindow extends CenteredWindow {
     this.cancelAction = cancelAction;
     this.confirmAction = confirmAction;
     this.choiceProvider = choiceProvider;
-    skillChoice = new ImInt(choiceProvider.get());
+    this.currentChoice = new ImInt(choiceProvider.get());
   }
 
+  /**
+   * Creates a new dropdown window with no cancel action.
+   *
+   * @param windowTitle The window title
+   * @param text The description text
+   * @param options The list of options for the dropdown
+   * @param confirmAction The action to run with the selected index when confirmed
+   * @param choiceProvider A supplier that provides the current choice index
+   */
   public DropdownWindow(String windowTitle, String text, List<String> options,
       Consumer<Integer> confirmAction, Supplier<Integer> choiceProvider) {
     this(windowTitle, text, options, NO_OP, confirmAction, choiceProvider);
@@ -38,10 +59,13 @@ public class DropdownWindow extends CenteredWindow {
 
   @Override
   public void open() {
-    skillChoice.set(choiceProvider.get());
+    currentChoice.set(choiceProvider.get());
     super.open();
   }
 
+  /**
+   * Renders the dropdown window.
+   */
   public void render() {
     if (!open) {
       return;
@@ -56,7 +80,7 @@ public class DropdownWindow extends CenteredWindow {
 
     ImGui.text(text);
 
-    ImGui.combo("##", skillChoice, optionsArray);
+    ImGui.combo("##", currentChoice, optionsArray);
 
     ImGui.separator();
 
@@ -73,7 +97,7 @@ public class DropdownWindow extends CenteredWindow {
     }
     ImGui.sameLine();
     if (ImGui.button("Save", new ImVec2(buttonWidth, 0))) {
-      confirmAction.accept(skillChoice.get());
+      confirmAction.accept(currentChoice.get());
       open = false;
     }
 

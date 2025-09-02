@@ -5,6 +5,8 @@ import static io.github.jjelliott.q1installer.NoOp.NO_OP;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
+import io.github.jjelliott.imgui.CenteredWindow;
+import io.github.jjelliott.imgui.FilePicker;
 import io.github.jjelliott.q1installer.config.Game;
 import io.github.jjelliott.q1installer.config.UserProps;
 import io.github.jjelliott.q1installer.os.ExamplePath;

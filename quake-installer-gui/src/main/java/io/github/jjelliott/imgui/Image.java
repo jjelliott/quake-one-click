@@ -1,4 +1,4 @@
-package io.github.jjelliott.q1installer.gui;
+package io.github.jjelliott.imgui;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
@@ -28,12 +28,21 @@ import java.nio.IntBuffer;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
+/**
+ * A utility class for loading and displaying images in ImGui.
+ * Handles texture loading from classpath resources.
+ */
 public class Image {
 
   private int textureId = 0;
   private int imageWidth = 0;
   private int imageHeight = 0;
 
+  /**
+   * Loads an image from a classpath resource.
+   *
+   * @param resourcePath The path to the resource
+   */
   public Image(String resourcePath) {
     try (MemoryStack stack = MemoryStack.stackPush()) {
       InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
@@ -81,14 +90,29 @@ public class Image {
     }
   }
 
+  /**
+   * Gets the OpenGL texture ID for this image.
+   *
+   * @return The texture ID
+   */
   public int textureId() {
     return textureId;
   }
 
+  /**
+   * Gets the width of the image in pixels.
+   *
+   * @return The image width
+   */
   public int imageWidth() {
     return imageWidth;
   }
 
+  /**
+   * Gets the height of the image in pixels.
+   *
+   * @return The image height
+   */
   public int imageHeight() {
     return imageHeight;
   }
