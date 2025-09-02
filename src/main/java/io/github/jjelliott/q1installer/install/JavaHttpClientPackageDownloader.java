@@ -34,7 +34,8 @@ public class JavaHttpClientPackageDownloader implements PackageDownloader {
 
     HttpResponse<byte[]> response;
 
-    response = client.send(HttpRequest.newBuilder(URI.create(installerArguments.getUrl())).build(),
+    response = client.send(
+        HttpRequest.newBuilder(URI.create(installerArguments.getUrl())).build(),
         HttpResponse.BodyHandlers.ofByteArray());
 
     if (response.statusCode() >= 300 && response.statusCode() < 400) {
@@ -49,8 +50,11 @@ public class JavaHttpClientPackageDownloader implements PackageDownloader {
         fileName = disposition.replace("attachment; filename=\"", "").replace("\"", "");
       }
     }
-    Files.write(Path.of(configLocation.getCacheDirFile(fileName)), response.body(),
-        StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+    Files.write(
+        Path.of(configLocation.getCacheDirFile(fileName)),
+        response.body(),
+        StandardOpenOption.CREATE,
+        StandardOpenOption.WRITE);
 
     return fileName;
   }

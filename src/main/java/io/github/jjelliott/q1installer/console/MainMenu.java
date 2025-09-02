@@ -7,7 +7,7 @@ import jakarta.inject.Singleton;
 import java.util.Scanner;
 
 @Singleton
-public class MainMenu implements ConsoleMenu{
+public class MainMenu implements ConsoleMenu {
 
   private final UserProps userProps;
   private final PathMenu pathMenu;
@@ -16,8 +16,13 @@ public class MainMenu implements ConsoleMenu{
   private final HandlerInstaller handlerInstaller;
   private final CacheOperations cacheOperations;
 
-  public MainMenu(UserProps userProps, PathMenu pathMenu, SkillMenu skillMenu, Scanner scanner,
-      HandlerInstaller handlerInstaller, CacheOperations cacheOperations) {
+  public MainMenu(
+      UserProps userProps,
+      PathMenu pathMenu,
+      SkillMenu skillMenu,
+      Scanner scanner,
+      HandlerInstaller handlerInstaller,
+      CacheOperations cacheOperations) {
     this.userProps = userProps;
     this.pathMenu = pathMenu;
     this.skillMenu = skillMenu;
@@ -32,7 +37,8 @@ public class MainMenu implements ConsoleMenu{
     System.out.println("Welcome to the quake-one-click setup menu.");
     while (menu) {
 
-      var input = prompt("""
+      var input = prompt(
+          """
           Select an option:
           1: Install handler
           2: Set Quake paths
@@ -59,11 +65,8 @@ public class MainMenu implements ConsoleMenu{
     return scanner;
   }
 
-
   void installHandler() {
     System.out.println("Installing URL handler...");
     handlerInstaller.install();
   }
-
-
 }

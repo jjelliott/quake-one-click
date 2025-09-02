@@ -24,12 +24,20 @@ public class PathsWindow extends CenteredWindow {
     this.text = TEXT;
     this.game = game;
     this.gameProps = userProps.getGameProps(game);
-    enginePicker = new FilePicker(game.name() + "_engine",
-        "Engine path (Example " + examplePath.engine(game) + ")", "Select", false,
-        gameProps.getEnginePath(), NO_OP);
-    gamedirPicker = new FilePicker(game.name() + "_gamedir",
-        "Game directory (Example " + examplePath.gameDir(game) + ")", "Select", true,
-        gameProps.getDirectoryPath(), NO_OP);
+    enginePicker = new FilePicker(
+        game.name() + "_engine",
+        "Engine path (Example " + examplePath.engine(game) + ")",
+        "Select",
+        false,
+        gameProps.getEnginePath(),
+        NO_OP);
+    gamedirPicker = new FilePicker(
+        game.name() + "_gamedir",
+        "Game directory (Example " + examplePath.gameDir(game) + ")",
+        "Select",
+        true,
+        gameProps.getDirectoryPath(),
+        NO_OP);
   }
 
   public void open() {
@@ -43,12 +51,14 @@ public class PathsWindow extends CenteredWindow {
       return;
     }
     position();
-    if (ImGui.begin("Paths for " + game.name(), null,
-        ImGuiWindowFlags.NoDocking |
-            ImGuiWindowFlags.NoResize |
-            ImGuiWindowFlags.NoMove |
-            ImGuiWindowFlags.NoCollapse |
-            ImGuiWindowFlags.Modal)) {
+    if (ImGui.begin(
+        "Paths for " + game.name(),
+        null,
+        ImGuiWindowFlags.NoDocking
+            | ImGuiWindowFlags.NoResize
+            | ImGuiWindowFlags.NoMove
+            | ImGuiWindowFlags.NoCollapse
+            | ImGuiWindowFlags.Modal)) {
       gamedirPicker.render();
       enginePicker.render();
       ImGui.separator();
@@ -64,7 +74,7 @@ public class PathsWindow extends CenteredWindow {
 
       ImGui.sameLine(); // Place the next item on the same line
       if (ImGui.button("Save", new ImVec2(buttonWidth, 20))) {
-//            confirmAction.run();
+        //            confirmAction.run();
         gameProps.setPaths(gamedirPicker.getFilePath(), enginePicker.getFilePath());
         open = false;
       }

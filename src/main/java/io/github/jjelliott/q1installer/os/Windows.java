@@ -29,17 +29,19 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
   public String textPrompt() {
     return """
         A prompt should pop up to write to the registry.
-        You may review %s/cache/q1package.reg if you wish before continuing.""".formatted(
-        getConfig()).replaceAll("/", "\\\\");
+        You may review %s/cache/q1package.reg if you wish before continuing."""
+        .formatted(getConfig())
+        .replaceAll("/", "\\\\");
   }
 
   @Override
   public void install() {
     try (var resource = Objects.requireNonNull(
-        this.getClass().getClassLoader().getResource("q1package.reg")).openStream()) {
+            this.getClass().getClassLoader().getResource("q1package.reg"))
+        .openStream()) {
       var outPath = Path.of(getConfig() + "/cache/q1package.reg");
-      var escapedPath = System.getProperty("user.dir")
-          .replaceAll("\\\\", "\\\\\\\\") + "\\\\"; // XXX: this is gross
+      var escapedPath = System.getProperty("user.dir").replaceAll("\\\\", "\\\\\\\\")
+          + "\\\\"; // XXX: this is gross
       var contents = new String(resource.readAllBytes(), StandardCharsets.UTF_8)
           .replace("%WORKDIR%", escapedPath);
       Files.writeString(outPath, contents, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
@@ -74,10 +76,11 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
 
   @Override
   public String engine(Game game) {
-    return gameDir(game) + switch (game) {
-      case QUAKE -> "\\glquake.exe";
-      case QUAKE2 -> "\\yquake2.exe";
-      case UNSUPPORTED -> "what are you doing with your life";
-    };
+    return gameDir(game)
+        + switch (game) {
+          case QUAKE -> "\\glquake.exe";
+          case QUAKE2 -> "\\yquake2.exe";
+          case UNSUPPORTED -> "what are you doing with your life";
+        };
   }
 }

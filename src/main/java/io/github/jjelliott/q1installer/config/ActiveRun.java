@@ -8,7 +8,10 @@ public class ActiveRun {
   private RunMode runMode;
 
   public enum RunMode {
-    TEXT_MENU, CONFIG_COMMAND, GUI_MENU, INSTALL_COMMAND
+    TEXT_MENU,
+    CONFIG_COMMAND,
+    GUI_MENU,
+    INSTALL_COMMAND
   }
 
   public RunMode runMode() {

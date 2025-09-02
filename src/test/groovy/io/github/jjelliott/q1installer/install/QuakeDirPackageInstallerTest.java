@@ -15,7 +15,7 @@ class QuakeDirPackageInstallerTest {
   void testQuakeDirectoryPath() {
     var props = new UserProps("/path/to/directory", "/path/to/directory/engine");
     var installer = new QuakeDirPackageInstaller(props, null, null, null);
-    assertEquals(Path.of("/path/to/directory/mod"),
-        installer.quakeDirectoryPath(Game.QUAKE, "mod"));
+    assertEquals(
+        Path.of("/path/to/directory/mod"), installer.quakeDirectoryPath(Game.QUAKE, "mod"));
   }
 }

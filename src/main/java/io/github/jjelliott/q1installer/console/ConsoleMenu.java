@@ -8,5 +8,6 @@ public interface ConsoleMenu {
     System.out.println(message);
     return getScanner().nextLine();
   }
+
   Scanner getScanner();
 }

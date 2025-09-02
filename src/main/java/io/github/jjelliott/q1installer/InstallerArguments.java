@@ -20,7 +20,8 @@ public class InstallerArguments {
   public InstallerArguments(String command) {
     String tempAction;
     this.command = command;
-    game = command.startsWith("q1package") ? QUAKE
+    game = command.startsWith("q1package")
+        ? QUAKE
         : (command.startsWith("q2package") ? QUAKE2 : UNSUPPORTED);
     String commandWithoutProtocol;
     tempAction = "install";

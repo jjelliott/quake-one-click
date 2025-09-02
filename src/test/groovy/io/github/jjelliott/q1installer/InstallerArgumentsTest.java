@@ -19,8 +19,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("root", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
@@ -32,9 +31,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("root", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
-
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
@@ -46,8 +43,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("gamedir", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
@@ -59,9 +55,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getUrl()),
         () -> assertEquals("gamedir", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
-
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
@@ -73,8 +67,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/map.zip", msg.getUrl()),
         () -> assertEquals("map", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
@@ -86,8 +79,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/map.zip", msg.getUrl()),
         () -> assertEquals("map", msg.getType()),
         () -> assertEquals("testmod", msg.getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
@@ -104,8 +96,7 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getModPackage().getUrl()),
         () -> assertEquals("gamedir", msg.getModPackage().getType()),
         () -> assertEquals("testmod", msg.getModPackage().getModName()),
-        () -> assertNull(msg.getLaunchMap())
-    );
+        () -> assertNull(msg.getLaunchMap()));
   }
 
   @Test
@@ -122,12 +113,9 @@ class InstallerArgumentsTest {
         () -> assertEquals("https://example.com/mod.zip", msg.getModPackage().getUrl()),
         () -> assertEquals("gamedir", msg.getModPackage().getType()),
         () -> assertEquals("testmod", msg.getModPackage().getModName()),
-        () -> assertEquals("start", msg.getLaunchMap())
-    );
+        () -> assertEquals("start", msg.getLaunchMap()));
   }
 
   @Test
-  void test_custom_instantiation() {
-
-  }
+  void test_custom_instantiation() {}
 }

@@ -7,7 +7,7 @@ import jakarta.inject.Singleton;
 import java.util.Scanner;
 
 @Singleton
-public class PathMenu implements ConsoleMenu{
+public class PathMenu implements ConsoleMenu {
   private final Scanner scanner;
   private final ExamplePath examplePath;
 
@@ -22,8 +22,8 @@ public class PathMenu implements ConsoleMenu{
       if (game.hasDirectoryPath() && game.hasEnginePath()) {
         printCurrentPaths(game);
 
-        var change = prompt(
-            "Would you like to change the currently configured paths? (y/yes/n/no)").toLowerCase();
+        var change = prompt("Would you like to change the currently configured paths? (y/yes/n/no)")
+            .toLowerCase();
         if (change.equals("y") || change.equals("yes")) {
           pathMenu = false;
           changePathsMenu(game);
@@ -45,7 +45,8 @@ public class PathMenu implements ConsoleMenu{
         printCurrentPaths(game);
       }
       first = false;
-      var modify = prompt("""
+      var modify = prompt(
+          """
           Which path would you like to modify?
           1: Quake Directory
           2: Quake Engine
@@ -105,7 +106,6 @@ public class PathMenu implements ConsoleMenu{
     System.out.println("- Quake Directory: " + game.getDirectoryPath());
     System.out.println("- Quake Engine   : " + game.getEnginePath());
   }
-
 
   @Override
   public Scanner getScanner() {

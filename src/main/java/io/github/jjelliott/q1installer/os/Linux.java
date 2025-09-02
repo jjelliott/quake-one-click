@@ -30,18 +30,19 @@ public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
 
   @Override
   public String engine(Game game) {
-    return gameDir(game) + switch (game) {
-      case QUAKE -> "/ironwail";
-      case QUAKE2 -> "/yquake2";
-      default -> "seriously how";
-    };
+    return gameDir(game)
+        + switch (game) {
+          case QUAKE -> "/ironwail";
+          case QUAKE2 -> "/yquake2";
+          default -> "seriously how";
+        };
   }
 
   @Override
   public String textPrompt() {
     var userHome = System.getProperty("user.home");
-    return "The handler desktop files will be installed to %s/.local/share/applications/".formatted(
-        userHome);
+    return "The handler desktop files will be installed to %s/.local/share/applications/"
+        .formatted(userHome);
   }
 
   @Override
@@ -56,8 +57,11 @@ public class Linux implements ConfigLocation, HandlerInstaller, ExamplePath {
             this.getClass().getClassLoader().getResource("%s.desktop".formatted(protocol)))
         .openStream()) {
       Files.createDirectories(Path.of("%s/.local/share/applications/".formatted(userHome)));
-      Files.write(Path.of("%s/.local/share/applications/%s.desktop".formatted(userHome, protocol)),
-          resource.readAllBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+      Files.write(
+          Path.of("%s/.local/share/applications/%s.desktop".formatted(userHome, protocol)),
+          resource.readAllBytes(),
+          StandardOpenOption.WRITE,
+          StandardOpenOption.CREATE);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

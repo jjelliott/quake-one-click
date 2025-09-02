@@ -15,7 +15,6 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
-
 @Singleton
 public class ZipExtractor implements Extractor {
 
@@ -33,8 +32,8 @@ public class ZipExtractor implements Extractor {
     var outputDir = configLocation.getCacheDirFile(FilenameUtils.getBaseName(filename));
     try (var inputStream = Files.newInputStream(Paths.get(filename))) {
       ArchiveStreamFactory archiveStreamFactory = new ArchiveStreamFactory();
-      ArchiveInputStream<? extends ArchiveEntry> archiveInputStream = archiveStreamFactory.createArchiveInputStream(
-          ArchiveStreamFactory.ZIP, inputStream);
+      ArchiveInputStream<? extends ArchiveEntry> archiveInputStream =
+          archiveStreamFactory.createArchiveInputStream(ArchiveStreamFactory.ZIP, inputStream);
       ArchiveEntry archiveEntry;
       while ((archiveEntry = archiveInputStream.getNextEntry()) != null) {
         Path path = Paths.get(outputDir, archiveEntry.getName());

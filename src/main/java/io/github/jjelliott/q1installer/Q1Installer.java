@@ -18,7 +18,8 @@ public class Q1Installer {
   private final PackageInstaller packageInstaller;
   private final GameLauncher gameLauncher;
 
-  public Q1Installer(List<InstalledPackage> installed,
+  public Q1Installer(
+      List<InstalledPackage> installed,
       PackageDownloader packageDownloader,
       PackageInstaller packageInstaller,
       GameLauncher gameLauncher) {
@@ -27,7 +28,6 @@ public class Q1Installer {
     this.packageInstaller = packageInstaller;
     this.gameLauncher = gameLauncher;
   }
-
 
   public void run(InstallerArguments installerArguments) throws ExitCodeException {
 
@@ -48,7 +48,6 @@ public class Q1Installer {
     if (installerArguments.getAction().equals("run")) {
       doOrExit(() -> gameLauncher.launchGame(installerArguments), "Unable to launch game", 3);
     }
-
   }
 
   boolean isNotInstalled(InstallerArguments installerArguments) {
@@ -59,11 +58,12 @@ public class Q1Installer {
 
   void downloadAndInstall(InstallerArguments installerArguments, String errorMessage, int exitCode)
       throws ExitCodeException {
-    doOrExit(() -> {
-      var filename = packageDownloader.downloadFile(installerArguments);
-      packageInstaller.installPackage(installerArguments, filename);
-    }, errorMessage, exitCode);
+    doOrExit(
+        () -> {
+          var filename = packageDownloader.downloadFile(installerArguments);
+          packageInstaller.installPackage(installerArguments, filename);
+        },
+        errorMessage,
+        exitCode);
   }
-
 }
-

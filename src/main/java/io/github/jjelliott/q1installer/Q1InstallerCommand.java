@@ -3,17 +3,20 @@ package io.github.jjelliott.q1installer;
 import io.github.jjelliott.q1installer.config.ActiveRun;
 import io.github.jjelliott.q1installer.config.ActiveRun.RunMode;
 import io.github.jjelliott.q1installer.config.UserProps;
+import io.github.jjelliott.q1installer.console.MainMenu;
 import io.github.jjelliott.q1installer.error.ExitCodeException;
 import io.github.jjelliott.q1installer.gui.Gui;
-import io.github.jjelliott.q1installer.console.MainMenu;
 import io.micronaut.configuration.picocli.PicocliRunner;
 import jakarta.inject.Inject;
 import java.util.Scanner;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
-@Command(name = "quake-one-click", description = "...",
-    mixinStandardHelpOptions = true, subcommands = {ConfigCommand.class, ConsoleCommand.class})
+@Command(
+    name = "quake-one-click",
+    description = "...",
+    mixinStandardHelpOptions = true,
+    subcommands = {ConfigCommand.class, ConsoleCommand.class})
 public class Q1InstallerCommand implements Runnable {
 
   @Inject
@@ -37,7 +40,6 @@ public class Q1InstallerCommand implements Runnable {
   @Parameters(index = "0", defaultValue = "")
   String arg;
 
-
   public static void main(String[] args) {
     PicocliRunner.run(Q1InstallerCommand.class, args);
   }
@@ -45,7 +47,7 @@ public class Q1InstallerCommand implements Runnable {
   public void run() {
 
     if (arg.isEmpty()) {
-//      menu.mainMenu();
+      //      menu.mainMenu();
       if (userProps.getMenuType().equals("gui")) {
         activeRun.setRunMode(RunMode.GUI_MENU);
         imgui.app.Application.launch(gui);
@@ -65,11 +67,9 @@ public class Q1InstallerCommand implements Runnable {
           System.out.println("Press enter to close...");
           scanner.nextLine();
           System.exit(e.getExitCode());
-
         }
       }
     }
-
   }
 
   private boolean checkPathsSet(UserProps.GameProps gameProps) {
@@ -82,4 +82,3 @@ public class Q1InstallerCommand implements Runnable {
     return true;
   }
 }
-

@@ -12,10 +12,13 @@ public class ConfigCommand implements Runnable {
 
   @Inject
   ActiveRun activeRun;
+
   @Inject
   UserProps userProps;
+
   @Parameters(index = "0", defaultValue = "")
   String field;
+
   @Parameters(index = "1", defaultValue = "")
   String value;
 

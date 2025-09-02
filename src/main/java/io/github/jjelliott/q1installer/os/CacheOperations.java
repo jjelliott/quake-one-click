@@ -25,7 +25,7 @@ public class CacheOperations {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    var sizes = new String[]{"B", "KiB", "MiB", "GiB"};
+    var sizes = new String[] {"B", "KiB", "MiB", "GiB"};
     var iters = 0;
     while (size > 1024) {
       size /= 1024;

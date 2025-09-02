@@ -38,7 +38,6 @@ public class UserProps {
     return props;
   }
 
-
   private void write() {
     try (FileOutputStream out = new FileOutputStream(location)) {
       System.out.println("Writing configuration...");
@@ -63,7 +62,6 @@ public class UserProps {
       default -> throw new RuntimeException("unsupported game found");
     };
   }
-
 
   public int getSkill() {
     return skill;

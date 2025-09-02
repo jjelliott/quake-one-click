@@ -3,7 +3,6 @@ package io.github.jjelliott.q1installer.gui;
 import io.github.jjelliott.imgui.BaseImGuiApp;
 import io.github.jjelliott.imgui.ConfirmWindow;
 import io.github.jjelliott.imgui.DropdownWindow;
-import io.github.jjelliott.imgui.Image;
 import io.github.jjelliott.imgui.ImGuiUtils;
 import io.github.jjelliott.q1installer.config.Game;
 import io.github.jjelliott.q1installer.config.UserProps;
@@ -24,19 +23,25 @@ public class Gui extends BaseImGuiApp {
   private final float buttonWidth = 200;
   private io.github.jjelliott.imgui.Image logoImage;
 
-  public Gui(UserProps userProps, HandlerInstaller handlerInstaller,
-      ExamplePath examplePath, CacheOperations cacheOperations) {
+  public Gui(
+      UserProps userProps,
+      HandlerInstaller handlerInstaller,
+      ExamplePath examplePath,
+      CacheOperations cacheOperations) {
     super("Quake One-Click Installer", 550, 650, "q1c.png");
 
-    this.handlerWindow = new ConfirmWindow("Install Handler", handlerInstaller.textPrompt(),
-        "Install",
-        handlerInstaller::install);
-    this.cacheWindow = new ConfirmWindow("Clear Cache",
+    this.handlerWindow = new ConfirmWindow(
+        "Install Handler", handlerInstaller.textPrompt(), "Install", handlerInstaller::install);
+    this.cacheWindow = new ConfirmWindow(
+        "Clear Cache",
         () -> "Cache currently sized at " + cacheOperations.getCacheSize()
-            + ".\nWould you like to clear it?", "Clear Cache", cacheOperations::clearCache);
+            + ".\nWould you like to clear it?",
+        "Clear Cache",
+        cacheOperations::clearCache);
     this.quakePathWindow = new PathsWindow(Game.QUAKE, userProps, examplePath);
     this.quake2PathWindow = new PathsWindow(Game.QUAKE2, userProps, examplePath);
-    this.skillWindow = new DropdownWindow("Default Skill",
+    this.skillWindow = new DropdownWindow(
+        "Default Skill",
         "What skill would you like to launch?",
         List.of("Ask every time", "Easy", "Normal", "Hard", "Nightmare"),
         choice -> userProps.setSkill(choice - 1),
@@ -60,9 +65,10 @@ public class Gui extends BaseImGuiApp {
     float windowHeight = getWindowHeight();
     float spacing = imgui.ImGui.getStyle().getItemSpacing().y;
 
-    float totalHeight =
-        356 + imgui.ImGui.getTextLineHeightWithSpacing() + (imgui.ImGui.getFrameHeightWithSpacing() * 6) + (
-            spacing * 7); // Calculate total height of elements
+    float totalHeight = 356
+        + imgui.ImGui.getTextLineHeightWithSpacing()
+        + (imgui.ImGui.getFrameHeightWithSpacing() * 6)
+        + (spacing * 7); // Calculate total height of elements
 
     imgui.ImGui.setCursorPosY((windowHeight - totalHeight) * 0.5f); // Center vertically
 
@@ -87,6 +93,4 @@ public class Gui extends BaseImGuiApp {
       System.exit(0);
     });
   }
-
-
 }

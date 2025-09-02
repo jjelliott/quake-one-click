@@ -19,9 +19,10 @@ public class SkillMenu implements ConsoleMenu {
   }
 
   void show() {
-    var input = prompt("""
+    var input = prompt(
+        """
         This is the skill that the app will launch by default.
-        Please input just the number: 
+        Please input just the number:
         0 - Easy
         1 - Normal
         2 - Hard
