@@ -9,6 +9,15 @@ version = "0.1"
 group = "io.github.jjelliott.q1installer"
 
 repositories {
+    mavenLocal()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/jjelliott/imgui-starter")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
     mavenCentral()
 }
 
@@ -16,9 +25,7 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen")
     annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
-
-    // Use the new GUI library
-    implementation(project(":quake-installer-gui"))
+    implementation("io.github.jjelliott.imgui:imgui-starter:0.1")
 
     implementation("info.picocli:picocli")
     implementation("io.micronaut.picocli:micronaut-picocli")
