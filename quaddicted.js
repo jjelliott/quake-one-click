@@ -30,6 +30,7 @@ async function run() {
       console.log("No zipbasedir tag found.");
       type = "mod-folder"
       gamedir = Object.keys(json.files)[0].split("/")[0]
+
     }
     if (!type || !gamedir) {
       throw new Error("uh oh, what do")
@@ -43,7 +44,7 @@ async function run() {
   window.packageInfo = json;
   console.log(json)
   const result = buildResultString(json);
-  changeChoice = function (value) {
+  window.changeChoice = function (value) {
     document.querySelector("#one-click").href = result + "," + value;
   }
   let mapChoices = [];
