@@ -1,5 +1,7 @@
 package io.github.jjelliott.q1installer;
 
+import static imgui.app.Application.*;
+
 import io.github.jjelliott.q1installer.config.ActiveRun;
 import io.github.jjelliott.q1installer.config.ActiveRun.RunMode;
 import io.github.jjelliott.q1installer.config.UserProps;
@@ -40,7 +42,7 @@ public class Q1InstallerCommand implements Runnable {
   @Parameters(index = "0", defaultValue = "")
   String arg;
 
-  public static void main(String[] args) {
+  static void main(String[] args) {
     PicocliRunner.run(Q1InstallerCommand.class, args);
   }
 
@@ -50,7 +52,7 @@ public class Q1InstallerCommand implements Runnable {
       //      menu.mainMenu();
       if (userProps.getMenuType().equals("gui")) {
         activeRun.setRunMode(RunMode.GUI_MENU);
-        imgui.app.Application.launch(gui);
+        launch(gui);
       } else if (userProps.getMenuType().equals("console")) {
         activeRun.setRunMode(RunMode.TEXT_MENU);
         mainMenu.show();

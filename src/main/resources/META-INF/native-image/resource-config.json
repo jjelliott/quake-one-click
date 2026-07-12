@@ -122,6 +122,9 @@
         "pattern": "\\Qq1c.png\\E"
       },
       {
+        "pattern": "\\Qtheme.toml\\E"
+      },
+      {
         "pattern": "jdk.jfr:\\Qjdk/jfr/internal/query/view.ini\\E"
       },
       {

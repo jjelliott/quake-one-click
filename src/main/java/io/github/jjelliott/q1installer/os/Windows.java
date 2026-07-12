@@ -27,15 +27,6 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
 
   @Override
   public String textPrompt() {
-    return """
-        A prompt should pop up to write to the registry.
-        You may review %s/cache/q1package.reg if you wish before continuing."""
-        .formatted(getConfig())
-        .replaceAll("/", "\\\\");
-  }
-
-  @Override
-  public void install() {
     try (var resource = Objects.requireNonNull(
             this.getClass().getClassLoader().getResource("q1package.reg"))
         .openStream()) {
@@ -48,6 +39,16 @@ public class Windows implements HandlerInstaller, ConfigLocation, ExamplePath {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    return """
+        A prompt should pop up to write to the registry.
+        You may review %s/cache/q1package.reg if you wish before continuing."""
+        .formatted(getConfig())
+        .replaceAll("/", "\\\\");
+  }
+
+  @Override
+  public void install() {
+
     if (activeRun.runMode() == RunMode.TEXT_MENU) {
       System.out.println(textPrompt());
       System.out.println("Press enter to continue when you are ready...");

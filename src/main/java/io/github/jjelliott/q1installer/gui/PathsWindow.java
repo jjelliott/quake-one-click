@@ -41,17 +41,18 @@ public class PathsWindow extends CenteredWindow {
   }
 
   public void open() {
-    open = true;
+    super.open();
     enginePicker.setFilePath(gameProps.getEnginePath());
     gamedirPicker.setFilePath(gameProps.getDirectoryPath());
   }
 
   public void render() {
-    if (!open) {
+    if (!isOpen()) {
       return;
     }
+    ImGui.openPopup("Paths for " + game.name());
     position();
-    if (ImGui.begin(
+    if (ImGui.beginPopupModal(
         "Paths for " + game.name(),
         null,
         ImGuiWindowFlags.NoDocking
@@ -69,16 +70,16 @@ public class PathsWindow extends CenteredWindow {
 
       ImGui.setCursorPosX((windowWidth - totalWidth) * 0.5f);
       if (ImGui.button("Cancel", new ImVec2(buttonWidth, 20))) {
-        open = false;
+        close();
       }
 
       ImGui.sameLine(); // Place the next item on the same line
       if (ImGui.button("Save", new ImVec2(buttonWidth, 20))) {
         //            confirmAction.run();
         gameProps.setPaths(gamedirPicker.getFilePath(), enginePicker.getFilePath());
-        open = false;
+        close();
       }
     }
-    ImGui.end();
+    ImGui.endPopup();
   }
 }

@@ -44,6 +44,7 @@ public class Gui extends BaseImGuiApp {
         "Default Skill",
         "What skill would you like to launch?",
         List.of("Ask every time", "Easy", "Normal", "Hard", "Nightmare"),
+        "Save",
         choice -> userProps.setSkill(choice - 1),
         () -> userProps.getSkill() + 1);
 
